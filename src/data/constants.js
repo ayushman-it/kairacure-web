@@ -230,3 +230,169 @@ export function buildAvailableDestinations(hospitals = []) {
     .sort((a, b) => a.country.localeCompare(b.country));
 }
 
+
+
+export const SEARCH_ALIASES = {
+  cardiac: ['cariac', 'heart', 'cardiology', 'bypass', 'cabg', 'angioplasty'],
+  orthopedics: ['ortho', 'bone', 'joint', 'knee', 'hip', 'arthritis'],
+  oncology: ['cancer', 'tumor', 'chemo', 'radiation'],
+  spine: ['back pain', 'disc', 'spinal', 'neck pain'],
+  urology: ['kidney', 'stone', 'prostate', 'urine'],
+  infertility: ['ivf', 'fertility', 'pregnancy'],
+  hair: ['hair loss', 'baldness', 'graft'],
+  dental: ['teeth', 'implant', 'smile'],
+  plastic: ['cosmetic', 'aesthetic', 'rhinoplasty'],
+  ophthalmology: ['eye', 'cataract', 'lasik', 'retina'],
+};
+
+export function normalizeSearch(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+export function getTreatmentDisplayTitle(treatment = {}) {
+  let displayTitle = treatment.title || 'Treatment';
+  displayTitle = displayTitle
+    .replace(/Other specified certain joint disorders, not elsewhere classified/gi, 'Joint Treatment')
+    .replace(/Abrasion of knee/gi, 'Knee Treatment')
+    .replace(/Other specified.*not elsewhere classified/gi, 'Specialized Treatment')
+    .replace(/Certain disorders.*not elsewhere classified/gi, 'Medical Treatment')
+    .replace(/Inflammatory arthropathies, unspecified/gi, 'Arthritis Treatment')
+    .replace(/Other specified/gi, 'Specialized')
+    .replace(/not elsewhere classified/gi, '')
+    .replace(/,\s*$/g, '')
+    .trim();
+
+  return displayTitle.length > 42 ? `${displayTitle.slice(0, 39)}...` : displayTitle;
+}
+
+export function getTreatmentPageTitle(treatment = {}) {
+  const displayTitle = getTreatmentDisplayTitle(treatment);
+  return /treatment$/i.test(displayTitle) ? displayTitle : `${displayTitle} Treatment`;
+}
+
+export function hasUsefulTreatmentDescription(description = '') {
+  const text = String(description || '').trim();
+  if (text.length < 24) return false;
+  return !/^WHO ICD-11 MMS mapped condition/i.test(text);
+}
+
+export function buildTreatmentMeaning(treatment = {}) {
+  const displayTitle = getTreatmentDisplayTitle(treatment);
+  const pageTitle = getTreatmentPageTitle(treatment);
+  const rawCondition = treatment.icdMatchedText || treatment.icdTitle || treatment.title || displayTitle;
+  const condition = getTreatmentDisplayTitle({ title: rawCondition });
+  const code = treatment.icdCode || treatment.procedureCode || treatment.code || '';
+  const source = treatment.sourceSystem || (code ? 'ICD-11 medical catalog' : 'Treatment catalog');
+  const release = treatment.sourceRelease || '';
+  const backendDescription = String(treatment.description || '').trim();
+  const description = hasUsefulTreatmentDescription(backendDescription)
+    ? backendDescription
+    : `${pageTitle} is mapped as ${condition}. Kairacure uses this treatment mapping to understand the patient case, prepare the report checklist, shortlist suitable hospitals, and build a practical journey plan.`;
+
+  return {
+    code,
+    condition,
+    description,
+    displayTitle,
+    pageTitle,
+    release,
+    source,
+  };
+}
+
+export function withBackendHospitalDefaults(item, index = 0) {
+  const fallback = INDIA_HOSPITALS[index % INDIA_HOSPITALS.length] || INDIA_HOSPITALS[0];
+  const tags = Array.isArray(item.tags) && item.tags.length
+    ? item.tags
+    : String(item.treatments || item.specialty || '')
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  const packageFrom = Number(item.packageFrom || item.cost?.package || fallback.cost.package || 0);
+
+  return {
+    ...fallback,
+    ...item,
+    id: item._id || item.id || `backend-hospital-${index + 1}`,
+    name: item.name || fallback.name,
+    city: item.city || fallback.city,
+    country: item.country || 'India',
+    specialty: item.specialty || tags[0] || fallback.specialty,
+    tags: tags.length ? tags : fallback.tags,
+    image: item.image || '',
+    galleryImages: item.galleryImages || fallback.galleryImages || [],
+    patientReviews: item.patientReviews || fallback.patientReviews || [],
+    doctor: item.doctor || fallback.doctor,
+    doctorTitle: item.doctorTitle || fallback.doctorTitle,
+    doctorImage: item.doctorImage || item.profileImage || fallback.doctorImage,
+    doctorFocus: Array.isArray(item.doctorFocus) ? item.doctorFocus : fallback.doctorFocus || [],
+    accreditations: item.accreditations || fallback.accreditations || [],
+    rating: Number(item.rating || fallback.rating || 4.8),
+    summary: item.summary || fallback.summary,
+    cost: {
+      ...fallback.cost,
+      ...(item.cost || {}),
+      package: packageFrom || fallback.cost.package,
+    },
+  };
+}
+
+export function withBackendTreatmentDefaults(item, index = 0) {
+  // Use backend data only - no fallback to dummy treatments
+  const title = item.title || item.icdTitle || `Treatment ${index + 1}`;
+  return {
+    ...item,
+    id: item._id || item.id || normalizeSearch(title).replace(/\s+/g, '-') || `backend-treatment-${index + 1}`,
+    title,
+    group: item.group || item.category || item.specialty || item.subtitle || 'Medical',
+    specialty: item.specialty || item.category || item.group || item.subtitle || 'General',
+    category: item.category || item.group || item.specialty || 'Medical',
+    procedureCode: item.procedureCode || item.icdCode || item.code || '',
+    icdCode: item.icdCode || item.procedureCode || item.code || '',
+    icdUri: item.icdUri || '',
+    icdEntityId: item.icdEntityId || '',
+    icdBrowserUrl: item.icdBrowserUrl || '',
+    sourceSystem: item.sourceSystem || '',
+    packageFrom: Number(item.packageFrom || 0),
+    image: item.image || '',
+    description: item.description || '',
+    value: Number(item.value || 85),
+  };
+}
+
+export function getSearchOptionsFromData(query, treatments, hospitals) {
+  const search = normalizeSearch(query);
+  if (!search) return [];
+
+  const options = [];
+  treatments.forEach((treatment) => {
+    const aliases = SEARCH_ALIASES[treatment.id] ?? [];
+    const haystack = normalizeSearch([treatment.title, treatment.group, treatment.specialty, treatment.category, treatment.procedureCode, treatment.icdCode, treatment.sourceSystem, ...aliases].join(' '));
+    if (haystack.includes(search) || aliases.some((alias) => normalizeSearch(alias).includes(search))) {
+      options.push({ type: 'Treatment', label: treatment.title, meta: treatment.icdCode ? `ICD-11 ${treatment.icdCode} - ${treatment.group}` : `${treatment.group} package estimate`, treatment });
+    }
+  });
+
+  hospitals.forEach((hospital) => {
+    const tags = Array.isArray(hospital.tags) ? hospital.tags : [];
+    const doctorFocus = Array.isArray(hospital.doctorFocus) ? hospital.doctorFocus : [];
+    const haystack = normalizeSearch([hospital.name, hospital.city, hospital.country, hospital.specialty, hospital.doctor, ...tags, ...doctorFocus].join(' '));
+    if (haystack.includes(search)) {
+      options.push({ type: 'Hospital', label: hospital.name, meta: `${hospital.city}, ${hospital.country}`, hospital });
+      options.push({ type: 'Doctor', label: hospital.doctor, meta: `${hospital.doctorTitle} - ${hospital.name}`, hospital });
+    }
+  });
+
+  buildAvailableDestinations(hospitals).forEach((destination) => {
+    if (normalizeSearch(destination.country).includes(search)) {
+      options.push({ type: 'Destination', label: destination.country, meta: `${destination.hospitals} hospitals, ${destination.doctors} doctors`, destination });
+    }
+  });
+
+  return options.slice(0, 8);
+}
+
+export function getSearchOptions(query) {
+  return getSearchOptionsFromData(query, TREATMENTS, INDIA_HOSPITALS);
+}
+
