@@ -1,11 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import logoImg from '../../assets/kairacure-logo.png';
-
-function formatShortName(value) {
-  if (!value) return 'User';
-  const first = String(value).split('@')[0].split(' ')[0];
-  return first.charAt(0).toUpperCase() + first.slice(1);
-}
+import { formatShortName, API_BASE } from '../../data/constants.js';
 
 export function Header({ currentPatient, hospitals = [], treatments = [], onLogoutPatient, openSearchOption, page, setPage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,15 +8,14 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   const [suggestions, setSuggestions] = useState([]);
   const [showSugg, setShowSugg] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
-  const searchRef = useRef(null);
-  const inputRef = useRef(null);
+  const searchRef = React.useRef(null);
+  const inputRef = React.useRef(null);
 
   const nav = [
     ['home', 'Home'],
     ['treatments', 'Treatments'],
     ['destinations', 'Destinations'],
     ['partners', 'Partners'],
-    ['doctors', 'Doctors'],
     ['planner', 'Plan My Journey'],
   ];
 
@@ -29,20 +23,21 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     { type: 'Treatment', label: 'Heart Bypass Surgery', meta: 'Cardiac · Starting ₹2.5L', icon: 'fa-heart-pulse' },
     { type: 'Treatment', label: 'Knee Replacement', meta: 'Orthopedics · Starting ₹1.8L', icon: 'fa-bone' },
     { type: 'Treatment', label: 'Cancer Treatment', meta: 'Oncology · Starting ₹3L', icon: 'fa-ribbon' },
-    { type: 'Partner', label: 'Apollo Hospitals', meta: 'Delhi, India', icon: 'fa-hospital' },
-    { type: 'Partner', label: 'Fortis Healthcare', meta: 'Mumbai, India', icon: 'fa-hospital' },
-    { type: 'Destination', label: 'Delhi / NCR', meta: '120+ partner hospitals', icon: 'fa-location-dot' },
+    { type: 'Hospital', label: 'Apollo Hospitals', meta: 'Delhi, India', icon: 'fa-hospital' },
+    { type: 'Hospital', label: 'Fortis Healthcare', meta: 'Mumbai, India', icon: 'fa-hospital' },
+    { type: 'Destination', label: 'Delhi / NCR', meta: '120+ hospitals available', icon: 'fa-location-dot' },
+    { type: 'Destination', label: 'Chennai', meta: '80+ hospitals available', icon: 'fa-location-dot' },
   ];
 
   const TYPE_ICON = {
     Treatment: 'fa-stethoscope',
-    Partner: 'fa-hospital',
+    Hospital: 'fa-hospital',
     Doctor: 'fa-user-doctor',
     Destination: 'fa-location-dot',
   };
   const TYPE_COLOR = {
     Treatment: '#0d2f5d',
-    Partner: '#0d2f5d',
+    Hospital: '#0d2f5d',
     Doctor: '#0d2f5d',
     Destination: '#0d4d3a',
   };
@@ -51,15 +46,32 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   const navigate = (id) => { setPage(id); setMobileMenuOpen(false); };
   const logoutAndClose = () => { onLogoutPatient(); setMobileMenuOpen(false); };
 
+  // Generate suggestions from query
+  const computeSuggestions = (q) => {
+    const trimmed = q.trim();
+    if (!trimmed) return [];
+    return getSearchOptionsFromData(trimmed, treatments, hospitals.length ? hospitals : []).map((opt) => ({
+      ...opt,
+      icon: TYPE_ICON[opt.type] || 'fa-magnifying-glass',
+    }));
+  };
+
   const handleChange = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
     setActiveIdx(-1);
+    if (val.trim()) {
+      const results = computeSuggestions(val);
+      setSuggestions(results.length ? results : [{ type: 'Search', label: `Search "${val}"`, meta: 'Browse all results', icon: 'fa-magnifying-glass', query: val }]);
+    } else {
+      setSuggestions([]);
+    }
     setShowSugg(true);
   };
 
   const handleFocus = () => {
     setShowSugg(true);
+    if (!searchQuery.trim()) setSuggestions([]);
   };
 
   const handleSelect = (sugg) => {
@@ -68,10 +80,24 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     setShowSugg(false);
     if (sugg.treatment) { openSearchOption?.(sugg); }
     else if (sugg.hospital) { openSearchOption?.(sugg); }
-    else { setPage('partners'); }
+    else if (sugg.destination) { openSearchOption?.(sugg); }
+    else { setPage('hospitals'); }
   };
 
-  useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (!showSugg || !suggestions.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, suggestions.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, -1)); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIdx >= 0) handleSelect(suggestions[activeIdx]);
+      else if (searchQuery.trim()) { setPage('hospitals'); setShowSugg(false); }
+    }
+    else if (e.key === 'Escape') { setShowSugg(false); setActiveIdx(-1); }
+  };
+
+  // Close on outside click
+  React.useEffect(() => {
     const handler = (e) => { if (searchRef.current && !searchRef.current.contains(e.target)) setShowSugg(false); };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -83,7 +109,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     <header className="site-header">
       {/* Brand */}
       <button className="brand-lockup" onClick={() => navigate('home')} type="button">
-        <img src={logoImg} alt="Kairacure" className="brand-logo-img" />
+        <img src="./src/assets/kairacure-logo.png" alt="Kaira Cure" className="brand-logo-img" />
       </button>
 
       {/* Nav */}
@@ -95,19 +121,22 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         ))}
       </nav>
 
-      {/* Search Bar */}
+      {/* ── Beautiful Search Bar ── */}
       <div className="hs-wrap" ref={searchRef}>
         <div className={`hs-box${showSugg ? ' hs-focused' : ''}`}>
           <i className="fa-solid fa-magnifying-glass hs-icon" aria-hidden="true" />
           <input
             ref={inputRef}
             className="hs-input"
-            placeholder="Search treatments, partner hospitals, cities..."
+            placeholder="Search treatments, hospitals, cities..."
             value={searchQuery}
             onChange={handleChange}
             onFocus={handleFocus}
+            onKeyDown={handleKeyDown}
             autoComplete="off"
             aria-label="Search"
+            aria-autocomplete="list"
+            aria-expanded={showSugg}
           />
           {searchQuery && (
             <button className="hs-clear" type="button" onClick={() => { setSearchQuery(''); setSuggestions([]); inputRef.current?.focus(); }} aria-label="Clear">
@@ -116,6 +145,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
           )}
         </div>
 
+        {/* Suggestions dropdown */}
         {showSugg && (
           <div className="hs-dropdown" role="listbox">
             {!searchQuery.trim() && (
@@ -126,6 +156,8 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
                 key={i}
                 className={`hs-item${activeIdx === i ? ' hs-item-active' : ''}`}
                 type="button"
+                role="option"
+                aria-selected={activeIdx === i}
                 onMouseEnter={() => setActiveIdx(i)}
                 onClick={() => handleSelect(sugg)}
               >
@@ -139,6 +171,12 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
                 <span className="hs-item-type">{sugg.type}</span>
               </button>
             ))}
+            {searchQuery.trim() && suggestions.length === 0 && (
+              <div className="hs-no-results">
+                <i className="fa-solid fa-magnifying-glass" aria-hidden="true" />
+                No results for &ldquo;{searchQuery}&rdquo;
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -165,12 +203,19 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         <i className="fa-solid fa-bars" aria-hidden="true" />
       </button>
       {mobileMenuOpen && <button aria-label="Close menu overlay" className="mobile-menu-backdrop" onClick={() => setMobileMenuOpen(false)} type="button" />}
-      <aside className={mobileMenuOpen ? 'mobile-offcanvas open' : 'mobile-offcanvas'}>
+      <aside className={mobileMenuOpen ? 'mobile-offcanvas open' : 'mobile-offcanvas'} aria-hidden={!mobileMenuOpen}>
         <div className="mobile-offcanvas-head">
           <strong>Menu</strong>
           <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button">
             <i className="fa-solid fa-xmark" aria-hidden="true" />
           </button>
+        </div>
+        {/* Mobile search */}
+        <div className="mobile-search-wrap">
+          <div className="hs-box">
+            <i className="fa-solid fa-magnifying-glass hs-icon" aria-hidden="true" />
+            <input className="hs-input" placeholder="Search treatments, hospitals..." autoComplete="off" />
+          </div>
         </div>
         <nav className="mobile-nav">
           {nav.map(([id, label]) => (
@@ -195,3 +240,4 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     </header>
   );
 }
+

@@ -1,6 +1,5 @@
 import React from 'react';
 import medicalVideoSrc from '../../assets/new+website+video+desktop+(1).mp4';
-
 const MEDICAL_VIDEO = medicalVideoSrc;
 
 export function MedicalVideoBackdrop() {
@@ -10,3 +9,4 @@ export function MedicalVideoBackdrop() {
     </video>
   );
 }
+

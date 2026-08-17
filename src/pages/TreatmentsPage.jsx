@@ -1,22 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
-
-function getTreatmentDisplayTitle(treatment) {
-  return treatment?.name || treatment?.title || 'Medical Treatment';
-}
-
-function getTreatmentIconKind(treatment) {
-  const name = String(treatment?.name || treatment?.title || treatment?.group || '').toLowerCase();
-  if (/heart|cardiac|cabg|valve/i.test(name)) return 'cardiac';
-  if (/knee|hip|ortho|bone|joint/i.test(name)) return 'orthopedics';
-  if (/cancer|chemo|onco|tumor/i.test(name)) return 'oncology';
-  if (/spine|back/i.test(name)) return 'spine';
-  if (/urology|kidney|renal/i.test(name)) return 'urology';
-  if (/dental|tooth|teeth/i.test(name)) return 'dental';
-  if (/hair|fue|dhi/i.test(name)) return 'hair';
-  if (/eye|lasik|cataract/i.test(name)) return 'ophthalmology';
-  return 'general';
-}
+import { SkeletonCard } from '../components/common/SkeletonCard.jsx';
+import { getTreatmentIconKind } from '../data/constants.js';
 
 function TreatmentVectorIcon({ treatment }) {
   const iconKind = getTreatmentIconKind(treatment);
@@ -34,7 +19,12 @@ function TreatmentVectorIcon({ treatment }) {
   return <i aria-hidden="true" className={`fa-solid ${iconClasses[iconKind] || iconClasses.general} treatment-vector-icon`} />;
 }
 
+function getTreatmentDisplayTitle(item) {
+  return item?.title || item?.name || 'Treatment';
+}
+
 export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiveGroup, selectedTreatment, setPage, setSelectedTreatment, treatments = [] }) {
+  // Generate groups from backend treatment categories/groups
   const groups = useMemo(() => {
     if (!treatments || treatments.length === 0) return ['All'];
 
@@ -46,6 +36,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
       }
     });
 
+    // Sort alphabetically and add 'All' at start
     const sortedGroups = Array.from(uniqueGroups).sort();
     return ['All', ...sortedGroups];
   }, [treatments]);
@@ -71,11 +62,13 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
     <section className="page-section treatments-section-redesigned" id="treatments">
       <MedicalVideoBackdrop />
 
+      {/* Centered Section Header */}
       <div className="treatments-section-header">
         <h2>Find <span>Treatments</span></h2>
         <p>Find the right speciality and compare estimated starting packages.</p>
       </div>
 
+      {/* Card-based Tab Navigation */}
       <div className="treatments-tabs-card">
         <div className="treatments-tabs-wrapper">
           <button
@@ -111,20 +104,21 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
         </div>
       </div>
 
+      {/* Treatment Grid */}
       <div className="treatment-grid">
-        {visibleItems.map((item) => {
+        {isLoading ? Array.from({ length: 8 }, (_, index) => <SkeletonCard className="treatment-skeleton" key={`treatment-skeleton-${index}`} />) : visibleItems.map((item) => {
           const displayTitle = getTreatmentDisplayTitle(item);
 
           return (
             <button
               className={selectedTreatment?.id === item.id ? 'treatment-card active' : 'treatment-card'}
-              key={item.id || item.name}
+              key={item.id}
               onClick={() => {
                 setSelectedTreatment(item);
                 setPage('treatment-detail');
               }}
               type="button"
-              title={item.title || item.name}
+              title={item.title} // Full original title on hover
             >
               <i className="treatment-card-icon" aria-hidden="true"><TreatmentVectorIcon treatment={item} /></i>
               <strong>{displayTitle}</strong>
@@ -133,7 +127,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
           );
         })}
       </div>
-      {visibleCount < items.length && (
+      {!isLoading && visibleCount < items.length && (
         <div className="load-more-row">
           <button onClick={() => setVisibleCount((count) => Math.min(count + 8, items.length))} type="button">
             Load more treatments
