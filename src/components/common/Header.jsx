@@ -1,0 +1,197 @@
+import React, { useState, useRef, useEffect } from 'react';
+import logoImg from '../../assets/kairacure-logo.png';
+
+function formatShortName(value) {
+  if (!value) return 'User';
+  const first = String(value).split('@')[0].split(' ')[0];
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
+
+export function Header({ currentPatient, hospitals = [], treatments = [], onLogoutPatient, openSearchOption, page, setPage }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSugg, setShowSugg] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const searchRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const nav = [
+    ['home', 'Home'],
+    ['treatments', 'Treatments'],
+    ['destinations', 'Destinations'],
+    ['partners', 'Partners'],
+    ['doctors', 'Doctors'],
+    ['planner', 'Plan My Journey'],
+  ];
+
+  const STATIC_SUGGESTIONS = [
+    { type: 'Treatment', label: 'Heart Bypass Surgery', meta: 'Cardiac · Starting ₹2.5L', icon: 'fa-heart-pulse' },
+    { type: 'Treatment', label: 'Knee Replacement', meta: 'Orthopedics · Starting ₹1.8L', icon: 'fa-bone' },
+    { type: 'Treatment', label: 'Cancer Treatment', meta: 'Oncology · Starting ₹3L', icon: 'fa-ribbon' },
+    { type: 'Partner', label: 'Apollo Hospitals', meta: 'Delhi, India', icon: 'fa-hospital' },
+    { type: 'Partner', label: 'Fortis Healthcare', meta: 'Mumbai, India', icon: 'fa-hospital' },
+    { type: 'Destination', label: 'Delhi / NCR', meta: '120+ partner hospitals', icon: 'fa-location-dot' },
+  ];
+
+  const TYPE_ICON = {
+    Treatment: 'fa-stethoscope',
+    Partner: 'fa-hospital',
+    Doctor: 'fa-user-doctor',
+    Destination: 'fa-location-dot',
+  };
+  const TYPE_COLOR = {
+    Treatment: '#0d2f5d',
+    Partner: '#0d2f5d',
+    Doctor: '#0d2f5d',
+    Destination: '#0d4d3a',
+  };
+
+  const patientLabel = formatShortName(currentPatient?.name || currentPatient?.email || 'User');
+  const navigate = (id) => { setPage(id); setMobileMenuOpen(false); };
+  const logoutAndClose = () => { onLogoutPatient(); setMobileMenuOpen(false); };
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    setActiveIdx(-1);
+    setShowSugg(true);
+  };
+
+  const handleFocus = () => {
+    setShowSugg(true);
+  };
+
+  const handleSelect = (sugg) => {
+    setSearchQuery('');
+    setSuggestions([]);
+    setShowSugg(false);
+    if (sugg.treatment) { openSearchOption?.(sugg); }
+    else if (sugg.hospital) { openSearchOption?.(sugg); }
+    else { setPage('partners'); }
+  };
+
+  useEffect(() => {
+    const handler = (e) => { if (searchRef.current && !searchRef.current.contains(e.target)) setShowSugg(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const displaySuggestions = searchQuery.trim() ? suggestions : STATIC_SUGGESTIONS;
+
+  return (
+    <header className="site-header">
+      {/* Brand */}
+      <button className="brand-lockup" onClick={() => navigate('home')} type="button">
+        <img src={logoImg} alt="Kairacure" className="brand-logo-img" />
+      </button>
+
+      {/* Nav */}
+      <nav className="desktop-nav">
+        {nav.map(([id, label]) => (
+          <button className={page === id ? 'active' : ''} key={id} onClick={() => navigate(id)} type="button">
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Search Bar */}
+      <div className="hs-wrap" ref={searchRef}>
+        <div className={`hs-box${showSugg ? ' hs-focused' : ''}`}>
+          <i className="fa-solid fa-magnifying-glass hs-icon" aria-hidden="true" />
+          <input
+            ref={inputRef}
+            className="hs-input"
+            placeholder="Search treatments, partner hospitals, cities..."
+            value={searchQuery}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
+            aria-label="Search"
+          />
+          {searchQuery && (
+            <button className="hs-clear" type="button" onClick={() => { setSearchQuery(''); setSuggestions([]); inputRef.current?.focus(); }} aria-label="Clear">
+              <i className="fa-solid fa-xmark" aria-hidden="true" />
+            </button>
+          )}
+        </div>
+
+        {showSugg && (
+          <div className="hs-dropdown" role="listbox">
+            {!searchQuery.trim() && (
+              <div className="hs-dropdown-label">Popular searches</div>
+            )}
+            {displaySuggestions.map((sugg, i) => (
+              <button
+                key={i}
+                className={`hs-item${activeIdx === i ? ' hs-item-active' : ''}`}
+                type="button"
+                onMouseEnter={() => setActiveIdx(i)}
+                onClick={() => handleSelect(sugg)}
+              >
+                <span className="hs-item-icon" style={{ background: `${TYPE_COLOR[sugg.type] || '#64748b'}18`, color: TYPE_COLOR[sugg.type] || '#64748b' }}>
+                  <i className={`fa-solid ${sugg.icon || TYPE_ICON[sugg.type] || 'fa-magnifying-glass'}`} aria-hidden="true" />
+                </span>
+                <span className="hs-item-text">
+                  <span className="hs-item-label">{sugg.label}</span>
+                  <span className="hs-item-meta">{sugg.meta}</span>
+                </span>
+                <span className="hs-item-type">{sugg.type}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Auth */}
+      <div className="header-actions desktop-header-actions">
+        {currentPatient ? (
+          <button className="header-cta header-user-cta" onClick={logoutAndClose} title={currentPatient.name || currentPatient.email} type="button">
+            <i className="fa-solid fa-user-check" aria-hidden="true" />
+            <span>{patientLabel}</span>
+            <b>Logout</b>
+          </button>
+        ) : (
+          <div className="header-auth-btns">
+            <button className="header-login-btn" onClick={() => navigate('login')} type="button">Login</button>
+            <span className="header-auth-sep">|</span>
+            <button className="header-signup-btn" onClick={() => navigate('login')} type="button">Sign Up</button>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile toggle */}
+      <button aria-expanded={mobileMenuOpen} aria-label="Open menu" className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(true)} type="button">
+        <i className="fa-solid fa-bars" aria-hidden="true" />
+      </button>
+      {mobileMenuOpen && <button aria-label="Close menu overlay" className="mobile-menu-backdrop" onClick={() => setMobileMenuOpen(false)} type="button" />}
+      <aside className={mobileMenuOpen ? 'mobile-offcanvas open' : 'mobile-offcanvas'}>
+        <div className="mobile-offcanvas-head">
+          <strong>Menu</strong>
+          <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button">
+            <i className="fa-solid fa-xmark" aria-hidden="true" />
+          </button>
+        </div>
+        <nav className="mobile-nav">
+          {nav.map(([id, label]) => (
+            <button className={page === id ? 'active' : ''} key={id} onClick={() => navigate(id)} type="button">
+              {label}
+            </button>
+          ))}
+        </nav>
+        {currentPatient ? (
+          <button className="header-cta mobile-header-cta header-user-cta" onClick={logoutAndClose} title={currentPatient.name || currentPatient.email} type="button">
+            <i className="fa-solid fa-user-check" aria-hidden="true" />
+            <span>{patientLabel}</span>
+            <b>Logout</b>
+          </button>
+        ) : (
+          <div className="header-auth-btns mobile-auth-btns">
+            <button className="header-login-btn" onClick={() => navigate('login')} type="button">Login</button>
+            <button className="header-signup-btn" onClick={() => navigate('login')} type="button">Sign Up</button>
+          </div>
+        )}
+      </aside>
+    </header>
+  );
+}

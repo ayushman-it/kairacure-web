@@ -1,0 +1,30 @@
+/* ════════════════════════════════════════════════════════════════
+   KAIRACURE DESIGN SYSTEM TOKENS
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  /* Palette */
+  --brand-dark: #0d2f5d;
+  --brand-mid: #1a4d8f;
+  --brand-light: #dbeafe;
+  --brand-xlight: #eff6ff;
+
+  --color-surface: #ffffff;
+  --color-background: #f8fafc;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  /* Fonts */
+  --font-heading: 'Noto Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Noto Sans', system-ui, -apple-system, sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px rgba(13, 47, 93, 0.08);
+  --shadow-lg: 0 10px 25px rgba(13, 47, 93, 0.12);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
