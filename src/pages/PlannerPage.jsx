@@ -25,7 +25,9 @@ import {
   getTreatmentIconKind,
   getTreatmentDisplayTitle,
   getTreatmentPageTitle,
-  buildTreatmentMeaning
+  buildTreatmentMeaning,
+  HEALTH_ICON_SOURCES,
+  HEALTH_ICON_BASE
 } from '../data/constants.js';
 
 export function PlannerPage({ hospitals = INDIA_HOSPITALS, initialProcedure = null, money = (value) => formatCurrency(value, 'INR'), selectedTreatment, selectedHospital, setPage, setSelectedHospital, setSelectedTreatment, treatments = TREATMENTS }) {
