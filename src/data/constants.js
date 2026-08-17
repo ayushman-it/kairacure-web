@@ -191,3 +191,42 @@ export function handleImageFallback(event) {
     event.currentTarget.src = HOSPITAL_PLACEHOLDER_IMAGE;
   }
 }
+
+export function buildAvailableDestinations(hospitals = []) {
+  const cityCopy = {
+    Chennai: 'High-volume cardiac, transplant, and multispeciality treatment programs.',
+    Delhi: 'Complex treatment programs with large multispeciality care teams.',
+    Gurgaon: 'NCR hospitals for complex surgery, recovery planning, and international patient support.',
+    Mumbai: 'Advanced diagnostics, oncology, cardiac care, and executive health checkups.',
+    Bangalore: 'Technology-led hospitals for eye care, orthopedics, fertility, and wellness.',
+    Bengaluru: 'Technology-led hospitals for eye care, orthopedics, fertility, and wellness.',
+  };
+  const grouped = new Map();
+  hospitals
+    .filter((hospital) => hospital.country === 'India' && hospital.city)
+    .forEach((hospital) => {
+      const key = hospital.city.trim();
+      const current = grouped.get(key) || {
+        country: key,
+        line: cityCopy[key] || `Available ${hospital.specialty?.toLowerCase() || 'specialist'} care teams and coordinated hospital support.`,
+        packageFrom: Number.POSITIVE_INFINITY,
+        hospitals: 0,
+        doctors: 0,
+        image: hospital.image,
+      };
+      current.hospitals += 1;
+      current.doctors += Number(hospital.doctors) || 0;
+      current.packageFrom = Math.min(current.packageFrom, Number(hospital.cost?.package) || Number.POSITIVE_INFINITY);
+      if (!current.image && hospital.image) current.image = hospital.image;
+      grouped.set(key, current);
+    });
+  return Array.from(grouped.values())
+    .map((destination) => ({
+      ...destination,
+      packageFrom: Number.isFinite(destination.packageFrom) ? destination.packageFrom : 0,
+      doctors: destination.doctors || destination.hospitals,
+      image: destination.image || HOSPITAL_PLACEHOLDER_IMAGE,
+    }))
+    .sort((a, b) => a.country.localeCompare(b.country));
+}
+
