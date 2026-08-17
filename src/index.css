@@ -12,7 +12,7 @@
 
   /* Fonts */
   --font-heading: 'Noto Sans', system-ui, sans-serif;
-  --font-body:    'Anonymous Pro', 'Courier New', monospace;
+  --font-body:    'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 .cma-treatment-page {
   background: #ffffff;
@@ -33313,7 +33313,7 @@ input, textarea, select, button,
 .benefit-item span, .hpl-checklist li,
 .partner-hero-subtitle, .hero-copy p,
 .hpl-checklist, .form-benefits {
-  font-family: 'Anonymous Pro', 'Courier New', monospace !important;
+  font-family: 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 /* ── White text on all dark/navy sections ── */
@@ -33545,7 +33545,7 @@ li, label, input, textarea, select,
 .detail-panel p, .cma-about-card p,
 .cma-overview-copy p, .hero-subtitle-modern,
 [class*="-meta"], [class*="-desc"], [class*="-sub"] {
-  font-family: 'Anonymous Pro', 'Courier New', monospace !important;
+  font-family: 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 /* ── Logo ── */
@@ -33617,7 +33617,7 @@ li, label, input, textarea, select,
 }
 .hs-icon { color: #94a3b8 !important; }
 .hs-box:focus-within .hs-icon { color: #0d2f5d !important; }
-.hs-input { font-family: 'Anonymous Pro', monospace !important; font-size: 0.85rem !important; }
+.hs-input { font-family: 'Noto Sans', system-ui, sans-serif !important; font-size: 0.85rem !important; }
 .hs-item:hover, .hs-item-active { background: #eff6ff !important; }
 
 /* ══════════════════════════════════════════
@@ -33800,9 +33800,9 @@ select:focus {
 .hcc-send-btn { background: #0d2f5d !important; }
 .hcc-send-btn:hover { background: #1a4d8f !important; }
 .hcc-bubble-user { background: #0d2f5d !important; color: #fff !important; }
-.hcc-chips button { font-family: 'Anonymous Pro', monospace !important; }
+.hcc-chips button { font-family: 'Noto Sans', system-ui, sans-serif !important; }
 .hcc-chips button:hover { background: #dbeafe !important; color: #0d2f5d !important; }
-.hcc-disclaimer { font-family: 'Anonymous Pro', monospace !important; }
+.hcc-disclaimer { font-family: 'Noto Sans', system-ui, sans-serif !important; }
 
 /* Typing dots */
 .hcc-typing span { background: #94a3b8 !important; }
@@ -33817,7 +33817,7 @@ select:focus {
 /* ══════════════════════════════════════════
    HPL (Partner Landing)
    ══════════════════════════════════════════ */
-.hpl-wrap { font-family: 'Anonymous Pro', monospace; }
+.hpl-wrap { font-family: 'Noto Sans', system-ui, sans-serif; }
 .hpl-h1 { font-family: 'Noto Sans', sans-serif !important; }
 .hpl-h1 em { color: #fbbf24 !important; font-style: normal !important; }
 
@@ -33893,4 +33893,143 @@ select:focus {
    BREADCRUMBS & LINKS
    ══════════════════════════════════════════ */
 .profile-breadcrumb button,
-.profile-breadcrumb a { color: #0d2f5d !important; font-family: 'Anonymous Pro', monospace !important; }
+.profile-breadcrumb a { color: #0d2f5d !important; font-family: 'Noto Sans', system-ui, sans-serif !important; }
+
+
+/* ════════════════════════════════════════════════════════════════
+   PARTNERS FILTER BAR & DROPDOWNS FIX
+   ════════════════════════════════════════════════════════════════ */
+.hospital-filter-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: #ffffff !important;
+  padding: 14px 20px !important;
+  border-radius: 16px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px rgba(13, 47, 93, 0.06) !important;
+  margin-bottom: 2rem !important;
+}
+
+.filter-static-field {
+  padding: 0.65rem 1.25rem !important;
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  color: #0d2f5d !important;
+  font-size: 0.9rem !important;
+}
+
+.checkbox-dropdown-wrap {
+  position: relative !important;
+  display: inline-block !important;
+  flex: 1 !important;
+  min-width: 160px !important;
+}
+
+.dropdown-trigger-btn {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.65rem 1rem !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  color: #1e293b !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.dropdown-trigger-btn:hover {
+  border-color: #0d2f5d !important;
+  background: #f8fafc !important;
+}
+
+.dropdown-menu-panel {
+  position: absolute !important;
+  top: calc(100% + 6px) !important;
+  left: 0 !important;
+  width: 100% !important;
+  min-width: 240px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  z-index: 100 !important;
+  padding: 12px !important;
+}
+
+.dropdown-menu-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 8px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.dropdown-menu-header strong {
+  font-size: 0.85rem !important;
+  color: #0d2f5d !important;
+  font-weight: 700 !important;
+}
+
+.dropdown-menu-header button {
+  background: none !important;
+  border: none !important;
+  color: #ef4444 !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+.dropdown-options-list {
+  max-height: 220px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+.dropdown-option-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 8px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  font-size: 0.85rem !important;
+  color: #334155 !important;
+  transition: background 0.15s ease !important;
+}
+
+.dropdown-option-item:hover {
+  background: #f1f5f9 !important;
+}
+
+.dropdown-option-item input[type="checkbox"] {
+  accent-color: #0d2f5d !important;
+  width: 16px !important;
+  height: 16px !important;
+  cursor: pointer !important;
+}
+
+.hospital-filter-bar > button {
+  padding: 0.65rem 1.75rem !important;
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a4d8f 100%) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.hospital-filter-bar > button:hover {
+  opacity: 0.9 !important;
+}

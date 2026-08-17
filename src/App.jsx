@@ -30,6 +30,8 @@ import { AuthPage } from './pages/AuthPage.jsx';
 // Modals
 import { JourneyModal } from './components/modals/JourneyModal.jsx';
 
+import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults } from './data/constants.js';
+
 const BRAND_NAME = 'Kairacure';
 
 function getApiBase() {
@@ -102,12 +104,7 @@ function AdminPanelRedirect() {
 }
 
 const INDIA_HOSPITALS = clientHospitals || [];
-const TREATMENTS = [
-  { id: 't1', name: 'Heart Bypass Surgery (CABG)', group: 'Cardiology', costINR: 250000 },
-  { id: 't2', name: 'Total Knee Replacement', group: 'Orthopedics', costINR: 180000 },
-  { id: 't3', name: 'Chemotherapy & Oncology Care', group: 'Oncology', costINR: 300000 },
-  { id: 't4', name: 'Kidney Transplant', group: 'Nephrology', costINR: 650000 },
-];
+const TREATMENTS = DEFAULT_TREATMENTS;
 
 function App() {
   const [page, setPageState] = useState(() => pageFromPath(window.location.pathname));
@@ -126,6 +123,37 @@ function App() {
   const [showJourneyModal, setShowJourneyModal] = useState(false);
   const [aiInitialMessage, setAiInitialMessage] = useState('');
   const [plannerInitialProcedure, setPlannerInitialProcedure] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+    const fetchContent = async () => {
+      setIsContentLoading(true);
+      try {
+        const [hRes, tRes] = await Promise.all([
+          fetch(`${API_BASE}/hospitals`),
+          fetch(`${API_BASE}/treatments`),
+        ]);
+        const [hData, tData] = await Promise.all([
+          hRes.ok ? hRes.json() : [],
+          tRes.ok ? tRes.json() : [],
+        ]);
+        if (!ignore) {
+          if (Array.isArray(hData) && hData.length) {
+            setBackendHospitals(hData.map(withBackendHospitalDefaults));
+          }
+          if (Array.isArray(tData) && tData.length) {
+            setBackendTreatments(tData.map(withBackendTreatmentDefaults));
+          }
+        }
+      } catch {
+        // Fallback to default client data
+      } finally {
+        if (!ignore) setIsContentLoading(false);
+      }
+    };
+    fetchContent();
+    return () => { ignore = true; };
+  }, []);
 
   const setPage = (nextPage) => {
     const nextPath = pathForPage(nextPage);
