@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════
    BRAND COLOR TOKENS  —  Kaira Cure
    Dark  : #0d2f5d   Light : #dbeafe
    ═══════════════════════════════════════════ */
@@ -33893,4 +33893,65 @@ select:focus {
    BREADCRUMBS & LINKS
    ══════════════════════════════════════════ */
 .profile-breadcrumb button,
-.profile-breadcrumb a { color: #0d2f5d !important; font-family: 'Anonymous Pro', monospace !important; }
+.profile-breadcrumb a { color: #0d2f5d !important; font-family: 'Noto Sans', sans-serif !important; }
+
+/* ════════════════════════════════════════════════════════════════
+   USER CUSTOM OVERRIDES
+   1. Clean Active Header Nav Link (Color ONLY - No shadow, no underline)
+   2. Reduced Word & Letter Spacing for Paragraphs
+   ════════════════════════════════════════════════════════════════ */
+
+/* Header Nav Links */
+.desktop-nav button {
+  font-family: 'Noto Sans', sans-serif !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  text-shadow: none !important;
+  outline: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.desktop-nav button.active {
+  color: #0d2f5d !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-color: transparent !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  outline: none !important;
+  font-weight: 700 !important;
+}
+
+.desktop-nav button.active::after,
+.desktop-nav button.active::before {
+  display: none !important;
+  content: none !important;
+}
+
+.desktop-nav button:hover {
+  color: #1a4d8f !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Paragraph Word & Letter Spacing Fix */
+p, small, span:not([class*="icon"]):not([class*="badge"]):not([class*="dot"]),
+li, label, input, textarea, select,
+.hero-copy p, .hpl-section-sub,
+.hs-item-meta, .hpl-checklist li,
+.detail-panel p, .cma-about-card p,
+.cma-overview-copy p, .hero-subtitle-modern,
+.why-card-grid article p, .faq-answer p, .section-heading p {
+  font-family: 'Noto Sans', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.01em !important;
+  word-spacing: normal !important;
+  line-height: 1.6 !important;
+}
+
