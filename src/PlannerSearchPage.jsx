@@ -207,14 +207,14 @@ export function PlannerSearchPage({
             userAgent: navigator.userAgent,
             referrer: document.referrer
           })
-        });
+        }).catch(() => null);
         
-        if (response.ok) {
-          const data = await response.json();
-          setLeadId(data.leadId);
+        if (response && response.ok) {
+          const data = await response.json().catch(() => ({}));
+          if (data && data.leadId) setLeadId(data.leadId);
         }
-      } catch (error) {
-        console.log('Lead tracking failed:', error);
+      } catch {
+        // silent fallback
       }
     };
     

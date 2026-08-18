@@ -300,8 +300,6 @@ export function buildAvailableDestinations(hospitals = []) {
     .sort((a, b) => a.country.localeCompare(b.country));
 }
 
-
-
 export const SEARCH_ALIASES = {
   cardiac: ['cariac', 'heart', 'cardiology', 'bypass', 'cabg', 'angioplasty'],
   orthopedics: ['ortho', 'bone', 'joint', 'knee', 'hip', 'arthritis'],
@@ -316,11 +314,11 @@ export const SEARCH_ALIASES = {
 };
 
 export function normalizeSearch(value) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 export function getTreatmentDisplayTitle(treatment = {}) {
-  let displayTitle = treatment.title || 'Treatment';
+  let displayTitle = treatment.title || treatment.name || 'Treatment';
   displayTitle = displayTitle
     .replace(/Other specified certain joint disorders, not elsewhere classified/gi, 'Joint Treatment')
     .replace(/Abrasion of knee/gi, 'Knee Treatment')
@@ -354,7 +352,7 @@ export function buildTreatmentMeaning(treatment = {}) {
   const code = treatment.icdCode || treatment.procedureCode || treatment.code || '';
   const source = treatment.sourceSystem || (code ? 'ICD-11 medical catalog' : 'Treatment catalog');
   const release = treatment.sourceRelease || '';
-  const backendDescription = String(treatment.description || '').trim();
+  const backendDescription = String(treatment.meaning || treatment.overview || treatment.description || '').trim();
   const description = hasUsefulTreatmentDescription(backendDescription)
     ? backendDescription
     : `${pageTitle} is mapped as ${condition}. Kairacure uses this treatment mapping to understand the patient case, prepare the report checklist, shortlist suitable hospitals, and build a practical journey plan.`;
@@ -408,7 +406,6 @@ export function withBackendHospitalDefaults(item, index = 0) {
 }
 
 export function withBackendTreatmentDefaults(item, index = 0) {
-  // Use backend data only - no fallback to dummy treatments
   const title = item.title || item.icdTitle || `Treatment ${index + 1}`;
   return {
     ...item,
@@ -425,7 +422,7 @@ export function withBackendTreatmentDefaults(item, index = 0) {
     sourceSystem: item.sourceSystem || '',
     packageFrom: Number(item.packageFrom || 0),
     image: item.image || '',
-    description: item.description || '',
+    description: item.description || item.meaning || item.overview || '',
     value: Number(item.value || 85),
   };
 }
@@ -465,4 +462,3 @@ export function getSearchOptionsFromData(query, treatments, hospitals) {
 export function getSearchOptions(query) {
   return getSearchOptionsFromData(query, TREATMENTS, INDIA_HOSPITALS);
 }
-

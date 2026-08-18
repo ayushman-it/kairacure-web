@@ -3,7 +3,7 @@ import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.
 import { StarRating } from '../components/common/StarRating.jsx';
 import { CallBackForm } from '../components/hospitals/CallBackForm.jsx';
 import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
-import { API_BASE, accreditationText, getHospitalImage, handleImageFallback } from '../data/constants.js';
+import { API_BASE, accreditationText, getHospitalImage, handleImageFallback, buildTreatmentMeaning, normalizeSearch, getTreatmentDisplayTitle, getTreatmentPageTitle } from '../data/constants.js';
 
 export function TreatmentDetailPage({ allTreatments = [], hospitals, money, selectedTreatment, setPage, setPlannerInitialProcedure, setSelectedHospital, setSelectedTreatment }) {
   const [activeTab, setActiveTab] = useState('Overview');
