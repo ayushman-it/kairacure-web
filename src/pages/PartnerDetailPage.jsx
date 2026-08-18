@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
 import { StarRating } from '../components/common/StarRating.jsx';
+import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
 import { CallBackForm } from '../components/hospitals/CallBackForm.jsx';
 import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
 import {

@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
 import { StarRating } from '../components/common/StarRating.jsx';
-import { API_BASE, readStoredPatientSession, getPatientAttribution } from '../data/constants.js';
+import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
+import { CallBackForm } from '../components/hospitals/CallBackForm.jsx';
+import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
+import {
+  API_BASE,
+  readStoredPatientSession,
+  getPatientAttribution,
+  hospitalGallery,
+  HOSPITALS,
+  accreditationText,
+  getHospitalImage,
+  handleImageFallback
+} from '../data/constants.js';
 
-export function DoctorDetailPage({ money, selectedHospital, setPage }) {
+export function DoctorDetailPage({ money, selectedHospital, selectedTreatment, setPage }) {
+  const basePackage = selectedTreatment && selectedHospital?.tags?.includes(selectedTreatment.title) ? selectedTreatment.packageFrom : selectedHospital?.cost?.package || 0;
   const gallery = hospitalGallery(selectedHospital);
   const [activeTab, setActiveTab] = useState('About');
   const [galleryOpen, setGalleryOpen] = useState(false);
