@@ -31,6 +31,7 @@ export const PAGE_PATHS = {
   'treatment-detail': '/treatments/detail',
   'partner-detail': '/partners/detail',
   'doctor-detail': '/doctors/detail',
+  'partner-growth': '/hospital-partners',
 };
 
 export function readStoredPatientSession() {
@@ -230,6 +231,16 @@ export function handleImageFallback(event) {
   if (event.currentTarget.src !== HOSPITAL_PLACEHOLDER_IMAGE) {
     event.currentTarget.src = HOSPITAL_PLACEHOLDER_IMAGE;
   }
+}
+
+export function hospitalGallery(hospital) {
+  return [
+    getHospitalImage(hospital),
+    'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1512678080530-7760d81faba6?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=1000&q=80',
+  ];
 }
 
 export function buildAvailableDestinations(hospitals = []) {

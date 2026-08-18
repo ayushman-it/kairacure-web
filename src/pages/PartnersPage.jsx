@@ -41,7 +41,7 @@ function CheckboxDropdown({ id, label, openDropdown, options, selectedValues, on
 
 export function PartnersPage({ hospitals, isLoading = false, money, selectedTreatment, setPage, setSelectedHospital, treatments = TREATMENTS }) {
   const cityOptions = useMemo(() => [...new Set(hospitals.map((hospital) => hospital.city))].sort(), [hospitals]);
-  const treatmentOptions = useMemo(() => treatments.map((treatment) => treatment.title), [treatments]);
+  const treatmentOptions = useMemo(() => treatments.map((treatment) => treatment.title || treatment.name), [treatments]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [selectedTreatments, setSelectedTreatments] = useState(selectedTreatment?.title ? [selectedTreatment.title] : []);
@@ -56,8 +56,8 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
   const filteredDirectoryHospitals = useMemo(() => hospitals.filter((hospital) => {
     const tags = Array.isArray(hospital.tags) ? hospital.tags : [];
     const matchesCity = selectedCities.length === 0 || selectedCities.includes(hospital.city);
-    const matchesDepartment = selectedDepartments.length === 0 || selectedDepartments.some((department) => tags.some((tag) => treatments.find((treatment) => treatment.title === tag)?.group === department));
-    const matchesTreatment = selectedTreatments.length === 0 || selectedTreatments.some((treatment) => tags.includes(treatment) || hospital.specialty === treatments.find((item) => item.title === treatment)?.specialty);
+    const matchesDepartment = selectedDepartments.length === 0 || selectedDepartments.some((department) => tags.some((tag) => treatments.find((treatment) => (treatment.title || treatment.name) === tag)?.group === department));
+    const matchesTreatment = selectedTreatments.length === 0 || selectedTreatments.some((treatment) => tags.includes(treatment) || hospital.specialty === treatments.find((item) => (item.title || item.name) === treatment)?.specialty);
     return matchesCity && matchesDepartment && matchesTreatment;
   }), [hospitals, selectedCities, selectedDepartments, selectedTreatments, treatments]);
   const visibleDirectoryHospitals = filteredDirectoryHospitals.slice(0, visibleHospitalCount);
@@ -113,26 +113,34 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
           window.setTimeout(() => setIsFiltering(false), 360);
         }} type="button">Search</button>
       </div>
+
       <div className="section-heading">
         <div>
-          <h2>Popular Hospitals</h2>
+          <h2>Popular Partners & Hospitals</h2>
           <p>Compare providers by destination, speciality, doctors, value, and full estimated budget.</p>
         </div>
       </div>
-      <div className="quick-filter-row">
+
+      <div className="quick-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         <span>Quick Filters</span>
         <button type="button">JCI Accreditation</button>
         <button type="button">NABH</button>
         <button type="button">Multi Specialty</button>
+        <button
+          type="button"
+          onClick={() => setPage('partner-growth')}
+          style={{ background: '#2563eb', color: '#ffffff', fontWeight: 700, marginLeft: 'auto', borderRadius: '8px', padding: '0.5rem 1rem', border: 'none', cursor: 'pointer' }}
+        >
+          <i className="fa-solid fa-bullhorn" aria-hidden="true" style={{ marginRight: '0.4rem' }} /> Hospital Partner Growth & DOOH Ads
+        </button>
       </div>
+
       <div className="hospital-directory-layout">
         <div className="hospital-list">
           {showHospitalSkeleton && Array.from({ length: 3 }, (_, index) => <SkeletonCard className="hospital-skeleton" key={`hospital-skeleton-${index}`} />)}
           {!showHospitalSkeleton && visibleDirectoryHospitals.map((hospital) => (
             <article className="hospital-card" key={hospital.id}>
-              <div
-                className="hospital-card-main"
-              >
+              <div className="hospital-card-main">
                 <button
                   className="hospital-thumb-button"
                   onClick={() => {
@@ -148,7 +156,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                     className="hospital-name-link"
                     onClick={() => {
                       setSelectedHospital(hospital);
-                      setPage('hospital-detail');
+                      setPage('partner-detail');
                     }}
                     type="button"
                   >
@@ -159,12 +167,12 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                     <span>{hospital.rating} ({hospital.doctors} Ratings)</span>
                   </div>
                   <p>
-                    {hospital.name} is listed from the {hospital.sourceSystem || 'client hospital master database'} for {hospital.specialty.toLowerCase()} care
+                    {hospital.name} is listed from the {hospital.sourceSystem || 'client hospital master database'} for {hospital.specialty?.toLowerCase() || 'specialist'} care
                     {hospital.city ? ` in ${hospital.city}` : ''}. {hospital.accreditations ? `Accreditation: ${accreditationText(hospital.accreditations)}.` : 'Accreditation details can be updated from admin.'}
                   </p>
                   <button className="show-more-link" onClick={() => {
                     setSelectedHospital(hospital);
-                    setPage('hospital-detail');
+                    setPage('partner-detail');
                   }} type="button">Show More</button>
                 </div>
               </div>
@@ -173,8 +181,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                 <span>Beds: {hospital.bedText || hospital.beds || 'Update pending'}</span>
                 <span>{hospital.jciAccredited ? 'JCI Accredited' : accreditationText(hospital.accreditations, hospital.nabhType || 'Accredited Hospital')}</span>
                 <span>Location: {hospital.city || hospital.addressLine1 || 'India'}</span>
-                
-                {/* Accreditation Logo - Compact inline */}
+
                 <div className="hospital-accreditation-logos">
                   {hospital.jciAccredited ? (
                     <div className="accreditation-badge jci-badge">
@@ -188,29 +195,23 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                     </div>
                   )}
                 </div>
-                
+
                 <button onClick={() => setPage('planner')} type="button">Book Appointment</button>
               </div>
             </article>
           ))}
-          {!showHospitalSkeleton && filteredDirectoryHospitals.length === 0 && (
-            <article className="hospital-empty-state">
-              <strong>No hospitals match these filters</strong>
-              <p>Clear one filter or select a broader treatment to see more options.</p>
-            </article>
-          )}
-          {!showHospitalSkeleton && visibleHospitalCount < filteredDirectoryHospitals.length && (
-            <div className="load-more-row hospital-load-more">
-              <button onClick={() => setVisibleHospitalCount((count) => Math.min(count + 5, filteredDirectoryHospitals.length))} type="button">
-                Load more hospitals
-              </button>
-              <span>{visibleDirectoryHospitals.length} of {filteredDirectoryHospitals.length}</span>
-            </div>
+
+          {filteredDirectoryHospitals.length > visibleHospitalCount && (
+            <button className="directory-load-more" onClick={() => setVisibleHospitalCount((prev) => prev + 5)} type="button">
+              Load More Partners
+            </button>
           )}
         </div>
-        <EvaluationForm title="Get FREE Evaluation" buttonLabel="Contact Us Now" />
+
+        <div className="hospital-form-side">
+          <EvaluationForm selectedHospital={hospitals[0]} title="Quick Consultation" />
+        </div>
       </div>
     </section>
   );
 }
-

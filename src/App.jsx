@@ -21,6 +21,7 @@ import { TreatmentsPage } from './pages/TreatmentsPage.jsx';
 import { TreatmentDetailPage } from './pages/TreatmentDetailPage.jsx';
 import { PartnersPage } from './pages/PartnersPage.jsx';
 import { PartnerDetailPage } from './pages/PartnerDetailPage.jsx';
+import { HospitalPartnerLandingPage } from './pages/HospitalPartnerLandingPage.jsx';
 import { DoctorsPage } from './pages/DoctorsPage.jsx';
 import { DoctorDetailPage } from './pages/DoctorDetailPage.jsx';
 import { PlannerPage } from './pages/PlannerPage.jsx';
@@ -264,6 +265,10 @@ function App() {
 
         {page === 'partner-detail' && (
           <PartnerDetailPage money={money} selectedHospital={selectedHospital} selectedTreatment={selectedTreatment} setPage={setPage} setSelectedHospital={setSelectedHospital} />
+        )}
+
+        {page === 'partner-growth' && (
+          <HospitalPartnerLandingPage onBackToDetails={() => setPage('partners')} selectedHospital={selectedHospital} />
         )}
 
         {page === 'doctor-detail' && <DoctorDetailPage money={money} selectedHospital={selectedHospital} setPage={setPage} />}

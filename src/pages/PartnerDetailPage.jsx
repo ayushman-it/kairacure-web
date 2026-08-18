@@ -9,7 +9,9 @@ import {
   getHospitalImage,
   handleImageFallback,
   getPatientAttribution,
-  readStoredPatientSession
+  readStoredPatientSession,
+  hospitalGallery,
+  HOSPITALS
 } from '../data/constants.js';
 
 export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, setPage, setSelectedHospital, onBack }) {
