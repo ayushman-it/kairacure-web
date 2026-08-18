@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════
    BRAND COLOR TOKENS  —  Kaira Cure
    Dark  : #0d2f5d   Light : #dbeafe
    ═══════════════════════════════════════════ */
@@ -34033,3 +34033,27 @@ select:focus {
 .hospital-filter-bar > button:hover {
   opacity: 0.9 !important;
 }
+
+/* Partner Detail Landing Page Full-Width & Bootstrap Overrides */
+.partner-detail-landing {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 0 3rem 0 !important;
+}
+
+.bootstrap-hospital-wrap {
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem;
+}
+
+.partner-hero-title {
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem) !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+}
+

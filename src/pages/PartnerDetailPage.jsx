@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
 import { StarRating } from '../components/common/StarRating.jsx';
 import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
-import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
 import {
   API_BASE,
   accreditationText,
@@ -48,7 +47,7 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
     ? hospital.tags.map((t, idx) => ({ id: `ht-${idx}`, title: t, packageFrom: 120000 + (idx * 25000), specialty: hospital.specialty }))
     : [
         { id: 'ht-1', title: `${hospital.specialty || 'Cardiology'} Surgery & Care`, packageFrom: 180000, specialty: hospital.specialty },
-        { id: 'ht-2', title: 'Specialist Consultation & Advanced Surgery', packageFrom: 120000, specialty: hospital.specialty },
+        { id: 'ht-2', title: 'Specialist Consultation & Surgery', packageFrom: 120000, specialty: hospital.specialty },
         { id: 'ht-3', title: 'Diagnostic & ICU Package', packageFrom: 75000, specialty: hospital.specialty }
       ];
 
@@ -67,14 +66,14 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
   ];
 
   return (
-    <section className="page-section partner-detail-landing" style={{ padding: '0.5rem 0 2rem', background: '#f8fafc' }}>
+    <section className="page-section partner-detail-landing">
       <MedicalVideoBackdrop />
 
-      {/* WIDER CONTAINER TO REDUCE LEFT/RIGHT EMPTY MARGINS */}
-      <div style={{ width: '95%', maxWidth: '1400px', margin: '0 auto' }}>
+      {/* BOOTSTRAP WIDE WRAPPER (1540px MAX WIDTH) */}
+      <div className="bootstrap-hospital-wrap">
 
-        {/* BREADCRUMBS WITH LOW TOP WHITESPACE */}
-        <div style={{ marginBottom: '0.5rem' }}>
+        {/* BREADCRUMBS WITH MINIMAL TOP PADDING */}
+        <div className="mb-2">
           <Breadcrumbs
             items={[
               { label: 'Home', onClick: () => setPage('home') },
@@ -85,141 +84,142 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
           />
         </div>
 
-        {/* HERO LANDING HEADER CARD */}
-        <div style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.03)', padding: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.75rem', alignItems: 'center' }}>
+        {/* HERO CARD (BOOTSTRAP CONTAINER-FLUID STYLED) */}
+        <div className="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4" style={{ background: '#ffffff' }}>
+          <div className="row g-4 align-items-center">
 
-          {/* Left Cover / Gallery */}
-          <div>
-            <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '240px', marginBottom: '0.65rem', border: '1px solid #cbd5e1' }}>
-              <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              <div style={{ position: 'absolute', top: '0.75rem', left: '0.75rem', background: '#0d2f5d', color: '#ffffff', padding: '0.25rem 0.65rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.03em' }}>
-                <i className="fa-solid fa-shield-halved" style={{ marginRight: '0.35rem', color: '#60a5fa' }} /> Verified Partner Hospital
+            {/* Left Image & Gallery */}
+            <div className="col-lg-5 col-md-6">
+              <div className="position-relative rounded-3 overflow-hidden border mb-2" style={{ height: '230px' }}>
+                <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} className="w-100 h-100 object-fit-cover" />
+                <span className="position-absolute top-0 start-0 m-3 px-3 py-1 bg-dark text-white rounded-pill fs-7 fw-bold">
+                  <i className="fa-solid fa-shield-halved text-info me-1" /> Verified Partner
+                </span>
+              </div>
+              <div className="d-flex gap-2">
+                {gallery.slice(0, 4).map((img, i) => (
+                  <img key={i} src={img} alt="Preview" className="rounded border object-fit-cover" style={{ width: '56px', height: '40px' }} />
+                ))}
               </div>
             </div>
-            {/* Gallery Thumbnails */}
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {gallery.slice(0, 4).map((img, i) => (
-                <img key={i} src={img} alt="Hospital preview" style={{ width: '60px', height: '44px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #e2e8f0' }} />
-              ))}
+
+            {/* Right Details Header */}
+            <div className="col-lg-7 col-md-6">
+              <div className="d-flex flex-wrap gap-2 mb-2">
+                <span className="badge bg-primary-subtle text-primary fw-semibold px-2.5 py-1.5 rounded-pill fs-7">
+                  {hospital.specialty || 'Multispecialty'} Hospital
+                </span>
+                <span className="badge bg-warning-subtle text-warning-emphasis fw-semibold px-2.5 py-1.5 rounded-pill fs-7">
+                  <i className="fa-solid fa-award me-1" /> {hospitalAccreditation}
+                </span>
+              </div>
+
+              {/* REFINED, CLEAN, UN-EXCESSIVE TITLE */}
+              <h1 className="partner-hero-title mb-2">
+                {cleanHospitalName}
+              </h1>
+
+              <p className="text-secondary fs-7 mb-3 d-flex align-items-center gap-1">
+                <i className="fa-solid fa-location-dot text-danger" /> {hospitalAddress}
+              </p>
+
+              {/* Spec Pills Bar */}
+              <div className="row row-cols-4 g-2 bg-light p-2.5 rounded-3 border text-center mb-3">
+                <div className="col">
+                  <span className="d-block fw-bold text-dark fs-6">{hospitalBeds}</span>
+                  <span className="text-muted fs-8">Capacity</span>
+                </div>
+                <div className="col">
+                  <span className="d-block fw-bold text-dark fs-6">{hospital.doctors || '45+'}</span>
+                  <span className="text-muted fs-8">Doctors</span>
+                </div>
+                <div className="col">
+                  <span className="d-block fw-bold text-dark fs-6">{hospitalFounded}</span>
+                  <span className="text-muted fs-8">Established</span>
+                </div>
+                <div className="col">
+                  <span className="d-block fw-bold text-success fs-6">{hospital.rating || '4.9'} ★</span>
+                  <span className="text-muted fs-8">Rating</span>
+                </div>
+              </div>
+
+              {/* Action CTAs */}
+              <div className="d-flex flex-wrap gap-2">
+                <a href="#connect-form" className="btn btn-primary fw-semibold px-3.5 py-2 rounded-3 fs-7 shadow-sm">
+                  <i className="fa-solid fa-calendar-check me-1.5" /> Book Free Consultation
+                </a>
+                <button onClick={() => setPage('planner')} type="button" className="btn btn-outline-primary fw-semibold px-3 py-2 rounded-3 fs-7">
+                  <i className="fa-solid fa-calculator me-1.5" /> Journey Cost Calculator
+                </button>
+              </div>
+
             </div>
+
           </div>
-
-          {/* Right Info Details */}
-          <div>
-            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
-              <span style={{ background: '#dbeafe', color: '#1d4ed8', padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.78rem', fontWeight: 700 }}>
-                {hospital.specialty || 'Multispecialty'} Hospital
-              </span>
-              <span style={{ background: '#fef3c7', color: '#b45309', padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.78rem', fontWeight: 700 }}>
-                <i className="fa-solid fa-award" style={{ marginRight: '0.3rem' }} /> {hospitalAccreditation}
-              </span>
-            </div>
-
-            {/* CLEAN, COMPACT, & ELEGANT TITLE */}
-            <h1 style={{ fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', color: '#0d2f5d', fontWeight: 800, lineHeight: 1.3, marginBottom: '0.4rem' }}>
-              {cleanHospitalName}
-            </h1>
-
-            <p style={{ color: '#64748b', fontSize: '0.88rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', lineHeight: 1.4 }}>
-              <i className="fa-solid fa-location-dot" style={{ color: '#ef4444' }} /> {hospitalAddress}
-            </p>
-
-            {/* Spec Cards Pill */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '1.1rem', textAlign: 'center' }}>
-              <div>
-                <strong style={{ display: 'block', fontSize: '0.95rem', color: '#0d2f5d', fontWeight: 800 }}>{hospitalBeds}</strong>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Capacity</span>
-              </div>
-              <div>
-                <strong style={{ display: 'block', fontSize: '0.95rem', color: '#0d2f5d', fontWeight: 800 }}>{hospital.doctors || '45+'}</strong>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Doctors</span>
-              </div>
-              <div>
-                <strong style={{ display: 'block', fontSize: '0.95rem', color: '#0d2f5d', fontWeight: 800 }}>{hospitalFounded}</strong>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Established</span>
-              </div>
-              <div>
-                <strong style={{ display: 'block', fontSize: '0.95rem', color: '#16a34a', fontWeight: 800 }}>{hospital.rating || '4.9'} ★</strong>
-                <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600 }}>Rating</span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <a href="#connect-form" style={{ padding: '0.65rem 1.35rem', background: '#0d2f5d', color: '#ffffff', borderRadius: '8px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', boxShadow: '0 4px 12px rgba(13,47,93,0.2)' }}>
-                <i className="fa-solid fa-calendar-check" style={{ marginRight: '0.35rem' }} /> Book Free Consultation
-              </a>
-              <button onClick={() => setPage('planner')} type="button" style={{ padding: '0.65rem 1.15rem', background: '#ffffff', color: '#0d2f5d', border: '2px solid #0d2f5d', borderRadius: '8px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer' }}>
-                <i className="fa-solid fa-calculator" style={{ marginRight: '0.35rem' }} /> Journey Cost Calculator
-              </button>
-            </div>
-
-          </div>
-
         </div>
 
         {/* NAVIGATION TABS */}
-        <div style={{ margin: '1.25rem 0 0', display: 'flex', gap: '0.5rem', borderBottom: '2px solid #e2e8f0', background: '#ffffff', padding: '0.4rem 0.85rem 0', borderRadius: '10px 10px 0 0', overflowX: 'auto' }}>
-          {[
-            ['overview', 'Overview & Highlights'],
-            ['treatments', 'Treatments & Packages'],
-            ['doctors', 'Specialist Doctors'],
-            ['reviews', 'Patient Reviews'],
-            ['faqs', 'FAQs'],
-          ].map(([tabKey, tabLabel]) => (
-            <button
-              key={tabKey}
-              onClick={() => setActiveTab(tabKey)}
-              style={{
-                padding: '0.6rem 1rem',
-                border: 'none',
-                background: 'transparent',
-                fontWeight: activeTab === tabKey ? 800 : 600,
-                color: activeTab === tabKey ? '#0d2f5d' : '#64748b',
-                borderBottom: activeTab === tabKey ? '3px solid #0d2f5d' : '3px solid transparent',
-                cursor: 'pointer',
-                fontSize: '0.88rem',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {tabLabel}
-            </button>
-          ))}
+        <div className="bg-white rounded-top-4 border-bottom px-3 pt-2 mb-3">
+          <ul className="nav nav-tabs border-0 flex-nowrap overflow-x-auto">
+            {[
+              ['overview', 'Overview & Technology'],
+              ['treatments', 'Specialties & Packages'],
+              ['doctors', 'Senior Specialists'],
+              ['reviews', 'Patient Reviews'],
+              ['faqs', 'FAQs'],
+            ].map(([tabKey, tabLabel]) => (
+              <li className="nav-item" key={tabKey}>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab(tabKey)}
+                  className={`nav-link border-0 text-nowrap py-2 px-3 fw-semibold ${activeTab === tabKey ? 'active border-bottom border-3 border-primary text-primary fw-bold' : 'text-secondary'}`}
+                >
+                  {tabLabel}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* MAIN CONTENT GRID: LEFT CONTENT + RIGHT CONNECT FORM */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 340px', gap: '1.5rem', marginTop: '1rem' }}>
+        {/* MAIN LAYOUT GRID: LEFT PANELS (COL 8) + RIGHT CONNECT FORM (COL 4) */}
+        <div className="row g-4">
 
           {/* LEFT MAIN PANELS */}
-          <div>
+          <div className="col-lg-8">
 
             {/* 1. OVERVIEW & PORTFOLIO */}
             {(activeTab === 'overview' || activeTab === 'all') && (
-              <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.65rem' }}>
+              <div className="card border-0 shadow-sm rounded-4 p-4 mb-4" style={{ background: '#ffffff' }}>
+                <h3 className="fs-5 fw-bold text-dark mb-2">
                   Infrastructure & Portfolio Highlights
                 </h3>
-                <p style={{ color: '#475569', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.1rem' }}>
-                  {cleanHospitalName} is a premier JCI/NABH accredited healthcare institution in {hospital.city}, providing comprehensive medical care, advanced robotic surgery, and dedicated international patient assistance.
+                <p className="text-secondary fs-6 leading-relaxed mb-3">
+                  {cleanHospitalName} is a premier JCI/NABH accredited medical center in {hospital.city}, providing multi-specialty clinical excellence, advanced surgical suites, and end-to-end international patient concierge services.
                 </p>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.85rem' }}>
-                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <i className="fa-solid fa-microscope" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
-                    <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>Advanced Diagnostics</strong>
-                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>PET-CT, 3T MRI, 128-Slice CT</span>
+                <div className="row g-3">
+                  <div className="col-md-4">
+                    <div className="p-3 bg-light rounded-3 border h-100">
+                      <i className="fa-solid fa-microscope text-primary fs-4 mb-2" />
+                      <strong className="d-block text-dark fs-7 mb-1">Advanced Diagnostics</strong>
+                      <span className="text-muted fs-8">PET-CT, 3T MRI, 128-Slice CT</span>
+                    </div>
                   </div>
 
-                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <i className="fa-solid fa-bed-pulse" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
-                    <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>ICU & Critical Care</strong>
-                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>24/7 Monitored Cardiac ICUs</span>
+                  <div className="col-md-4">
+                    <div className="p-3 bg-light rounded-3 border h-100">
+                      <i className="fa-solid fa-bed-pulse text-primary fs-4 mb-2" />
+                      <strong className="d-block text-dark fs-7 mb-1">ICU & Critical Care</strong>
+                      <span className="text-muted fs-8">24/7 Monitored Cardiac ICUs</span>
+                    </div>
                   </div>
 
-                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <i className="fa-solid fa-globe" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
-                    <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>International Desk</strong>
-                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Visa Invitation & Translators</span>
+                  <div className="col-md-4">
+                    <div className="p-3 bg-light rounded-3 border h-100">
+                      <i className="fa-solid fa-globe text-primary fs-4 mb-2" />
+                      <strong className="d-block text-dark fs-7 mb-1">International Lounge</strong>
+                      <span className="text-muted fs-8">Visa Invitation & Translators</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -227,26 +227,28 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
             {/* 2. TREATMENTS & PACKAGES */}
             {(activeTab === 'treatments' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.85rem' }}>
-                  Treatments & Estimated Packages
+              <div className="card border-0 shadow-sm rounded-4 p-4 mb-4" style={{ background: '#ffffff' }}>
+                <h3 className="fs-5 fw-bold text-dark mb-3">
+                  Specialties & Package Estimates
                 </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '0.85rem' }}>
+                <div className="row g-3">
                   {hospitalTreatments.map((t, idx) => (
-                    <div key={idx} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase' }}>{t.specialty || 'Specialty'}</span>
-                        <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 700, marginTop: '0.15rem', marginBottom: '0.3rem' }}>{t.title}</h4>
-                        <p style={{ fontSize: '0.78rem', color: '#64748b' }}>In-patient package including surgery, stay, and post-op care.</p>
-                      </div>
-                      <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div key={idx} className="col-md-6">
+                      <div className="p-3 bg-light rounded-3 border h-100 d-flex flex-column justify-content-between">
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Starts from</span>
-                          <strong style={{ display: 'block', fontSize: '0.95rem', color: '#0d2f5d' }}>{money(t.packageFrom)}</strong>
+                          <span className="badge bg-primary-subtle text-primary fw-semibold fs-8 mb-1">{t.specialty || 'Specialty'}</span>
+                          <h4 className="fs-6 fw-bold text-dark mb-1">{t.title}</h4>
+                          <p className="text-muted fs-8 mb-2">In-patient package covering surgery, stay, and post-op care.</p>
                         </div>
-                        <a href="#connect-form" style={{ padding: '0.4rem 0.75rem', background: '#0d2f5d', color: '#fff', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none' }}>
-                          Enquire
-                        </a>
+                        <div className="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                          <div>
+                            <span className="text-muted fs-8 d-block">Starts from</span>
+                            <strong className="text-dark fs-6">{money(t.packageFrom)}</strong>
+                          </div>
+                          <a href="#connect-form" className="btn btn-sm btn-primary fw-semibold px-3 rounded-2 fs-8">
+                            Enquire
+                          </a>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -256,26 +258,30 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
             {/* 3. SPECIALIST DOCTORS GRID */}
             {(activeTab === 'doctors' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.85rem' }}>
-                  Specialist Doctors at {cleanHospitalName}
+              <div className="card border-0 shadow-sm rounded-4 p-4 mb-4" style={{ background: '#ffffff' }}>
+                <h3 className="fs-5 fw-bold text-dark mb-3">
+                  Senior Specialists at {cleanHospitalName}
                 </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '0.85rem' }}>
+                <div className="row g-3">
                   {hospitalDoctors.map((doc, idx) => (
-                    <div key={idx} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#ffffff', textAlign: 'center' }}>
-                      <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#dbeafe', margin: '0 auto 0.65rem', display: 'grid', placeItems: 'center', color: '#1d4ed8', fontSize: '1.5rem' }}>
-                        <i className="fa-solid fa-user-doctor" />
+                    <div key={idx} className="col-md-4">
+                      <div className="p-3 border rounded-3 text-center bg-white h-100 d-flex flex-column justify-content-between">
+                        <div>
+                          <div className="bg-primary-subtle text-primary rounded-circle mx-auto mb-2 d-grid place-items-center" style={{ width: '56px', height: '56px', fontSize: '1.5rem' }}>
+                            <i className="fa-solid fa-user-doctor" />
+                          </div>
+                          <h4 className="fs-6 fw-bold text-dark mb-0.5">{doc.name}</h4>
+                          <span className="text-primary fw-semibold fs-8 d-block mb-1">{doc.title}</span>
+                          <div className="d-flex justify-content-center gap-1 fs-8 text-muted mb-2">
+                            <span>{doc.exp}</span>
+                            <span>•</span>
+                            <span className="text-success fw-bold">{doc.rating}</span>
+                          </div>
+                        </div>
+                        <a href="#connect-form" className="btn btn-sm btn-outline-secondary fw-semibold w-100 fs-8">
+                          Book Slot
+                        </a>
                       </div>
-                      <h4 style={{ fontSize: '0.95rem', color: '#0d2f5d', fontWeight: 700, marginBottom: '0.15rem' }}>{doc.name}</h4>
-                      <span style={{ display: 'block', fontSize: '0.78rem', color: '#2563eb', fontWeight: 600, marginBottom: '0.35rem' }}>{doc.title}</span>
-                      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem', fontSize: '0.72rem', color: '#64748b', marginBottom: '0.75rem' }}>
-                        <span>{doc.exp}</span>
-                        <span>•</span>
-                        <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
-                      </div>
-                      <a href="#connect-form" style={{ display: 'block', padding: '0.4rem', background: '#f1f5f9', color: '#0d2f5d', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, textDecoration: 'none' }}>
-                        Book Appointment
-                      </a>
                     </div>
                   ))}
                 </div>
@@ -284,47 +290,58 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
             {/* 4. PATIENT REVIEWS & TESTIMONIALS */}
             {(activeTab === 'reviews' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
-                  <h3 style={{ fontSize: '1.15rem', color: '#0d2f5d', fontWeight: 800 }}>Verified Patient Reviews</h3>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#fef3c7', padding: '0.25rem 0.65rem', borderRadius: '50px' }}>
-                    <i className="fa-solid fa-star" style={{ color: '#f59e0b', fontSize: '0.8rem' }} />
-                    <strong style={{ color: '#92400e', fontSize: '0.8rem' }}>4.9 out of 5.0 Rating</strong>
-                  </div>
+              <div className="card border-0 shadow-sm rounded-4 p-4 mb-4" style={{ background: '#ffffff' }}>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h3 className="fs-5 fw-bold text-dark mb-0">Patient Reviews & Ratings</h3>
+                  <span className="badge bg-warning-subtle text-warning-emphasis px-3 py-1.5 rounded-pill fs-7 fw-bold">
+                    <i className="fa-solid fa-star me-1" /> 4.9 / 5.0 Verified Rating
+                  </span>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '0.85rem' }}>
-                  <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <p style={{ fontStyle: 'italic', color: '#334155', fontSize: '0.82rem', marginBottom: '0.5rem' }}>
-                      "The medical coordinator organized our doctor consultation, airport pickup, and hospital package smoothly. World-class treatment!"
-                    </p>
-                    <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0d2f5d' }}>Ahmed Al-Hassan</strong>
-                    <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Saudi Arabia · Cardiac Patient</span>
-                  </blockquote>
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <blockquote className="p-3 bg-light rounded-3 border mb-0">
+                      <p className="fst-italic text-secondary fs-7 mb-2">
+                        "The medical coordinator organized our doctor consultation, airport pickup, and hospital package smoothly. World-class treatment!"
+                      </p>
+                      <strong className="d-block text-dark fs-7">Ahmed Al-Hassan</strong>
+                      <span className="text-muted fs-8">Saudi Arabia · Cardiac Patient</span>
+                    </blockquote>
+                  </div>
 
-                  <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <p style={{ fontStyle: 'italic', color: '#334155', fontSize: '0.82rem', marginBottom: '0.5rem' }}>
-                      "From the initial opinion to post-operative recovery, everything was transparent and affordable. Highly recommend this partner hospital."
-                    </p>
-                    <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0d2f5d' }}>Grace Wanjiku</strong>
-                    <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Kenya · Orthopedic Patient</span>
-                  </blockquote>
+                  <div className="col-md-6">
+                    <blockquote className="p-3 bg-light rounded-3 border mb-0">
+                      <p className="fst-italic text-secondary fs-7 mb-2">
+                        "From the initial opinion to post-operative recovery, everything was transparent and affordable. Highly recommend this partner hospital."
+                      </p>
+                      <strong className="d-block text-dark fs-7">Grace Wanjiku</strong>
+                      <span className="text-muted fs-8">Kenya · Orthopedic Patient</span>
+                    </blockquote>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* 5. FAQs ACCORDION */}
             {(activeTab === 'faqs' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.85rem' }}>
+              <div className="card border-0 shadow-sm rounded-4 p-4 mb-4" style={{ background: '#ffffff' }}>
+                <h3 className="fs-5 fw-bold text-dark mb-3">
                   Frequently Asked Questions
                 </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <div className="accordion accordion-flush" id="hospitalFaqAccordion">
                   {faqs.map((faq, i) => (
-                    <details key={i} style={{ padding: '0.75rem 0.85rem', background: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                      <summary style={{ fontWeight: 700, color: '#0f172a', cursor: 'pointer', fontSize: '0.85rem' }}>{faq.q}</summary>
-                      <p style={{ color: '#475569', marginTop: '0.35rem', fontSize: '0.82rem', lineHeight: 1.5 }}>{faq.a}</p>
-                    </details>
+                    <div key={i} className="accordion-item border rounded-3 mb-2 overflow-hidden">
+                      <h2 className="accordion-header">
+                        <button className="accordion-button collapsed fw-bold text-dark fs-7 py-2.5 px-3" type="button" data-bs-toggle="collapse" data-bs-target={`#faq-${i}`}>
+                          {faq.q}
+                        </button>
+                      </h2>
+                      <div id={`faq-${i}`} className="accordion-collapse collapse" data-bs-parent="#hospitalFaqAccordion">
+                        <div className="accordion-body text-secondary fs-7 pt-1 pb-3 px-3">
+                          {faq.a}
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -332,43 +349,43 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
           </div>
 
-          {/* RIGHT STICKY CONNECT FORM */}
-          <div id="connect-form" style={{ position: 'sticky', top: '1.5rem', height: 'fit-content' }}>
-            <div style={{ background: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.25rem', boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
-              <div style={{ marginBottom: '0.85rem', textAlign: 'center' }}>
-                <h3 style={{ fontSize: '1.05rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.15rem' }}>Book Free Consultation</h3>
-                <p style={{ color: '#64748b', fontSize: '0.78rem' }}>Doctor opinion & starting quote within 2 hours</p>
+          {/* RIGHT COLUMN: STICKY CONNECT FORM (COL 4) */}
+          <div className="col-lg-4">
+            <div id="connect-form" className="card border-0 shadow-sm rounded-4 p-4 sticky-top" style={{ top: '1.5rem', background: '#ffffff' }}>
+              <div className="text-center mb-3">
+                <h3 className="fs-5 fw-bold text-dark mb-1">Book Free Consultation</h3>
+                <p className="text-muted fs-8 mb-0">Doctor opinion & starting quote within 2 hours</p>
               </div>
 
               {formSubmitted ? (
-                <div style={{ padding: '1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', textAlign: 'center' }}>
-                  <i className="fa-solid fa-circle-check" style={{ fontSize: '1.85rem', color: '#16a34a', marginBottom: '0.3rem' }} />
-                  <h4 style={{ color: '#14532d', fontSize: '0.95rem', fontWeight: 700 }}>Request Received!</h4>
-                  <p style={{ color: '#166534', fontSize: '0.78rem', marginTop: '0.15rem' }}>Our medical coordinator will call you back shortly.</p>
+                <div className="p-3 bg-success-subtle text-success-emphasis border border-success-subtle rounded-3 text-center">
+                  <i className="fa-solid fa-circle-check fs-2 text-success mb-2" />
+                  <h4 className="fs-6 fw-bold mb-1">Request Received!</h4>
+                  <p className="fs-8 mb-0">Our medical coordinator will call you back shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <form onSubmit={handleLeadSubmit} className="d-flex flex-column gap-2.5">
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Patient Full Name *</label>
-                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} style={{ width: '100%', padding: '0.55rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.82rem' }} />
+                    <label className="form-label text-dark fs-8 fw-semibold mb-1">Patient Full Name *</label>
+                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="form-control form-control-sm fs-7" />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Phone / WhatsApp Number *</label>
-                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} style={{ width: '100%', padding: '0.55rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.82rem' }} />
+                    <label className="form-label text-dark fs-8 fw-semibold mb-1">Phone / WhatsApp Number *</label>
+                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="form-control form-control-sm fs-7" />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Email Address</label>
-                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} style={{ width: '100%', padding: '0.55rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.82rem' }} />
+                    <label className="form-label text-dark fs-8 fw-semibold mb-1">Email Address</label>
+                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} className="form-control form-control-sm fs-7" />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Medical Issue / Treatment</label>
-                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} style={{ width: '100%', padding: '0.55rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.82rem' }} />
+                    <label className="form-label text-dark fs-8 fw-semibold mb-1">Medical Issue / Specialty</label>
+                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="form-control form-control-sm fs-7" />
                   </div>
-                  <button type="submit" style={{ width: '100%', padding: '0.65rem', background: '#0d2f5d', color: '#ffffff', border: 'none', borderRadius: '6px', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem', marginTop: '0.2rem' }}>
+                  <button type="submit" className="btn btn-primary fw-bold w-100 py-2 fs-7 mt-1 shadow-sm">
                     Request Callback & Quote
                   </button>
-                  <span style={{ fontSize: '0.68rem', color: '#64748b', textAlign: 'center', display: 'block', marginTop: '0.15rem' }}>
-                    <i className="fa-solid fa-lock" style={{ marginRight: '0.25rem' }} /> 100% Confidential & Secure
+                  <span className="text-muted fs-8 text-center d-block">
+                    <i className="fa-solid fa-lock me-1" /> 100% Confidential & Secure
                   </span>
                 </form>
               )}
