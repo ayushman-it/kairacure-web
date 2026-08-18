@@ -34216,28 +34216,81 @@ select:focus {
   gap: 0.75rem;
 }
 
-.pdl-btn-primary {
-  padding: 0.65rem 1.35rem;
-  background: #0d2f5d;
-  color: #ffffff;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(13, 47, 93, 0.2);
+.pdl-btn-primary,
+a.pdl-btn-primary,
+button.pdl-btn-primary {
+  padding: 0.65rem 1.35rem !important;
+  background: #0d2f5d !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  text-decoration: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(13, 47, 93, 0.25) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.pdl-btn-outline {
-  padding: 0.65rem 1.15rem;
-  background: #ffffff;
-  color: #0d2f5d;
-  border: 2px solid #0d2f5d;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
+.pdl-btn-primary:hover,
+a.pdl-btn-primary:hover,
+button.pdl-btn-primary:hover {
+  background: #1e40af !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.pdl-btn-enquire,
+a.pdl-btn-enquire,
+button.pdl-btn-enquire {
+  padding: 0.45rem 1.1rem !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  text-decoration: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.pdl-btn-enquire:hover,
+a.pdl-btn-enquire:hover,
+button.pdl-btn-enquire:hover {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.pdl-btn-outline,
+a.pdl-btn-outline,
+button.pdl-btn-outline {
+  padding: 0.65rem 1.15rem !important;
+  background: #ffffff !important;
+  color: #0d2f5d !important;
+  border: 2px solid #0d2f5d !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.pdl-btn-outline:hover,
+a.pdl-btn-outline:hover,
+button.pdl-btn-outline:hover {
+  background: #f1f5f9 !important;
+  color: #0d2f5d !important;
+  text-decoration: none !important;
 }
 
 .pdl-nav-tabs {

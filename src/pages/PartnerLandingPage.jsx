@@ -81,10 +81,10 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
           </div>
 
           <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: '#ffffff' }}>
+            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.95rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: '#ffffff' }}>
               <i className="fa-solid fa-phone" style={{ color: '#2563eb' }} /> +91 98765 43210
             </a>
-            <a href="#connect-form" style={{ background: '#0d2f5d', color: '#ffffff', padding: '0.5rem 1.25rem', borderRadius: '6px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', boxShadow: '0 2px 8px rgba(13,47,93,0.2)' }}>
+            <a href="#connect-form" className="pdl-btn-primary">
               Book Consultation
             </a>
           </div>
@@ -187,11 +187,11 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
               {/* HIGH CONTRAST ACTION BUTTONS */}
               <div className="pdl-actions-row">
-                <a href="#connect-form" className="pdl-btn-primary" style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, textDecoration: 'none', padding: '0.65rem 1.35rem', borderRadius: '8px', fontSize: '0.88rem' }}>
-                  <i className="fa-solid fa-calendar-check" style={{ marginRight: '0.35rem' }} /> Book Free Consultation
+                <a href="#connect-form" className="pdl-btn-primary">
+                  <i className="fa-solid fa-calendar-check" /> Book Free Consultation
                 </a>
-                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline" style={{ background: '#ffffff', color: '#0d2f5d', border: '2px solid #0d2f5d', fontWeight: 700, padding: '0.65rem 1.15rem', borderRadius: '8px', fontSize: '0.88rem', cursor: 'pointer' }}>
-                  <i className="fa-solid fa-calculator" style={{ marginRight: '0.35rem' }} /> Journey Cost Calculator
+                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline">
+                  <i className="fa-solid fa-calculator" /> Journey Cost Calculator
                 </button>
               </div>
 
@@ -277,7 +277,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                           <span style={{ fontSize: '0.68rem', color: '#64748b', display: 'block' }}>Starts from</span>
                           <strong style={{ fontSize: '0.95rem', color: '#0d2f5d' }}>{money(t.packageFrom)}</strong>
                         </div>
-                        <a href="#connect-form" style={{ padding: '0.45rem 0.85rem', background: '#2563eb', color: '#ffffff', fontWeight: 700, borderRadius: '6px', fontSize: '0.78rem', textDecoration: 'none', border: 'none' }}>
+                        <a href="#connect-form" className="pdl-btn-enquire">
                           Enquire
                         </a>
                       </div>
@@ -306,7 +306,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                         <span>•</span>
                         <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
                       </div>
-                      <a href="#connect-form" style={{ width: '100%', display: 'block', padding: '0.4rem', background: '#ffffff', color: '#0d2f5d', border: '2px solid #0d2f5d', borderRadius: '6px', fontWeight: 700, fontSize: '0.78rem', textAlign: 'center', textDecoration: 'none' }}>
+                      <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center' }}>
                         Book Slot
                       </a>
                     </div>
@@ -413,7 +413,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Medical Issue / Specialty</label>
                     <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="pdl-input" />
                   </div>
-                  <button type="submit" className="pdl-form-submit" style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, border: 'none', borderRadius: '6px', padding: '0.65rem', cursor: 'pointer' }}>
+                  <button type="submit" className="pdl-btn-primary" style={{ width: '100%', padding: '0.7rem' }}>
                     Request Callback & Quote
                   </button>
                   <span style={{ fontSize: '0.68rem', color: '#64748b', textAlign: 'center', display: 'block', marginTop: '0.15rem' }}>
