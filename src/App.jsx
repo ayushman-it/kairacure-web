@@ -156,10 +156,15 @@ function App() {
     return () => { ignore = true; };
   }, []);
 
-  const setPage = (nextPage) => {
-    const nextPath = pathForPage(nextPage);
+  const setPage = (nextPage, targetHospital) => {
+    const activeHospital = targetHospital || selectedHospital;
+    let nextPath = pathForPage(nextPage);
+    if (nextPage === 'partner-detail' && activeHospital) {
+      const hospSlug = activeHospital.id || encodeURIComponent(activeHospital.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+      nextPath = `/partners/detail?id=${hospSlug}`;
+    }
     setPageState(nextPage);
-    if (window.location.pathname !== nextPath) {
+    if (window.location.pathname + window.location.search !== nextPath) {
       window.history.pushState({ page: nextPage }, '', nextPath);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
