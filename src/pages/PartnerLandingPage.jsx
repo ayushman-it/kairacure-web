@@ -185,12 +185,12 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 </div>
               </div>
 
-              {/* HIGH CONTRAST THEME BUTTONS */}
+              {/* HIGH CONTRAST BUTTONS WITH UNIFORM #0d2f5d NAVY BACKGROUND */}
               <div className="pdl-actions-row">
                 <a href="#connect-form" className="pdl-btn-primary">
                   <i className="fa-solid fa-calendar-check" /> Book Free Consultation
                 </a>
-                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline">
+                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-primary" style={{ background: '#0d2f5d' }}>
                   <i className="fa-solid fa-calculator" /> Journey Cost Calculator
                 </button>
               </div>
@@ -306,7 +306,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                         <span>•</span>
                         <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
                       </div>
-                      <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center' }}>
+                      <a href="#connect-form" className="pdl-btn-primary" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center' }}>
                         Book Slot
                       </a>
                     </div>
