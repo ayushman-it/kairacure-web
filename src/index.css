@@ -34034,8 +34034,9 @@ select:focus {
   opacity: 0.9 !important;
 }
 
-/* Partner Detail Landing Page 100% Header Aligned & Responsive Styles */
-.partner-detail-landing {
+/* Partner Detail & Partner Landing Page 100% Header Aligned Styles */
+.partner-detail-landing,
+.partner-landing-page {
   width: min(var(--page-max), calc(100% - (var(--page-gutter) * 2))) !important;
   margin-left: auto !important;
   margin-right: auto !important;

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Footer } from '../components/common/Footer.jsx';
+import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
 import {
   API_BASE,
   accreditationText,
@@ -13,7 +15,17 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
   const hospital = selectedHospital || HOSPITALS[0];
   const gallery = hospitalGallery(hospital);
   const cleanHospitalName = formatHospitalDisplayName(hospital.name);
+
+  // Doctors Check: ONLY show if database has real doctors
+  const hasRealDoctors = (Array.isArray(hospital.doctorsList) && hospital.doctorsList.length > 0) || Boolean(hospital.doctor);
+  const hospitalDoctors = Array.isArray(hospital.doctorsList) && hospital.doctorsList.length
+    ? hospital.doctorsList
+    : hospital.doctor
+      ? [{ name: hospital.doctor, title: hospital.doctorTitle || `Specialist at ${cleanHospitalName}`, exp: 'Senior Specialist', rating: '4.9 ★' }]
+      : [];
+
   const [activeTab, setActiveTab] = useState('overview');
+  const [openFaq, setOpenFaq] = useState(0);
   const [leadForm, setLeadForm] = useState({ name: '', phone: '', email: '', treatment: hospital.specialty || 'General', notes: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -48,14 +60,6 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
         { id: 'ht-3', title: 'Diagnostic & ICU Package', packageFrom: 75000, specialty: hospital.specialty }
       ];
 
-  const hospitalDoctors = Array.isArray(hospital.doctorsList) && hospital.doctorsList.length
-    ? hospital.doctorsList
-    : [
-        { name: hospital.doctor || 'Senior Lead Specialist', title: hospital.doctorTitle || `Head of ${hospital.specialty || 'Department'}`, exp: '18+ Years Exp', rating: '4.9 ★' },
-        { name: 'Dr. Rajesh Sharma', title: 'Senior Consultant Surgeon', exp: '15+ Years Exp', rating: '4.8 ★' },
-        { name: 'Dr. Ananya Varma', title: 'Chief Medical Specialist', exp: '14+ Years Exp', rating: '4.9 ★' }
-      ];
-
   const faqs = [
     { q: `How do I book an appointment with a doctor at ${cleanHospitalName}?`, a: `Submit your consultation request using the form on this page. Our care coordinator will confirm doctor availability within 2 hours.` },
     { q: `Does ${cleanHospitalName} issue medical visa invitation letters (VIL)?`, a: `Yes. Once your case is evaluated by senior specialists, ${cleanHospitalName} issues official Visa Invitation Letters for patient and attendant visas.` },
@@ -63,11 +67,11 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
   ];
 
   return (
-    <div className="partner-standalone-page" style={{ background: '#f8fafc', minHeight: '100vh', color: '#0f172a', fontFamily: "'Noto Sans', sans-serif" }}>
+    <div className="partner-standalone-shell" style={{ background: '#f8fafc', minHeight: '100vh', color: '#0f172a', fontFamily: "'Noto Sans', sans-serif" }}>
 
-      {/* ── STANDALONE PAGE NAVBAR HEADER ── */}
-      <header style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', padding: '0.85rem 1.5rem', sticky: 'top', top: 0, zIndex: 100 }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      {/* ── STANDALONE PAGE NAVBAR HEADER (100% CONTAINER ALIGNED) ── */}
+      <header style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', sticky: 'top', top: 0, zIndex: 100 }}>
+        <div style={{ width: 'min(var(--page-max), calc(100% - (var(--page-gutter) * 2)))', margin: '0 auto', padding: '0.85rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button onClick={() => setPage('home')} type="button" style={{ border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontWeight: 800, fontSize: '1.25rem', color: '#0d2f5d' }}>Kaira<span style={{ color: '#2563eb' }}>Cure</span></span>
@@ -76,55 +80,84 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
             <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569' }}>{cleanHospitalName}</span>
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: '#ffffff' }}>
               <i className="fa-solid fa-phone" style={{ color: '#2563eb' }} /> +91 98765 43210
             </a>
-            <a href="#connect-form" style={{ background: '#0d2f5d', color: '#ffffff', padding: '0.5rem 1.25rem', borderRadius: '8px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', boxShadow: '0 2px 8px rgba(13,47,93,0.2)' }}>
+            <a href="#connect-form" style={{ background: '#0d2f5d', color: '#ffffff', padding: '0.5rem 1.25rem', borderRadius: '6px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', boxShadow: '0 2px 8px rgba(13,47,93,0.2)' }}>
               Book Consultation
             </a>
           </div>
         </div>
       </header>
 
-      {/* ── MAIN LANDING CONTAINER ── */}
-      <main style={{ maxWidth: '1280px', margin: '1.5rem auto 3rem', padding: '0 1.5rem' }}>
+      {/* ── MAIN CONTENT (ALIGNED 100% WITH HEADER NAVBAR) ── */}
+      <main className="partner-landing-page" style={{ paddingTop: '0.5rem' }}>
 
-        {/* HERO CARD */}
-        <div style={{ background: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(13,47,93,0.04)', padding: '1.75rem', marginBottom: '1.5rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+        {/* BREADCRUMBS WITH LOW TOP MARGIN */}
+        <div style={{ marginBottom: '0.5rem' }}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', onClick: () => setPage('home') },
+              { label: 'Partners', onClick: onBack || (() => setPage('partners')) },
+              { label: hospital.country || 'India', onClick: () => setPage('destinations') },
+              { label: cleanHospitalName },
+            ]}
+          />
+        </div>
 
-            {/* Left Info Details */}
+        {/* HERO CARD (CLEAN & ELEGANT) */}
+        <div className="pdl-card">
+          <div className="pdl-hero-grid">
+
+            {/* Left Image & Gallery */}
             <div>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                <span style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+              <div className="pdl-cover-wrap">
+                <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} className="pdl-cover-img" />
+                <span className="pdl-badge-verified">
+                  <i className="fa-solid fa-shield-halved" style={{ marginRight: '0.35rem', color: '#60a5fa' }} /> Verified Partner
+                </span>
+              </div>
+              <div className="pdl-thumbs-row">
+                {gallery.slice(0, 4).map((img, i) => (
+                  <img key={i} src={img} alt="Preview" className="pdl-thumb-img" />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Details Header */}
+            <div>
+              {/* SMALL COMPACT BADGES */}
+              <div className="pdl-badge-wrap">
+                <span className="pdl-badge-blue">
                   {hospital.specialty || 'Multispecialty'} Hospital
                 </span>
-                <span style={{ background: '#fffbe6', color: '#b45309', border: '1px solid #fef08a', fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                <span className="pdl-badge-gold">
                   <i className="fa-solid fa-award" style={{ marginRight: '0.3rem' }} /> {hospitalAccreditation}
                 </span>
               </div>
 
-              <h1 style={{ fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)', fontWeight: 700, color: '#0d2f5d', lineHeight: 1.3, marginBottom: '0.5rem' }}>
+              {/* CLEAN, UN-EXCESSIVE TITLE */}
+              <h1 className="pdl-title">
                 {cleanHospitalName}
               </h1>
 
-              {/* LOCATION BLOCK */}
-              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '0.75rem 1rem', marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+              {/* ENHANCED LOCATION BLOCK */}
+              <div className="pdl-location-box">
+                <div className="pdl-location-header">
                   <i className="fa-solid fa-location-dot" style={{ color: '#ef4444', fontSize: '1rem', marginTop: '0.15rem' }} />
                   <div>
-                    <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a', fontWeight: 700, marginBottom: '0.2rem' }}>
+                    <div className="pdl-location-title">
                       {hospital.city ? `${hospital.city}, ${hospital.state || ''} ${hospital.country || 'India'}` : hospitalAddress}
-                    </strong>
-                    <span style={{ display: 'block', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4, marginBottom: '0.4rem' }}>
+                    </div>
+                    <div className="pdl-location-sub">
                       {hospitalAddress}
-                    </span>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <span style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#475569', fontSize: '0.75rem', fontWeight: 600, padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
+                    </div>
+                    <div className="pdl-location-pills">
+                      <span className="pdl-pill">
                         <i className="fa-solid fa-plane-arrival" style={{ color: '#2563eb', marginRight: '0.3rem' }} /> International Airport Access
                       </span>
-                      <span style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#475569', fontSize: '0.75rem', fontWeight: 600, padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
+                      <span className="pdl-pill">
                         <i className="fa-solid fa-hospital-user" style={{ color: '#16a34a', marginRight: '0.3rem' }} /> Care Concierge Desk
                       </span>
                     </div>
@@ -132,94 +165,71 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 </div>
               </div>
 
-              {/* Specs Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '0.65rem', textCenter: 'center', marginBottom: '1.25rem' }}>
-                <div style={{ textAlign: 'center' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', fontWeight: 800, color: '#0d2f5d' }}>{hospitalBeds}</strong>
-                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Capacity</span>
+              {/* Spec Pills Bar */}
+              <div className="pdl-specs-grid">
+                <div>
+                  <strong className="pdl-spec-val">{hospitalBeds}</strong>
+                  <span className="pdl-spec-lbl">Capacity</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', fontWeight: 800, color: '#0d2f5d' }}>{hospital.doctors || '45+'}</strong>
-                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Doctors</span>
+                <div>
+                  <strong className="pdl-spec-val">{hospital.doctors || '45+'}</strong>
+                  <span className="pdl-spec-lbl">Doctors</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', fontWeight: 800, color: '#0d2f5d' }}>{hospitalFounded}</strong>
-                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Established</span>
+                <div>
+                  <strong className="pdl-spec-val">{hospitalFounded}</strong>
+                  <span className="pdl-spec-lbl">Established</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', fontWeight: 800, color: '#16a34a' }}>{hospital.rating || '4.9'} ★</strong>
-                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Rating</span>
+                <div>
+                  <strong className="pdl-spec-val" style={{ color: '#16a34a' }}>{hospital.rating || '4.9'} ★</strong>
+                  <span className="pdl-spec-lbl">Rating</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <a href="#connect-form" style={{ padding: '0.65rem 1.35rem', background: '#0d2f5d', color: '#ffffff', borderRadius: '8px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', boxShadow: '0 4px 12px rgba(13,47,93,0.2)' }}>
+              {/* HIGH CONTRAST ACTION BUTTONS */}
+              <div className="pdl-actions-row">
+                <a href="#connect-form" className="pdl-btn-primary" style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, textDecoration: 'none', padding: '0.65rem 1.35rem', borderRadius: '8px', fontSize: '0.88rem' }}>
                   <i className="fa-solid fa-calendar-check" style={{ marginRight: '0.35rem' }} /> Book Free Consultation
                 </a>
-                <button onClick={() => setPage('planner')} type="button" style={{ padding: '0.65rem 1.15rem', background: '#ffffff', color: '#0d2f5d', border: '2px solid #0d2f5d', borderRadius: '8px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer' }}>
+                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline" style={{ background: '#ffffff', color: '#0d2f5d', border: '2px solid #0d2f5d', fontWeight: 700, padding: '0.65rem 1.15rem', borderRadius: '8px', fontSize: '0.88rem', cursor: 'pointer' }}>
                   <i className="fa-solid fa-calculator" style={{ marginRight: '0.35rem' }} /> Journey Cost Calculator
                 </button>
               </div>
 
             </div>
 
-            {/* Right Cover / Gallery */}
-            <div>
-              <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '240px', border: '1px solid #cbd5e1', marginBottom: '0.5rem' }}>
-                <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <span style={{ position: 'absolute', top: '0.75rem', left: '0.75rem', background: 'rgba(13,47,93,0.9)', color: '#ffffff', fontSize: '0.72rem', fontWeight: 700, borderRadius: '4px', padding: '0.2rem 0.6rem' }}>
-                  <i className="fa-solid fa-shield-halved" style={{ marginRight: '0.35rem', color: '#60a5fa' }} /> Verified Partner
-                </span>
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {gallery.slice(0, 4).map((img, i) => (
-                  <img key={i} src={img} alt="Preview" style={{ width: '56px', height: '40px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
-                ))}
-              </div>
-            </div>
-
           </div>
         </div>
 
-        {/* TABS BAR */}
-        <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '2px solid #e2e8f0', background: '#ffffff', padding: '0.4rem 0.85rem 0', borderRadius: '10px 10px 0 0', overflowX: 'auto', marginBottom: '1rem' }}>
+        {/* NAVIGATION TABS */}
+        <div className="pdl-nav-tabs">
           {[
             ['overview', 'Overview & Technology'],
             ['treatments', 'Specialties & Packages'],
-            ['doctors', 'Senior Specialists'],
-            ['reviews', 'Patient Reviews'],
+            ...(hasRealDoctors ? [['doctors', 'Senior Specialists']] : []),
+            ['reviews', 'Top Google Ratings'],
             ['faqs', 'FAQs'],
           ].map(([tabKey, tabLabel]) => (
             <button
               key={tabKey}
               type="button"
               onClick={() => setActiveTab(tabKey)}
-              style={{
-                padding: '0.6rem 1rem',
-                border: 'none',
-                background: 'transparent',
-                fontWeight: activeTab === tabKey ? 800 : 600,
-                color: activeTab === tabKey ? '#0d2f5d' : '#64748b',
-                borderBottom: activeTab === tabKey ? '3px solid #0d2f5d' : '3px solid transparent',
-                cursor: 'pointer',
-                fontSize: '0.88rem',
-                whiteSpace: 'nowrap'
-              }}
+              className={`pdl-tab-btn${activeTab === tabKey ? ' active' : ''}`}
             >
               {tabLabel}
             </button>
           ))}
         </div>
 
-        {/* CONTENT & CONNECT FORM GRID */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 350px', gap: '1.5rem', alignItems: 'start' }}>
+        {/* MAIN LAYOUT GRID: LEFT PANELS + RIGHT CONNECT FORM */}
+        <div className="pdl-main-grid">
 
-          {/* LEFT PANELS */}
+          {/* LEFT MAIN PANELS */}
           <div>
+
+            {/* 1. OVERVIEW & PORTFOLIO */}
             {(activeTab === 'overview' || activeTab === 'all') && (
-              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0d2f5d', marginBottom: '0.75rem' }}>
+              <div className="pdl-card">
+                <h3 className="pdl-section-h3">
                   Infrastructure & Portfolio Highlights
                 </h3>
                 <p style={{ color: '#475569', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.1rem' }}>
@@ -248,16 +258,17 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
             )}
 
+            {/* 2. TREATMENTS & PACKAGES */}
             {(activeTab === 'treatments' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0d2f5d', marginBottom: '0.75rem' }}>
+              <div className="pdl-card">
+                <h3 className="pdl-section-h3">
                   Specialties & Package Estimates
                 </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '0.85rem' }}>
+                <div className="pdl-treatment-grid">
                   {hospitalTreatments.map((t, idx) => (
-                    <div key={idx} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#f8fafc', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div key={idx} className="pdl-treatment-card">
                       <div>
-                        <span style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.6rem', borderRadius: '4px', marginBottom: '0.4rem', display: 'inline-block' }}>{t.specialty || 'Specialty'}</span>
+                        <span className="pdl-badge-blue" style={{ marginBottom: '0.4rem', display: 'inline-block' }}>{t.specialty || 'Specialty'}</span>
                         <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 700, marginTop: '0.15rem', marginBottom: '0.3rem' }}>{t.title}</h4>
                         <p style={{ fontSize: '0.78rem', color: '#64748b' }}>In-patient package covering surgery, stay, and post-op care.</p>
                       </div>
@@ -266,7 +277,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                           <span style={{ fontSize: '0.68rem', color: '#64748b', display: 'block' }}>Starts from</span>
                           <strong style={{ fontSize: '0.95rem', color: '#0d2f5d' }}>{money(t.packageFrom)}</strong>
                         </div>
-                        <a href="#connect-form" style={{ padding: '0.4rem 0.75rem', background: '#0d2f5d', color: '#ffffff', border: 'none', borderRadius: '6px', fontWeight: 700, fontSize: '0.78rem', textDecoration: 'none' }}>
+                        <a href="#connect-form" style={{ padding: '0.45rem 0.85rem', background: '#2563eb', color: '#ffffff', fontWeight: 700, borderRadius: '6px', fontSize: '0.78rem', textDecoration: 'none', border: 'none' }}>
                           Enquire
                         </a>
                       </div>
@@ -276,15 +287,16 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
             )}
 
-            {(activeTab === 'doctors' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0d2f5d', marginBottom: '0.75rem' }}>
+            {/* 3. SENIOR SPECIALISTS (ONLY RENDERED IF REAL DOCTORS EXIST IN DATABASE) */}
+            {hasRealDoctors && (activeTab === 'doctors' || activeTab === 'overview') && (
+              <div className="pdl-card">
+                <h3 className="pdl-section-h3">
                   Senior Specialists at {cleanHospitalName}
                 </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.85rem' }}>
+                <div className="pdl-doctor-grid">
                   {hospitalDoctors.map((doc, idx) => (
-                    <div key={idx} style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '8px', background: '#ffffff', textAlign: 'center' }}>
-                      <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#dbeafe', color: '#1d4ed8', display: 'grid', placeItems: 'center', margin: '0 auto 0.5rem', fontSize: '1.35rem' }}>
+                    <div key={idx} className="pdl-doctor-card">
+                      <div className="pdl-doc-avatar">
                         <i className="fa-solid fa-user-doctor" />
                       </div>
                       <h4 style={{ fontSize: '0.95rem', color: '#0d2f5d', fontWeight: 700, marginBottom: '0.15rem' }}>{doc.name}</h4>
@@ -303,17 +315,21 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
             )}
 
+            {/* 4. TOP GOOGLE RATINGS */}
             {(activeTab === 'reviews' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.25rem' }}>
+              <div className="pdl-card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0d2f5d', marginBottom: 0 }}>Patient Reviews & Ratings</h3>
-                  <span style={{ background: '#fffbe6', color: '#b45309', border: '1px solid #fef08a', fontSize: '0.75rem', fontWeight: 700, borderRadius: '4px', padding: '0.2rem 0.6rem' }}>
-                    <i className="fa-solid fa-star" style={{ color: '#f59e0b', marginRight: '0.3rem' }} /> 4.9 / 5.0 Verified Rating
+                  <h3 className="pdl-section-h3" style={{ marginBottom: 0 }}>Top Google Ratings</h3>
+                  <span className="pdl-badge-gold" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                    <i className="fa-brands fa-google" style={{ color: '#ea4335' }} /> 4.9 ★ Google Verified Score
                   </span>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
                   <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', gap: '0.2rem', color: '#f59e0b', fontSize: '0.8rem', marginBottom: '0.4rem' }}>
+                      <i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" />
+                    </div>
                     <p style={{ fontStyle: 'italic', color: '#334155', fontSize: '0.82rem', marginBottom: '0.5rem' }}>
                       "The medical coordinator organized our doctor consultation, airport pickup, and hospital package smoothly. World-class treatment!"
                     </p>
@@ -322,6 +338,9 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                   </blockquote>
 
                   <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', gap: '0.2rem', color: '#f59e0b', fontSize: '0.8rem', marginBottom: '0.4rem' }}>
+                      <i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" />
+                    </div>
                     <p style={{ fontStyle: 'italic', color: '#334155', fontSize: '0.82rem', marginBottom: '0.5rem' }}>
                       "From the initial opinion to post-operative recovery, everything was transparent and affordable. Highly recommend this partner hospital."
                     </p>
@@ -332,27 +351,40 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
             )}
 
+            {/* 5. INTERACTIVE FAQS ACCORDION */}
             {(activeTab === 'faqs' || activeTab === 'overview') && (
-              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0d2f5d', marginBottom: '0.75rem' }}>
+              <div className="pdl-card">
+                <h3 className="pdl-section-h3">
                   Frequently Asked Questions
                 </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {faqs.map((faq, i) => (
-                    <details key={i} style={{ padding: '0.75rem 0.85rem', background: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                      <summary style={{ fontWeight: 700, color: '#0f172a', cursor: 'pointer', fontSize: '0.85rem' }}>{faq.q}</summary>
-                      <p style={{ color: '#475569', marginTop: '0.35rem', fontSize: '0.82rem', lineHeight: 1.5 }}>{faq.a}</p>
-                    </details>
+                    <div key={i} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
+                      <button
+                        onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                        type="button"
+                        style={{ width: '100%', padding: '0.85rem 1rem', background: 'transparent', border: 'none', textAlign: 'left', fontWeight: 700, color: '#0d2f5d', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontSize: '0.88rem' }}
+                      >
+                        <span>{faq.q}</span>
+                        <i className={`fa-solid ${openFaq === i ? 'fa-chevron-up' : 'fa-chevron-down'}`} style={{ color: '#2563eb', fontSize: '0.8rem' }} />
+                      </button>
+                      {openFaq === i && (
+                        <div style={{ padding: '0 1rem 0.85rem', color: '#475569', fontSize: '0.82rem', lineHeight: 1.5, borderTop: '1px solid #e2e8f0', paddingTop: '0.6rem' }}>
+                          {faq.a}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
             )}
+
           </div>
 
-          {/* RIGHT CONNECT FORM */}
-          <div id="connect-form" style={{ position: 'sticky', top: '5rem' }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '1.25rem', boxShadow: '0 4px 14px rgba(0,0,0,0.04)' }}>
-              <div style={{ marginBottom: '0.85rem', textCenter: 'center', textAlign: 'center' }}>
+          {/* RIGHT STICKY CONNECT FORM */}
+          <div id="connect-form">
+            <div className="pdl-form-card">
+              <div style={{ marginBottom: '0.85rem', textAlign: 'center' }}>
                 <h3 style={{ fontSize: '1.05rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.15rem' }}>Book Free Consultation</h3>
                 <p style={{ color: '#64748b', fontSize: '0.78rem' }}>Doctor opinion & starting quote within 2 hours</p>
               </div>
@@ -367,21 +399,21 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Patient Full Name *</label>
-                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Phone / WhatsApp Number *</label>
-                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Email Address</label>
-                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Medical Issue / Specialty</label>
-                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="pdl-input" />
                   </div>
-                  <button type="submit" style={{ width: '100%', padding: '0.65rem', background: '#0d2f5d', color: '#ffffff', border: 'none', borderRadius: '6px', fontWeight: 700, cursor: 'pointer', fontSize: '0.88rem', marginTop: '0.25rem' }}>
+                  <button type="submit" className="pdl-form-submit" style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, border: 'none', borderRadius: '6px', padding: '0.65rem', cursor: 'pointer' }}>
                     Request Callback & Quote
                   </button>
                   <span style={{ fontSize: '0.68rem', color: '#64748b', textAlign: 'center', display: 'block', marginTop: '0.15rem' }}>
@@ -396,21 +428,8 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
       </main>
 
-      {/* ── STANDALONE PAGE FOOTER ── */}
-      <footer style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', padding: '2rem 1.5rem', textAlign: 'center', marginTop: '3rem' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.5rem' }}>
-            © 2026 {cleanHospitalName} Partner Portal · Powered by KairaCure International Patient Concierge.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', fontSize: '0.8rem', color: '#94a3b8' }}>
-            <span>Verified JCI/NABH Healthcare Network</span>
-            <span>•</span>
-            <span>Free Airport Transfer & Translation</span>
-            <span>•</span>
-            <span>24/7 Medical Care Desk</span>
-          </div>
-        </div>
-      </footer>
+      {/* ── REUSABLE FOOTER ── */}
+      <Footer setPage={setPage} />
 
     </div>
   );
