@@ -4,6 +4,7 @@ import { StarRating } from '../components/common/StarRating.jsx';
 import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
 import { CallBackForm } from '../components/hospitals/CallBackForm.jsx';
 import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
+import { UiIcon, TreatmentVectorIcon, TreatmentIconTile } from '../components/common/UiIcon.jsx';
 import {
   API_BASE,
   accreditationText,
