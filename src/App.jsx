@@ -31,7 +31,7 @@ import { AuthPage } from './pages/AuthPage.jsx';
 // Modals
 import { JourneyModal } from './components/modals/JourneyModal.jsx';
 
-import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults } from './data/constants.js';
+import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults, formatHospitalDisplayName } from './data/constants.js';
 
 const BRAND_NAME = 'Kairacure';
 
@@ -155,45 +155,53 @@ function App() {
     return () => { ignore = true; };
   }, []);
 
-  // Sync selectedHospital from URL ?id= or ?hospital= parameter
-  useEffect(() => {
+  // Helper to extract hospital slug or ID from URL
+  const resolveHospitalFromUrl = useCallback((hospitalsList) => {
+    const pathname = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
-    const hospId = params.get('id') || params.get('hospital');
-    if (hospId) {
-      const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
-      const found = allHospitals.find(
-        (h) => String(h.id) === hospId || h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === hospId.toLowerCase()
-      );
-      if (found) {
-        setSelectedHospital(found);
-      }
-    }
-  }, [backendHospitals]);
+    const queryId = params.get('id') || params.get('hospital');
+    const pathSlug = pathname.startsWith('/partner/') ? pathname.replace(/^\/partner\//, '') : null;
+    const target = queryId || pathSlug;
 
+    if (!target) return null;
+
+    return hospitalsList.find((h) => {
+      const cleanName = formatHospitalDisplayName(h.name);
+      const nameSlug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const rawSlug = h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      return String(h.id) === target || nameSlug === target.toLowerCase() || rawSlug === target.toLowerCase();
+    }) || null;
+  }, []);
+
+  // Sync selectedHospital from URL on data load
+  useEffect(() => {
+    const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
+    const found = resolveHospitalFromUrl(allHospitals);
+    if (found) {
+      setSelectedHospital(found);
+    }
+  }, [backendHospitals, resolveHospitalFromUrl]);
+
+  // Sync selectedHospital on browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
       const currentPage = pageFromPath(window.location.pathname);
       setPageState(currentPage);
-      const params = new URLSearchParams(window.location.search);
-      const hospId = params.get('id') || params.get('hospital');
-      if (hospId) {
-        const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
-        const found = allHospitals.find(
-          (h) => String(h.id) === hospId || h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === hospId.toLowerCase()
-        );
-        if (found) setSelectedHospital(found);
-      }
+      const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
+      const found = resolveHospitalFromUrl(allHospitals);
+      if (found) setSelectedHospital(found);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [backendHospitals]);
+  }, [backendHospitals, resolveHospitalFromUrl]);
 
   const setPage = (nextPage, targetHospital) => {
     const activeHospital = targetHospital || selectedHospital;
     let nextPath = pathForPage(nextPage);
     if (nextPage === 'partner-detail' && activeHospital) {
-      const hospSlug = activeHospital.id || encodeURIComponent(activeHospital.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-      nextPath = `/partners/detail?id=${hospSlug}`;
+      const cleanName = formatHospitalDisplayName(activeHospital.name);
+      const hospSlug = encodeURIComponent(cleanName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')) || activeHospital.id;
+      nextPath = `/partner/${hospSlug}`;
     }
     setPageState(nextPage);
     if (window.location.pathname + window.location.search !== nextPath) {

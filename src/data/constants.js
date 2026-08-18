@@ -61,10 +61,29 @@ export function formatShortName(name = '') {
   return trimmed.length > 16 ? `${trimmed.slice(0, 15)}...` : trimmed;
 }
 
+export function formatHospitalDisplayName(rawName = '') {
+  let name = String(rawName || '').trim();
+  if (!name) return 'Hospital Partner';
+
+  const altNameMatch = name.match(/issued in the Name of ([^)]+)\)/i);
+  if (altNameMatch && altNameMatch[1]) {
+    return altNameMatch[1].trim();
+  }
+
+  name = name.split(/\s*\(Earlier Certificate/i)[0];
+  name = name.split(/\s*\(formerly/i)[0];
+  name = name.split(/\s*\(unit of/i)[0];
+  name = name.split(/\s*Adress\s*/i)[0];
+  name = name.split(/\s*Address\s*/i)[0];
+  name = name.replace(/[\s\-,–]+Ltd\.?$/i, '');
+  name = name.replace(/[-–,.\s]+$/, '').trim();
+  return name || rawName;
+}
+
 export function pageFromPath(pathname) {
   const cleanPath = pathname.replace(/\/$/, '') || '/';
   if (cleanPath === '/hospitals' || cleanPath === '/partners') return 'partners';
-  if (cleanPath === '/hospitals/detail' || cleanPath === '/partners/detail' || cleanPath === '/partner-detail' || cleanPath === '/hospital-detail') return 'partner-detail';
+  if (cleanPath.startsWith('/partner/') || cleanPath === '/hospitals/detail' || cleanPath === '/partners/detail' || cleanPath === '/partner-detail' || cleanPath === '/hospital-detail') return 'partner-detail';
   return Object.entries(PAGE_PATHS).find(([, path]) => path === cleanPath)?.[0] ?? 'home';
 }
 
