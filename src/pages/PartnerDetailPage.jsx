@@ -4,6 +4,7 @@ import { StarRating } from '../components/common/StarRating.jsx';
 import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
 import { CallBackForm } from '../components/hospitals/CallBackForm.jsx';
 import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
+import { HospitalPartnerLandingPage } from './HospitalPartnerLandingPage.jsx';
 import { UiIcon, TreatmentVectorIcon, TreatmentIconTile } from '../components/common/UiIcon.jsx';
 import {
   API_BASE,
@@ -527,7 +528,7 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
         </div>
 
         <div id="partner-details" className="partner-details-section">
-          <HospitalPartnerLanding onBackToDetails={() => {}} selectedHospital={selectedHospital} isEmbedded={true} />
+          <HospitalPartnerLandingPage onBackToDetails={() => {}} selectedHospital={selectedHospital} isEmbedded={true} />
         </div>
       </section>
 
