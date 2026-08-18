@@ -16,6 +16,9 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
   const gallery = hospitalGallery(hospital);
   const cleanHospitalName = formatHospitalDisplayName(hospital.name);
 
+  // INTERACTIVE GALLERY STATE: Default to first gallery image or main hospital image
+  const [activeImg, setActiveImg] = useState(() => gallery[0] || getHospitalImage(hospital));
+
   // Doctors Check: ONLY show if database has real doctors
   const hasRealDoctors = (Array.isArray(hospital.doctorsList) && hospital.doctorsList.length > 0) || Boolean(hospital.doctor);
   const hospitalDoctors = Array.isArray(hospital.doctorsList) && hospital.doctorsList.length
@@ -110,34 +113,43 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
         <div className="pdl-card">
           <div className="pdl-hero-grid">
 
-            {/* Left Image & Gallery */}
+            {/* Left Image & Interactive Gallery */}
             <div>
               <div className="pdl-cover-wrap">
-                <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} className="pdl-cover-img" />
+                <img src={activeImg} alt={cleanHospitalName} onError={handleImageFallback} className="pdl-cover-img" />
                 <span className="pdl-badge-verified">
-                  <i className="fa-solid fa-shield-halved" style={{ marginRight: '0.35rem', color: '#60a5fa' }} /> Verified Partner
+                  <i className="fa-solid fa-shield-halved" style={{ color: '#38bdf8' }} /> Verified Partner
                 </span>
               </div>
+
+              {/* INTERACTIVE GALLERY THUMBNAILS */}
               <div className="pdl-thumbs-row">
-                {gallery.slice(0, 4).map((img, i) => (
-                  <img key={i} src={img} alt="Preview" className="pdl-thumb-img" />
+                {gallery.slice(0, 5).map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`Preview ${i + 1}`}
+                    onClick={() => setActiveImg(img)}
+                    className={`pdl-thumb-img${activeImg === img ? ' active' : ''}`}
+                    onError={handleImageFallback}
+                  />
                 ))}
               </div>
             </div>
 
             {/* Right Details Header */}
             <div>
-              {/* SMALL COMPACT BADGES */}
+              {/* UPGRADED MODERN PILL BADGES */}
               <div className="pdl-badge-wrap">
                 <span className="pdl-badge-blue">
-                  {hospital.specialty || 'Multispecialty'} Hospital
+                  <i className="fa-solid fa-stethoscope" /> {hospital.specialty || 'Multispecialty'} Hospital
                 </span>
                 <span className="pdl-badge-gold">
-                  <i className="fa-solid fa-award" style={{ marginRight: '0.3rem' }} /> {hospitalAccreditation}
+                  <i className="fa-solid fa-award" /> {hospitalAccreditation}
                 </span>
               </div>
 
-              {/* CLEAN, UN-EXCESSIVE TITLE */}
+              {/* CLEAN TITLE */}
               <h1 className="pdl-title">
                 {cleanHospitalName}
               </h1>
@@ -190,7 +202,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 <a href="#connect-form" className="pdl-btn-primary">
                   <i className="fa-solid fa-calendar-check" /> Book Free Consultation
                 </a>
-                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-primary" style={{ background: '#0d2f5d' }}>
+                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-primary">
                   <i className="fa-solid fa-calculator" /> Journey Cost Calculator
                 </button>
               </div>
