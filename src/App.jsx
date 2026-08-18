@@ -147,7 +147,6 @@ function App() {
           }
         }
       } catch {
-        // Fallback to default client data
       } finally {
         if (!ignore) setIsContentLoading(false);
       }
@@ -155,6 +154,39 @@ function App() {
     fetchContent();
     return () => { ignore = true; };
   }, []);
+
+  // Sync selectedHospital from URL ?id= or ?hospital= parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hospId = params.get('id') || params.get('hospital');
+    if (hospId) {
+      const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
+      const found = allHospitals.find(
+        (h) => String(h.id) === hospId || h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === hospId.toLowerCase()
+      );
+      if (found) {
+        setSelectedHospital(found);
+      }
+    }
+  }, [backendHospitals]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const currentPage = pageFromPath(window.location.pathname);
+      setPageState(currentPage);
+      const params = new URLSearchParams(window.location.search);
+      const hospId = params.get('id') || params.get('hospital');
+      if (hospId) {
+        const allHospitals = backendHospitals.length ? backendHospitals : INDIA_HOSPITALS;
+        const found = allHospitals.find(
+          (h) => String(h.id) === hospId || h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === hospId.toLowerCase()
+        );
+        if (found) setSelectedHospital(found);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [backendHospitals]);
 
   const setPage = (nextPage, targetHospital) => {
     const activeHospital = targetHospital || selectedHospital;

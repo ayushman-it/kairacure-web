@@ -63,8 +63,8 @@ export function formatShortName(name = '') {
 
 export function pageFromPath(pathname) {
   const cleanPath = pathname.replace(/\/$/, '') || '/';
-  if (cleanPath === '/hospitals') return 'partners';
-  if (cleanPath === '/hospitals/detail') return 'partner-detail';
+  if (cleanPath === '/hospitals' || cleanPath === '/partners') return 'partners';
+  if (cleanPath === '/hospitals/detail' || cleanPath === '/partners/detail' || cleanPath === '/partner-detail' || cleanPath === '/hospital-detail') return 'partner-detail';
   return Object.entries(PAGE_PATHS).find(([, path]) => path === cleanPath)?.[0] ?? 'home';
 }
 
