@@ -21,6 +21,7 @@ import { TreatmentsPage } from './pages/TreatmentsPage.jsx';
 import { TreatmentDetailPage } from './pages/TreatmentDetailPage.jsx';
 import { PartnersPage } from './pages/PartnersPage.jsx';
 import { PartnerDetailPage } from './pages/PartnerDetailPage.jsx';
+import { PartnerLandingPage } from './pages/PartnerLandingPage.jsx';
 import { HospitalPartnerLandingPage } from './pages/HospitalPartnerLandingPage.jsx';
 import { DoctorsPage } from './pages/DoctorsPage.jsx';
 import { DoctorDetailPage } from './pages/DoctorDetailPage.jsx';
@@ -31,7 +32,7 @@ import { AuthPage } from './pages/AuthPage.jsx';
 // Modals
 import { JourneyModal } from './components/modals/JourneyModal.jsx';
 
-import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults, formatHospitalDisplayName } from './data/constants.js';
+import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults, formatHospitalDisplayName, pageFromPath, pathForPage } from './data/constants.js';
 
 const BRAND_NAME = 'Kairacure';
 
@@ -39,67 +40,24 @@ function getApiBase() {
   const configuredBase = import.meta.env.VITE_API_BASE_URL || '/api';
   if (typeof window === 'undefined') return configuredBase;
   const host = window.location.hostname;
-  const isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '::1';
-  const configuredUrl = String(configuredBase);
-  if (!isLocalHost && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/api/i.test(configuredUrl)) {
-    return '/api';
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return 'http://localhost:5000/api';
   }
   return configuredBase;
 }
 
 const API_BASE = getApiBase();
 
-const PAGE_PATHS = {
-  home: '/',
-  treatments: '/treatments',
-  destinations: '/destinations',
-  partners: '/partners',
-  doctors: '/doctors',
-  planner: '/plan-my-journey',
-  admin: '/admin',
-  login: '/login',
-  'ai-assistant': '/ai-assistant',
-  'treatment-detail': '/treatments/detail',
-  'partner-detail': '/partners/detail',
-  'doctor-detail': '/doctors/detail',
-};
-
-function pageFromPath(pathname) {
-  const normalized = (pathname || '/').toLowerCase();
-  const entry = Object.entries(PAGE_PATHS).find(([_, path]) => path.toLowerCase() === normalized);
-  return entry ? entry[0] : 'home';
-}
-
-function pathForPage(pageKey) {
-  return PAGE_PATHS[pageKey] || '/';
-}
-
-function readStoredPatientSession() {
-  if (typeof window === 'undefined') return { token: '', patient: null };
-  try {
-    const token = window.localStorage.getItem('KairacurePatientToken') || window.localStorage.getItem('kairacurePatientToken') || '';
-    const patientJson = window.localStorage.getItem('KairacurePatient') || window.localStorage.getItem('kairacurePatient') || 'null';
-    return { token, patient: JSON.parse(patientJson) };
-  } catch {
-    return { token: '', patient: null };
-  }
-}
-
-function formatShortName(value) {
-  if (!value) return 'User';
-  const first = String(value).split('@')[0].split(' ')[0];
-  return first.charAt(0).toUpperCase() + first.slice(1);
-}
-
 function AdminPanelRedirect() {
   useEffect(() => {
-    const adminUrl = import.meta.env.VITE_ADMIN_PORTAL_URL || 'https://admin.kairacure.com';
-    window.location.href = adminUrl;
+    window.location.replace('https://kairacure-admin.onrender.com');
   }, []);
   return (
-    <div style={{ padding: '6rem 2rem', textAlign: 'center', fontFamily: 'sans-serif' }}>
-      <h2 style={{ fontSize: '2rem', color: '#1e293b' }}>Redirecting to Kairacure Admin Portal...</h2>
-      <p style={{ color: '#64748b', marginTop: '0.5rem' }}>Administrative management is hosted securely on <strong style={{ color: '#2563eb' }}>admin.kairacure.com</strong>.</p>
+    <div style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', textAlign: 'center', padding: '2rem' }}>
+      <div>
+        <h2>Redirecting to Kairacure Admin Console...</h2>
+        <p>If you are not redirected automatically, <a href="https://kairacure-admin.onrender.com">click here</a>.</p>
+      </div>
     </div>
   );
 }
@@ -238,7 +196,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      {!showAdmin && (
+      {!showAdmin && page !== 'partner-detail' && (
         <Header
           currentPatient={currentPatient}
           hospitals={contentHospitals}
@@ -309,7 +267,7 @@ function App() {
         )}
 
         {page === 'partner-detail' && (
-          <PartnerDetailPage money={money} selectedHospital={selectedHospital} selectedTreatment={selectedTreatment} setPage={setPage} setSelectedHospital={setSelectedHospital} />
+          <PartnerLandingPage money={money} selectedHospital={selectedHospital} selectedTreatment={selectedTreatment} setPage={setPage} setSelectedHospital={setSelectedHospital} />
         )}
 
         {page === 'partner-growth' && (
@@ -337,7 +295,7 @@ function App() {
         {showHome && <HomeFaqSection />}
       </main>
 
-      {!showAdmin && !showAuth && <Footer setPage={setPage} />}
+      {!showAdmin && !showAuth && page !== 'partner-detail' && <Footer setPage={setPage} />}
       {showJourneyModal && page !== 'ai-assistant' && !showAdmin && <JourneyModal onClose={() => setShowJourneyModal(false)} setPage={setPage} treatments={contentTreatments} />}
     </div>
   );
