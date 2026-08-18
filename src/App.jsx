@@ -32,7 +32,7 @@ import { AuthPage } from './pages/AuthPage.jsx';
 // Modals
 import { JourneyModal } from './components/modals/JourneyModal.jsx';
 
-import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults, formatHospitalDisplayName, pageFromPath, pathForPage } from './data/constants.js';
+import { DEFAULT_TREATMENTS, withBackendTreatmentDefaults, withBackendHospitalDefaults, formatHospitalDisplayName, pageFromPath, pathForPage, readStoredPatientSession } from './data/constants.js';
 
 const BRAND_NAME = 'Kairacure';
 
