@@ -67,10 +67,10 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
   ];
 
   return (
-    <div className="partner-standalone-shell" style={{ background: '#f8fafc', minHeight: '100vh', color: '#0f172a', fontFamily: "'Noto Sans', sans-serif" }}>
+    <div className="partner-standalone-shell" style={{ background: '#ffffff', minHeight: '100vh', color: '#0f172a', fontFamily: "'Noto Sans', sans-serif" }}>
 
       {/* ── STANDALONE PAGE NAVBAR HEADER (100% CONTAINER ALIGNED) ── */}
-      <header style={{ background: 'transparent', borderBottom: '1px solid #e2e8f0', sticky: 'top', top: 0, zIndex: 100 }}>
+      <header style={{ background: '#ffffff', borderBottom: '1px solid #e2e8f0', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ width: 'min(var(--page-max), calc(100% - (var(--page-gutter) * 2)))', margin: '0 auto', padding: '0.85rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button onClick={() => setPage('home')} type="button" style={{ border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -81,7 +81,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
           </div>
 
           <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.95rem', border: '1px solid #e2e8f0', borderRadius: '6px', background: 'transparent' }}>
+            <a href="tel:+919876543210" style={{ color: '#0d2f5d', textDecoration: 'none', fontWeight: 700, fontSize: '0.88rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.45rem 0.95rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: '#ffffff' }}>
               <i className="fa-solid fa-phone" style={{ color: '#2563eb' }} /> +91 98765 43210
             </a>
             <a href="#connect-form" className="pdl-btn-primary">
@@ -91,7 +91,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
         </div>
       </header>
 
-      {/* ── MAIN CONTENT (NO WHITE BACKGROUND, NO SHADOW, LIGHT BORDER ONLY) ── */}
+      {/* ── MAIN CONTENT (WHITE BACKGROUND, CLEAN LIGHT BORDER, EXACT CONTAINER ALIGNMENT) ── */}
       <main className="partner-landing-page" style={{ paddingTop: '0.5rem' }}>
 
         {/* BREADCRUMBS WITH LOW TOP MARGIN */}
@@ -106,13 +106,13 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
           />
         </div>
 
-        {/* HERO CARD (TRANSPARENT BACKGROUND, NO SHADOW, LIGHT BORDER ONLY) */}
-        <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+        {/* HERO CARD (WHITE BACKGROUND, CLEAN LIGHT BORDER) */}
+        <div className="pdl-card">
           <div className="pdl-hero-grid">
 
             {/* Left Image & Gallery */}
             <div>
-              <div className="pdl-cover-wrap" style={{ border: '1px solid #e2e8f0', boxShadow: 'none' }}>
+              <div className="pdl-cover-wrap">
                 <img src={getHospitalImage(hospital)} alt={cleanHospitalName} onError={handleImageFallback} className="pdl-cover-img" />
                 <span className="pdl-badge-verified">
                   <i className="fa-solid fa-shield-halved" style={{ marginRight: '0.35rem', color: '#60a5fa' }} /> Verified Partner
@@ -120,7 +120,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
               <div className="pdl-thumbs-row">
                 {gallery.slice(0, 4).map((img, i) => (
-                  <img key={i} src={img} alt="Preview" className="pdl-thumb-img" style={{ border: '1px solid #e2e8f0' }} />
+                  <img key={i} src={img} alt="Preview" className="pdl-thumb-img" />
                 ))}
               </div>
             </div>
@@ -142,8 +142,8 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 {cleanHospitalName}
               </h1>
 
-              {/* ENHANCED LOCATION BLOCK (LIGHT BORDER, NO SHADOW) */}
-              <div className="pdl-location-box" style={{ background: 'transparent', border: '1px solid #e2e8f0', boxShadow: 'none' }}>
+              {/* ENHANCED LOCATION BLOCK */}
+              <div className="pdl-location-box">
                 <div className="pdl-location-header">
                   <i className="fa-solid fa-location-dot" style={{ color: '#ef4444', fontSize: '1rem', marginTop: '0.15rem' }} />
                   <div>
@@ -154,10 +154,10 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                       {hospitalAddress}
                     </div>
                     <div className="pdl-location-pills">
-                      <span className="pdl-pill" style={{ border: '1px solid #e2e8f0', background: 'transparent' }}>
+                      <span className="pdl-pill">
                         <i className="fa-solid fa-plane-arrival" style={{ color: '#2563eb', marginRight: '0.3rem' }} /> International Airport Access
                       </span>
-                      <span className="pdl-pill" style={{ border: '1px solid #e2e8f0', background: 'transparent' }}>
+                      <span className="pdl-pill">
                         <i className="fa-solid fa-hospital-user" style={{ color: '#16a34a', marginRight: '0.3rem' }} /> Care Concierge Desk
                       </span>
                     </div>
@@ -166,7 +166,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               </div>
 
               {/* Spec Pills Bar */}
-              <div className="pdl-specs-grid" style={{ background: 'transparent', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-specs-grid">
                 <div>
                   <strong className="pdl-spec-val">{hospitalBeds}</strong>
                   <span className="pdl-spec-lbl">Capacity</span>
@@ -185,12 +185,12 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 </div>
               </div>
 
-              {/* HIGH CONTRAST ACTION BUTTONS */}
+              {/* HIGH CONTRAST THEME BUTTONS */}
               <div className="pdl-actions-row">
                 <a href="#connect-form" className="pdl-btn-primary">
                   <i className="fa-solid fa-calendar-check" /> Book Free Consultation
                 </a>
-                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline" style={{ background: 'transparent' }}>
+                <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline">
                   <i className="fa-solid fa-calculator" /> Journey Cost Calculator
                 </button>
               </div>
@@ -201,7 +201,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
         </div>
 
         {/* NAVIGATION TABS */}
-        <div className="pdl-nav-tabs" style={{ background: 'transparent', borderBottom: '1px solid #e2e8f0' }}>
+        <div className="pdl-nav-tabs">
           {[
             ['overview', 'Overview & Technology'],
             ['treatments', 'Specialties & Packages'],
@@ -223,12 +223,12 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
         {/* MAIN LAYOUT GRID: LEFT PANELS + RIGHT CONNECT FORM */}
         <div className="pdl-main-grid">
 
-          {/* LEFT MAIN PANELS (LIGHT BORDER ONLY, NO WHITE BACKGROUND, NO SHADOW) */}
+          {/* LEFT MAIN PANELS */}
           <div>
 
             {/* 1. OVERVIEW & PORTFOLIO */}
             {(activeTab === 'overview' || activeTab === 'all') && (
-              <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-card">
                 <h3 className="pdl-section-h3">
                   Infrastructure & Portfolio Highlights
                 </h3>
@@ -237,19 +237,19 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 </p>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
-                  <div style={{ padding: '0.85rem', background: 'transparent', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <i className="fa-solid fa-microscope" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
                     <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>Advanced Diagnostics</strong>
                     <span style={{ fontSize: '0.78rem', color: '#64748b' }}>PET-CT, 3T MRI, 128-Slice CT</span>
                   </div>
 
-                  <div style={{ padding: '0.85rem', background: 'transparent', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <i className="fa-solid fa-bed-pulse" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
                     <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>ICU & Critical Care</strong>
                     <span style={{ fontSize: '0.78rem', color: '#64748b' }}>24/7 Monitored Cardiac ICUs</span>
                   </div>
 
-                  <div style={{ padding: '0.85rem', background: 'transparent', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <i className="fa-solid fa-globe" style={{ fontSize: '1.25rem', color: '#2563eb', marginBottom: '0.35rem' }} />
                     <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>International Lounge</strong>
                     <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Visa Invitation & Translators</span>
@@ -260,13 +260,13 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
             {/* 2. TREATMENTS & PACKAGES */}
             {(activeTab === 'treatments' || activeTab === 'overview') && (
-              <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-card">
                 <h3 className="pdl-section-h3">
                   Specialties & Package Estimates
                 </h3>
                 <div className="pdl-treatment-grid">
                   {hospitalTreatments.map((t, idx) => (
-                    <div key={idx} className="pdl-treatment-card" style={{ background: 'transparent', border: '1px solid #e2e8f0', boxShadow: 'none' }}>
+                    <div key={idx} className="pdl-treatment-card">
                       <div>
                         <span className="pdl-badge-blue" style={{ marginBottom: '0.4rem', display: 'inline-block' }}>{t.specialty || 'Specialty'}</span>
                         <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 700, marginTop: '0.15rem', marginBottom: '0.3rem' }}>{t.title}</h4>
@@ -289,13 +289,13 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
             {/* 3. SENIOR SPECIALISTS (ONLY RENDERED IF REAL DOCTORS EXIST IN DATABASE) */}
             {hasRealDoctors && (activeTab === 'doctors' || activeTab === 'overview') && (
-              <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-card">
                 <h3 className="pdl-section-h3">
                   Senior Specialists at {cleanHospitalName}
                 </h3>
                 <div className="pdl-doctor-grid">
                   {hospitalDoctors.map((doc, idx) => (
-                    <div key={idx} className="pdl-doctor-card" style={{ background: 'transparent', border: '1px solid #e2e8f0', boxShadow: 'none' }}>
+                    <div key={idx} className="pdl-doctor-card">
                       <div className="pdl-doc-avatar">
                         <i className="fa-solid fa-user-doctor" />
                       </div>
@@ -306,7 +306,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                         <span>•</span>
                         <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
                       </div>
-                      <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center', background: 'transparent' }}>
+                      <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center' }}>
                         Book Slot
                       </a>
                     </div>
@@ -317,7 +317,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
             {/* 4. TOP GOOGLE RATINGS */}
             {(activeTab === 'reviews' || activeTab === 'overview') && (
-              <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
                   <h3 className="pdl-section-h3" style={{ marginBottom: 0 }}>Top Google Ratings</h3>
                   <span className="pdl-badge-gold" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -326,7 +326,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
-                  <blockquote style={{ margin: 0, padding: '1rem', background: 'transparent', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', gap: '0.2rem', color: '#f59e0b', fontSize: '0.8rem', marginBottom: '0.4rem' }}>
                       <i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" />
                     </div>
@@ -337,7 +337,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                     <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Saudi Arabia · Cardiac Patient</span>
                   </blockquote>
 
-                  <blockquote style={{ margin: 0, padding: '1rem', background: 'transparent', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <blockquote style={{ margin: 0, padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', gap: '0.2rem', color: '#f59e0b', fontSize: '0.8rem', marginBottom: '0.4rem' }}>
                       <i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" /><i className="fa-solid fa-star" />
                     </div>
@@ -353,13 +353,13 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
             {/* 5. INTERACTIVE FAQS ACCORDION */}
             {(activeTab === 'faqs' || activeTab === 'overview') && (
-              <div className="pdl-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+              <div className="pdl-card">
                 <h3 className="pdl-section-h3">
                   Frequently Asked Questions
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {faqs.map((faq, i) => (
-                    <div key={i} style={{ background: 'transparent', border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
+                    <div key={i} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden' }}>
                       <button
                         onClick={() => setOpenFaq(openFaq === i ? null : i)}
                         type="button"
@@ -383,14 +383,14 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
           {/* RIGHT STICKY CONNECT FORM */}
           <div id="connect-form">
-            <div className="pdl-form-card" style={{ background: 'transparent', boxShadow: 'none', border: '1px solid #e2e8f0' }}>
+            <div className="pdl-form-card">
               <div style={{ marginBottom: '0.85rem', textAlign: 'center' }}>
                 <h3 style={{ fontSize: '1.05rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '0.15rem' }}>Book Free Consultation</h3>
                 <p style={{ color: '#64748b', fontSize: '0.78rem' }}>Doctor opinion & starting quote within 2 hours</p>
               </div>
 
               {formSubmitted ? (
-                <div style={{ padding: '1rem', background: 'transparent', border: '1px solid #bbf7d0', borderRadius: '8px', textAlign: 'center' }}>
+                <div style={{ padding: '1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', textAlign: 'center' }}>
                   <i className="fa-solid fa-circle-check" style={{ fontSize: '1.85rem', color: '#16a34a', marginBottom: '0.3rem' }} />
                   <h4 style={{ color: '#14532d', fontSize: '0.95rem', fontWeight: 700 }}>Request Received!</h4>
                   <p style={{ color: '#166534', fontSize: '0.78rem', marginTop: '0.15rem' }}>Our medical coordinator will call you back shortly.</p>
@@ -399,19 +399,19 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                 <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Patient Full Name *</label>
-                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="pdl-input" style={{ background: 'transparent', border: '1px solid #cbd5e1' }} />
+                    <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Phone / WhatsApp Number *</label>
-                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="pdl-input" style={{ background: 'transparent', border: '1px solid #cbd5e1' }} />
+                    <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Email Address</label>
-                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} className="pdl-input" style={{ background: 'transparent', border: '1px solid #cbd5e1' }} />
+                    <input type="email" placeholder="patient@example.com" value={leadForm.email} onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} className="pdl-input" />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#334155', marginBottom: '0.15rem' }}>Medical Issue / Specialty</label>
-                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="pdl-input" style={{ background: 'transparent', border: '1px solid #cbd5e1' }} />
+                    <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="pdl-input" />
                   </div>
                   <button type="submit" className="pdl-btn-primary" style={{ width: '100%', padding: '0.7rem' }}>
                     Request Callback & Quote

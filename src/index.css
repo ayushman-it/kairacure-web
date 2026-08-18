@@ -34044,11 +34044,15 @@ select:focus {
   padding-bottom: 3rem !important;
 }
 
+.partner-standalone-shell {
+  background: #ffffff !important;
+}
+
 .pdl-card {
-  background: transparent !important;
+  background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 14px !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 93, 0.05) !important;
   padding: 1.5rem !important;
   margin-bottom: 1.25rem !important;
 }
@@ -34057,7 +34061,7 @@ select:focus {
   display: flex !important;
   gap: 0.5rem !important;
   border-bottom: 1px solid #e2e8f0 !important;
-  background: transparent !important;
+  background: #ffffff !important;
   padding: 0.4rem 0.5rem 0 !important;
   border-radius: 8px 8px 0 0 !important;
   overflow-x: auto !important;
@@ -34067,11 +34071,11 @@ select:focus {
 .pdl-form-card {
   position: sticky !important;
   top: 1.5rem !important;
-  background: transparent !important;
+  background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 12px !important;
   padding: 1.25rem !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 93, 0.05) !important;
 }
 
 .pdl-hero-grid {
