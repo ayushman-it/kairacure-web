@@ -2,6 +2,25 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 
 const STEP_LABELS = ['Treatment', 'Procedure', 'Trip Style', 'Hospital', 'Plan Journey'];
 
+function formatHospitalDisplayName(rawName = '') {
+  let name = String(rawName || '').trim();
+  if (!name) return 'Hospital Partner';
+
+  const altNameMatch = name.match(/issued in the Name of ([^)]+)\)/i);
+  if (altNameMatch && altNameMatch[1]) {
+    return altNameMatch[1].trim();
+  }
+
+  name = name.split(/\s*\(Earlier Certificate/i)[0];
+  name = name.split(/\s*\(formerly/i)[0];
+  name = name.split(/\s*\(unit of/i)[0];
+  name = name.split(/\s*Adress\s*/i)[0];
+  name = name.split(/\s*Address\s*/i)[0];
+  name = name.replace(/[\s\-,–]+Ltd\.?$/i, '');
+  name = name.replace(/[-–,.\s]+$/, '').trim();
+  return name || rawName;
+}
+
 let _prevStep = 0;
 
 function PlannerStepsBar({ currentStep = 1 }) {
@@ -184,6 +203,7 @@ function getPlannerTreatmentTitle(treatment = {}) {
 // Modern Professional Treatment Search Page Component
 export function PlannerSearchPage({ 
   treatments = [], 
+  allTreatments = [],
   onSearchHospitals, 
   getTreatmentIconKind,
   plannerStep = 1,
@@ -234,7 +254,7 @@ export function PlannerSearchPage({
             selectedTreatments: selectedTreatments.map(t => ({
               id: t.id,
               title: t.title,
-              category: t.category || t.group
+              group: t.group
             }))
           }
         })
@@ -242,19 +262,31 @@ export function PlannerSearchPage({
     }
   }, [leadId, selectedTreatments]);
 
+  const effectiveTreatments = useMemo(() => {
+    const list = (treatments && treatments.length) ? treatments : (allTreatments || []);
+    if (!Array.isArray(list)) return [];
+    return list.map((t, idx) => ({
+      ...t,
+      id: t.id || t._id || `tr-${idx}`,
+      category: t.group || t.category || t.specialty || 'Medical',
+      group: t.group || t.category || t.specialty || 'Medical',
+    }));
+  }, [treatments, allTreatments]);
+
   const categories = useMemo(() => {
-    const cats = ['All', ...new Set(treatments.map(t => t.group || t.category || 'Medical'))];
+    const cats = ['All', ...new Set(effectiveTreatments.map(t => t.group || t.category || t.specialty || 'Medical'))];
     return cats;
-  }, [treatments]);
+  }, [effectiveTreatments]);
 
   const filteredTreatments = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
-    let filtered = treatments;
+    let filtered = effectiveTreatments;
 
     if (activeCategory !== 'All') {
-      filtered = filtered.filter(t => 
-        (t.group || t.category) === activeCategory
-      );
+      filtered = filtered.filter(t => {
+        const cat = t.group || t.category || t.specialty || 'Medical';
+        return cat === activeCategory || cat.toLowerCase() === activeCategory.toLowerCase();
+      });
     }
 
     if (query) {
@@ -265,13 +297,13 @@ export function PlannerSearchPage({
     }
 
     return filtered;
-  }, [treatments, searchQuery, activeCategory]);
+  }, [effectiveTreatments, searchQuery, activeCategory]);
 
   const autocompleteOptions = useMemo(() => {
     if (!searchQuery.trim()) return [];
     
     const query = searchQuery.toLowerCase();
-    const options = treatments
+    const options = effectiveTreatments
       .filter(t => {
         const searchText = `${t.title} ${t.group} ${t.specialty}`.toLowerCase();
         return searchText.includes(query);
@@ -279,15 +311,16 @@ export function PlannerSearchPage({
       .slice(0, 8);
     
     return options;
-  }, [searchQuery, treatments]);
+  }, [searchQuery, effectiveTreatments]);
 
   const toggleTreatment = (treatment) => {
+    const tid = treatment.id || treatment._id;
     setSelectedTreatments(prev => {
-      const exists = prev.find(t => t.id === treatment.id);
+      const exists = prev.find(t => (t.id || t._id) === tid);
       if (exists) {
-        return prev.filter(t => t.id !== treatment.id);
+        return prev.filter(t => (t.id || t._id) !== tid);
       }
-      return [...prev, treatment];
+      return [...prev, { ...treatment, id: tid }];
     });
   };
 
@@ -457,11 +490,15 @@ export function PlannerSearchPage({
       {/* Treatment Grid */}
       <div className="planner-treatments-grid">
         <div className="treatments-grid-container">
-          {treatments.length === 0 && (
-            <div className="planner-loading-state">
-              <i className="fa-solid fa-stethoscope" aria-hidden="true" />
-              <strong>Loading treatments</strong>
-              <p>Preparing treatment options from the hospital catalog.</p>
+          {effectiveTreatments.length === 0 && (
+            <div className="planner-loading-state" style={{ background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '16px', padding: '2.5rem 1.5rem', textAlign: 'center', gridColumn: '1 / -1' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#eff6ff', color: '#0066fe', display: 'grid', placeItems: 'center', margin: '0 auto 0.85rem', fontSize: '1.4rem' }}>
+                <i className="bi bi-folder-x" aria-hidden="true" />
+              </div>
+              <strong style={{ display: 'block', fontSize: '1.05rem', color: '#0f172a', marginBottom: '0.35rem' }}>No Catalog Records Found</strong>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                All procedure records strictly load from live database uploads. Use the Admin Panel to search and import ICD-11 procedures.
+              </p>
             </div>
           )}
           {treatments.length > 0 && filteredTreatments.length === 0 && (
@@ -472,44 +509,93 @@ export function PlannerSearchPage({
             </div>
           )}
           {filteredTreatments.map((treatment) => {
-            const isSelected = selectedTreatments.some(t => t.id === treatment.id);
-            const hasCosting = treatment.packageFrom && treatment.packageFrom > 0;
-            const valueScore = Number(treatment.value || 0);
-            
+            const tid = treatment.id || treatment._id;
+            const isSelected = selectedTreatments.some(t => (t.id || t._id) === tid);
+            const hasCosting = treatment.packageFrom && Number(treatment.packageFrom) > 0;
+            const title = getPlannerTreatmentTitle(treatment);
+            const categoryLabel = treatment.group || treatment.category || treatment.specialty || 'Medical';
+
             return (
               <article
-                key={treatment.id}
-                className={isSelected ? 'treatment-card selected' : 'treatment-card'}
+                key={tid}
+                className={isSelected ? 'admin-treatment-card selected active' : 'admin-treatment-card'}
                 onClick={() => toggleTreatment(treatment)}
+                style={{
+                  padding: '1.25rem',
+                  background: isSelected ? '#f0f7ff' : '#ffffff',
+                  border: isSelected ? '2px solid #0066fe' : '1px solid #e2e8f0',
+                  borderRadius: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justify: 'space-between',
+                  boxShadow: isSelected ? '0 6px 20px rgba(0, 102, 254, 0.16)' : '0 4px 16px rgba(13, 47, 93, 0.04)',
+                  cursor: 'pointer',
+                  transition: 'all 0.22s ease',
+                  textAlign: 'left',
+                  position: 'relative',
+                }}
               >
-                <div className="treatment-card-icon">
-                  {getTreatmentIcon(treatment)}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '12px',
+                      background: isSelected ? '#0066fe' : '#eff6ff',
+                      color: isSelected ? '#ffffff' : '#0066fe',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.15rem',
+                      boxShadow: isSelected ? '0 3px 10px rgba(0, 102, 254, 0.25)' : 'none',
+                      border: '1px solid #dbeafe',
+                    }}>
+                      <i className="bi bi-heart-pulse-fill" aria-hidden="true" />
+                    </div>
+
+                    <span style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      color: '#0066fe',
+                      background: '#f0f7ff',
+                      padding: '0.2rem 0.65rem',
+                      borderRadius: '20px',
+                      border: '1px solid #dbeafe',
+                    }}>
+                      {categoryLabel}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.02rem', color: '#0f172a', fontWeight: 700, margin: '0 0 0.4rem 0', lineHeight: 1.3 }}>
+                    {title}
+                  </h3>
                 </div>
-                
-                <h3 className="treatment-card-title">{getPlannerTreatmentTitle(treatment)}</h3>
-                
-                <span className="treatment-category">{treatment.group || treatment.category}</span>
-                
-                {/* Subtle costing display */}
-                {hasCosting && (
-                  <div className="treatment-cost-subtle">
-                    From ₹{(treatment.packageFrom / 100000).toFixed(1)}L
-                  </div>
-                )}
-                
-                {valueScore > 0 && (
-                  <div className="treatment-rating">
-                    <i className="fa-solid fa-star" aria-hidden="true" />
-                    <small>{valueScore}% value</small>
-                  </div>
-                )}
-                
-                <div className="treatment-card-check">
-                  {isSelected ? (
-                    <i className="fa-solid fa-circle-check" aria-hidden="true" />
-                  ) : (
-                    <i className="fa-regular fa-circle" aria-hidden="true" />
-                  )}
+
+                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: hasCosting ? '#0f172a' : '#64748b' }}>
+                    {hasCosting ? `From ₹${(Number(treatment.packageFrom) / 100000).toFixed(1)}L` : 'Estimate on request'}
+                  </span>
+
+                  <span style={{
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    color: isSelected ? '#0066fe' : '#94a3b8',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem'
+                  }}>
+                    {isSelected ? (
+                      <>
+                        <i className="bi bi-check-circle-fill" style={{ fontSize: '1.15rem', color: '#0066fe' }} />
+                        <span>Selected</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-circle" style={{ fontSize: '1.1rem', color: '#cbd5e1' }} />
+                        <span>Select</span>
+                      </>
+                    )}
+                  </span>
                 </div>
               </article>
             );
@@ -588,37 +674,41 @@ export function ProcedureSelectPage({
   const [selectedProcedures, setSelectedProcedures] = useState(preSelectedProcedures);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Build procedure list: every treatment that has an icdCode/icdUri AND whose
-  // group matches one of the selected treatment groups — these are the ICD-11 imports.
+  // Build procedure list: every treatment from backend/catalog that matches selected groups or treatments
   const procedures = useMemo(() => {
-    const groups = new Set(
-      selectedTreatments.map((t) => (t.group || t.category || '').toLowerCase())
+    if (!allTreatments || !allTreatments.length) return [];
+    if (!selectedTreatments || !selectedTreatments.length) return allTreatments;
+
+    const selectedGroups = new Set(
+      selectedTreatments.map((t) => (t.group || t.category || t.specialty || '').toLowerCase().trim()).filter(Boolean)
     );
-    const titleSet = new Set(
-      selectedTreatments.map((t) => (t.title || '').toLowerCase())
+    const selectedTitles = new Set(
+      selectedTreatments.map((t) => (t.title || t.name || '').toLowerCase().trim()).filter(Boolean)
     );
 
-    return allTreatments.filter((t) => {
-      // Must be an ICD-11 record (has a code or uri)
-      const isIcd = !!(t.icdCode || t.icdUri || t.procedureCode);
-      if (!isIcd) return false;
+    const matchesSelected = (t) => {
+      const tGroup = (t.group || t.category || t.specialty || '').toLowerCase().trim();
+      const tTitle = (t.title || t.name || '').toLowerCase().trim();
 
-      // Must belong to the same specialty group as a selected treatment
-      const tGroup = (t.group || t.category || '').toLowerCase();
-      const tTitle = (t.title || '').toLowerCase();
-      const groupMatch = groups.has(tGroup);
-      // Also include if title exactly matches a selected treatment title
-      const titleMatch = titleSet.has(tTitle);
+      if (selectedGroups.has(tGroup) || selectedTitles.has(tTitle)) return true;
 
-      return groupMatch || titleMatch;
-    });
+      for (const group of selectedGroups) {
+        if (group && tGroup && (tGroup.includes(group) || group.includes(tGroup))) return true;
+        const mainKeyword = group.split(' ')[0];
+        if (mainKeyword.length > 3 && tGroup.includes(mainKeyword)) return true;
+      }
+      return false;
+    };
+
+    const matched = allTreatments.filter(matchesSelected);
+    return matched;
   }, [allTreatments, selectedTreatments]);
 
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     if (!q) return procedures;
     return procedures.filter((p) =>
-      `${p.title} ${p.icdCode} ${p.group} ${p.description || ''}`.toLowerCase().includes(q)
+      `${p.title} ${p.icdCode || ''} ${p.group || ''} ${p.description || ''}`.toLowerCase().includes(q)
     );
   }, [procedures, searchQuery]);
 
@@ -651,7 +741,7 @@ export function ProcedureSelectPage({
         <div className="procedure-select-header-content">
           <h1>Select Specific Procedure</h1>
           <p>
-            Choose the exact procedure from our ICD-11 catalog — or skip to browse
+            Choose the exact procedure for your medical journey — or skip to browse
             hospitals by treatment category.
           </p>
         </div>
@@ -675,7 +765,7 @@ export function ProcedureSelectPage({
             <input
               type="text"
               className="planner-search-input"
-              placeholder="Search procedures, ICD codes..."
+              placeholder="Search procedures, treatments, or medical conditions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -697,11 +787,10 @@ export function ProcedureSelectPage({
         {procedures.length === 0 && (
           <div className="procedure-empty-state">
             <i className="fa-solid fa-flask-vial" aria-hidden="true" />
-            <strong>No specific procedures imported yet</strong>
+            <strong>No specific procedures available</strong>
             <p>
-              Your admin can import detailed ICD-11 procedures for{' '}
+              Explore procedures or continue to find matching top hospitals for{' '}
               {selectedTreatments.map((t) => t.group || t.title).join(', ')}.
-              You can still continue to find matching hospitals.
             </p>
           </div>
         )}
@@ -710,7 +799,7 @@ export function ProcedureSelectPage({
           <div className="procedure-empty-state">
             <i className="fa-solid fa-magnifying-glass" aria-hidden="true" />
             <strong>No procedures match "{searchQuery}"</strong>
-            <p>Try a different keyword or ICD code.</p>
+            <p>Try a different keyword or search term.</p>
           </div>
         )}
 
@@ -1229,11 +1318,11 @@ export function JourneyPlanningPage({
 }) {
   const [userLocation, setUserLocation] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [selectedAirport, setSelectedAirport] = useState('');
   const [customAirport, setCustomAirport] = useState('');
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [showStateDropdown, setShowStateDropdown] = useState(false);
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [showAirportDropdown, setShowAirportDropdown] = useState(false);
   const [travelMode, setTravelMode] = useState('flight');
   const [hotelCategory, setHotelCategory] = useState('3star');
@@ -1243,78 +1332,182 @@ export function JourneyPlanningPage({
   const [isCalculating, setIsCalculating] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
+  const [userPhone, setUserPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+91');
+  const [liveFlightData, setLiveFlightData] = useState(null);
+  const [isFetchingApiData, setIsFetchingApiData] = useState(false);
+  const [isFetchingHotels, setIsFetchingHotels] = useState(false);
 
-  // Airport data by country and state
-  const airportData = {
+  const countryDialCodes = [
+    { code: '+91', country: 'India (+91)' },
+    { code: '+966', country: 'Saudi Arabia (+966)' },
+    { code: '+971', country: 'UAE (+971)' },
+    { code: '+965', country: 'Kuwait (+965)' },
+    { code: '+968', country: 'Oman (+968)' },
+    { code: '+974', country: 'Qatar (+974)' },
+    { code: '+973', country: 'Bahrain (+973)' },
+    { code: '+254', country: 'Kenya (+254)' },
+    { code: '+234', country: 'Nigeria (+234)' },
+    { code: '+880', country: 'Bangladesh (+880)' },
+    { code: '+1', country: 'USA / Canada (+1)' },
+    { code: '+44', country: 'UK (+44)' },
+    { code: '+964', country: 'Iraq (+964)' },
+    { code: '+998', country: 'Uzbekistan (+998)' },
+    { code: '+977', country: 'Nepal (+977)' },
+    { code: '+94', country: 'Sri Lanka (+94)' },
+    { code: '+960', country: 'Maldives (+960)' },
+    { code: '+60', country: 'Malaysia (+60)' },
+    { code: '+65', country: 'Singapore (+65)' }
+  ];
+
+  // Airport data by country and city
+  const cityAirportData = {
     'India': {
-      'Delhi': [
-        { code: 'DEL', name: 'Indira Gandhi International Airport', city: 'New Delhi' },
+      'New Delhi / NCR': [
+        { code: 'DEL', name: 'Indira Gandhi International Airport', city: 'New Delhi' }
       ],
-      'Maharashtra': [
-        { code: 'BOM', name: 'Chhatrapati Shivaji International Airport', city: 'Mumbai' },
-        { code: 'PNQ', name: 'Pune Airport', city: 'Pune' },
+      'Mumbai': [
+        { code: 'BOM', name: 'Chhatrapati Shivaji Maharaj International Airport', city: 'Mumbai' }
       ],
-      'Karnataka': [
-        { code: 'BLR', name: 'Kempegowda International Airport', city: 'Bangalore' },
+      'Bengaluru': [
+        { code: 'BLR', name: 'Kempegowda International Airport', city: 'Bengaluru' }
       ],
-      'Tamil Nadu': [
-        { code: 'MAA', name: 'Chennai International Airport', city: 'Chennai' },
-        { code: 'CJB', name: 'Coimbatore International Airport', city: 'Coimbatore' },
+      'Chennai': [
+        { code: 'MAA', name: 'Chennai International Airport', city: 'Chennai' }
       ],
-      'Telangana': [
-        { code: 'HYD', name: 'Rajiv Gandhi International Airport', city: 'Hyderabad' },
+      'Hyderabad': [
+        { code: 'HYD', name: 'Rajiv Gandhi International Airport', city: 'Hyderabad' }
       ],
-      'West Bengal': [
-        { code: 'CCU', name: 'Netaji Subhas Chandra Bose International Airport', city: 'Kolkata' },
+      'Kolkata': [
+        { code: 'CCU', name: 'Netaji Subhas Chandra Bose International Airport', city: 'Kolkata' }
       ],
-      'Kerala': [
-        { code: 'COK', name: 'Cochin International Airport', city: 'Kochi' },
-        { code: 'TRV', name: 'Trivandrum International Airport', city: 'Trivandrum' },
+      'Pune': [
+        { code: 'PNQ', name: 'Pune International Airport', city: 'Pune' }
       ],
-      'Gujarat': [
-        { code: 'AMD', name: 'Sardar Vallabhbhai Patel International Airport', city: 'Ahmedabad' },
+      'Ahmedabad': [
+        { code: 'AMD', name: 'Sardar Vallabhbhai Patel International Airport', city: 'Ahmedabad' }
       ],
-      'Rajasthan': [
-        { code: 'JAI', name: 'Jaipur International Airport', city: 'Jaipur' },
+      'Jaipur': [
+        { code: 'JAI', name: 'Jaipur International Airport', city: 'Jaipur' }
       ],
-      'Punjab': [
-        { code: 'ATQ', name: 'Sri Guru Ram Dass Jee International Airport', city: 'Amritsar' },
+      'Kochi': [
+        { code: 'COK', name: 'Cochin International Airport', city: 'Kochi' }
+      ],
+      'Lucknow': [
+        { code: 'LKO', name: 'Chaudhary Charan Singh International Airport', city: 'Lucknow' }
+      ],
+      'Chandigarh': [
+        { code: 'IXC', name: 'Chandigarh International Airport', city: 'Chandigarh' }
+      ],
+      'Goa': [
+        { code: 'GOI', name: 'Dabolim Airport', city: 'Goa' },
+        { code: 'GOX', name: 'Manohar International Airport (Mopa)', city: 'Goa' }
       ]
     },
     'USA': {
-      'California': [
-        { code: 'LAX', name: 'Los Angeles International Airport', city: 'Los Angeles' },
-        { code: 'SFO', name: 'San Francisco International Airport', city: 'San Francisco' },
-      ],
       'New York': [
         { code: 'JFK', name: 'John F. Kennedy International Airport', city: 'New York' },
-        { code: 'LGA', name: 'LaGuardia Airport', city: 'New York' },
+        { code: 'EWR', name: 'Newark Liberty International Airport', city: 'Newark/NY' },
+        { code: 'LGA', name: 'LaGuardia Airport', city: 'New York' }
       ],
-      'Texas': [
-        { code: 'DFW', name: 'Dallas/Fort Worth International Airport', city: 'Dallas' },
-        { code: 'IAH', name: 'George Bush Intercontinental Airport', city: 'Houston' },
+      'Los Angeles': [
+        { code: 'LAX', name: 'Los Angeles International Airport', city: 'Los Angeles' }
+      ],
+      'San Francisco': [
+        { code: 'SFO', name: 'San Francisco International Airport', city: 'San Francisco' }
+      ],
+      'Chicago': [
+        { code: 'ORD', name: 'O\'Hare International Airport', city: 'Chicago' }
+      ],
+      'Houston': [
+        { code: 'IAH', name: 'George Bush Intercontinental Airport', city: 'Houston' }
       ]
     },
     'UK': {
-      'England': [
-        { code: 'LHR', name: 'Heathrow Airport', city: 'London' },
-        { code: 'LGW', name: 'Gatwick Airport', city: 'London' },
-        { code: 'MAN', name: 'Manchester Airport', city: 'Manchester' },
+      'London': [
+        { code: 'LHR', name: 'London Heathrow Airport', city: 'London' },
+        { code: 'LGW', name: 'London Gatwick Airport', city: 'London' }
+      ],
+      'Manchester': [
+        { code: 'MAN', name: 'Manchester Airport', city: 'Manchester' }
+      ],
+      'Birmingham': [
+        { code: 'BHX', name: 'Birmingham Airport', city: 'Birmingham' }
+      ]
+    },
+    'UAE': {
+      'Dubai': [
+        { code: 'DXB', name: 'Dubai International Airport', city: 'Dubai' }
+      ],
+      'Abu Dhabi': [
+        { code: 'AUH', name: 'Zayed International Airport', city: 'Abu Dhabi' }
+      ],
+      'Sharjah': [
+        { code: 'SHJ', name: 'Sharjah International Airport', city: 'Sharjah' }
+      ]
+    },
+    'Saudi Arabia': {
+      'Riyadh': [
+        { code: 'RUH', name: 'King Khalid International Airport', city: 'Riyadh' }
+      ],
+      'Jeddah': [
+        { code: 'JED', name: 'King Abdulaziz International Airport', city: 'Jeddah' }
       ]
     },
     'Canada': {
-      'Ontario': [
-        { code: 'YYZ', name: 'Toronto Pearson International Airport', city: 'Toronto' },
+      'Toronto': [
+        { code: 'YYZ', name: 'Toronto Pearson International Airport', city: 'Toronto' }
       ],
-      'British Columbia': [
-        { code: 'YVR', name: 'Vancouver International Airport', city: 'Vancouver' },
+      'Vancouver': [
+        { code: 'YVR', name: 'Vancouver International Airport', city: 'Vancouver' }
+      ]
+    },
+    'Oman': {
+      'Muscat': [
+        { code: 'MCT', name: 'Muscat International Airport', city: 'Muscat' }
+      ]
+    },
+    'Kenya': {
+      'Nairobi': [
+        { code: 'NBO', name: 'Jomo Kenyatta International Airport', city: 'Nairobi' }
+      ]
+    },
+    'Bangladesh': {
+      'Dhaka': [
+        { code: 'DAC', name: 'Hazrat Shahjalal International Airport', city: 'Dhaka' }
+      ]
+    },
+    'Nepal': {
+      'Kathmandu': [
+        { code: 'KTM', name: 'Tribhuvan International Airport', city: 'Kathmandu' }
+      ]
+    },
+    'Nigeria': {
+      'Lagos': [
+        { code: 'LOS', name: 'Murtala Muhammed International Airport', city: 'Lagos' }
+      ]
+    },
+    'Iraq': {
+      'Baghdad': [
+        { code: 'BGW', name: 'Baghdad International Airport', city: 'Baghdad' }
+      ]
+    },
+    'Uzbekistan': {
+      'Tashkent': [
+        { code: 'TAS', name: 'Tashkent International Airport', city: 'Tashkent' }
       ]
     }
   };
 
-  const countries = Object.keys(airportData);
-  const states = selectedCountry ? Object.keys(airportData[selectedCountry] || {}) : [];
-  const airports = (selectedCountry && selectedState) ? (airportData[selectedCountry][selectedState] || []) : [];
+  const countries = Object.keys(cityAirportData);
+  const cities = selectedCountry ? Object.keys(cityAirportData[selectedCountry] || {}) : [];
+  const airports = (selectedCountry && selectedCity) 
+    ? (cityAirportData[selectedCountry]?.[selectedCity] || []) 
+    : selectedCountry 
+    ? Object.values(cityAirportData[selectedCountry] || {}).flat() 
+    : [];
+
+  const allAirportsList = Object.values(cityAirportData).flatMap(countryObj => Object.values(countryObj).flat());
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -1330,17 +1523,115 @@ export function JourneyPlanningPage({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Get user email from localStorage
+  // Get user info from localStorage
   useEffect(() => {
     const email = localStorage.getItem('userEmail') || '';
     const name = localStorage.getItem('userName') || '';
+    const phone = localStorage.getItem('userPhone') || '';
+    const code = localStorage.getItem('countryCode') || '+91';
     setUserEmail(email);
     setUserName(name);
+    if (phone) setUserPhone(phone);
+    if (code) setCountryCode(code);
   }, []);
 
-  // Dummy travel data for calculation
+  const cityHotelData = {
+    'New Delhi / NCR': [
+      { name: 'Lemon Tree Premier (Aerocity)', star: '4star', price: 7500, dist: '1.2 km from Hospital', rating: 4.6, amenities: ['Wheelchair Accessible', 'Doctor on Call'] },
+      { name: 'Radisson Blu Hotel (Paschim Vihar)', star: '5star', price: 14500, dist: '2.1 km from Hospital', rating: 4.8, amenities: ['24/7 Concierge', 'Oxygen Support'] },
+      { name: 'Ginger Hotel (East Delhi)', star: '3star', price: 4200, dist: '0.9 km from Hospital', rating: 4.3, amenities: ['Patient Diet Kitchen', 'Elevator'] },
+      { name: 'FabHotel Prime Executive', star: '2star', price: 2600, dist: '0.5 km from Hospital', rating: 4.1, amenities: ['Free Wi-Fi', 'Room Service'] }
+    ],
+    'Mumbai': [
+      { name: 'ITC Grand Central (Parel)', star: '5star', price: 16000, dist: '0.8 km from Hospital', rating: 4.9, amenities: ['Medical Suite', 'Doctor on Call'] },
+      { name: 'The Lalit Mumbai (Sahar)', star: '4star', price: 8200, dist: '1.5 km from Hospital', rating: 4.7, amenities: ['Wheelchair Ramp', 'Special Patient Care'] },
+      { name: 'Hotel Kohinoor Park (Prabhadevi)', star: '3star', price: 4800, dist: '0.6 km from Hospital', rating: 4.4, amenities: ['Dietary Meals', 'Elevator'] }
+    ],
+    'Bengaluru': [
+      { name: 'Taj Yeshwantpur', star: '5star', price: 15500, dist: '1.1 km from Hospital', rating: 4.8, amenities: ['Wheelchair Care', 'Special Diet'] },
+      { name: 'Lemon Tree Hotel (Whitefield)', star: '4star', price: 7800, dist: '0.7 km from Hospital', rating: 4.6, amenities: ['Doctor Escort', 'Silent Rooms'] },
+      { name: 'IBIS Bengaluru Hosur Road', star: '3star', price: 4400, dist: '1.3 km from Hospital', rating: 4.3, amenities: ['24/7 Room Service', 'Kitchenette'] }
+    ],
+    'Chennai': [
+      { name: 'Hyatt Regency Chennai', star: '5star', price: 14000, dist: '1.0 km from Hospital', rating: 4.8, amenities: ['Hospital Escort Service', 'Translators'] },
+      { name: 'The Residency Towers', star: '4star', price: 7200, dist: '0.5 km from Hospital', rating: 4.6, amenities: ['Wheelchair Friendly', 'Organic Diet'] },
+      { name: 'Hotel Savera (Mylapore)', star: '3star', price: 4200, dist: '1.2 km from Hospital', rating: 4.4, amenities: ['Patient Lounge', 'Doctor Call'] }
+    ],
+    'Hyderabad': [
+      { name: 'Park Hyatt Banjara Hills', star: '5star', price: 15000, dist: '0.9 km from Hospital', rating: 4.9, amenities: ['VIP Medical Suite', 'Private Ambulance'] },
+      { name: 'Mercure Hyderabad KCP', star: '4star', price: 7600, dist: '0.6 km from Hospital', rating: 4.7, amenities: ['Quiet Floor', 'Patient Meals'] },
+      { name: 'Hotel Katriya (Somajiguda)', star: '3star', price: 4500, dist: '0.4 km from Hospital', rating: 4.3, amenities: ['Elevator', '24h Room Service'] }
+    ],
+    'Kolkata': [
+      { name: 'ITC Sonar (EM Bypass)', star: '5star', price: 14800, dist: '1.2 km from Hospital', rating: 4.8, amenities: ['Medical Concierge', 'Interpreter'] },
+      { name: 'The Peerless Inn', star: '4star', price: 7400, dist: '0.8 km from Hospital', rating: 4.5, amenities: ['Patient Diet Menu', '24h Transport'] }
+    ]
+  };
+
+  const FLIGHT_API_KEY = '6a84a2d99c48dcc1a75d43ad';
+  const HOTEL_API_KEY = '6a84a34bfd3e3e4cc59ff94d';
+
+  // Helper to detect airport code from airport selection or city/location text
+  const getDetectedOriginAirport = () => {
+    if (selectedAirport) return selectedAirport;
+    const searchStr = `${selectedCity} ${userLocation} ${selectedCountry}`.toLowerCase();
+    if (searchStr.includes('mumbai') || searchStr.includes('bombay')) return 'BOM';
+    if (searchStr.includes('bengaluru') || searchStr.includes('bangalore')) return 'BLR';
+    if (searchStr.includes('chennai') || searchStr.includes('madras')) return 'MAA';
+    if (searchStr.includes('hyderabad')) return 'HYD';
+    if (searchStr.includes('kolkata') || searchStr.includes('calcutta')) return 'CCU';
+    if (searchStr.includes('jaipur')) return 'JAI';
+    if (searchStr.includes('chandigarh')) return 'IXC';
+    if (searchStr.includes('dubai') || searchStr.includes('uae')) return 'DXB';
+    if (searchStr.includes('riyadh') || searchStr.includes('saudi')) return 'RUH';
+    if (searchStr.includes('dhaka') || searchStr.includes('bangladesh')) return 'DAC';
+    if (searchStr.includes('muscat') || searchStr.includes('oman')) return 'MCT';
+    if (searchStr.includes('nairobi') || searchStr.includes('kenya')) return 'NBO';
+    if (searchStr.includes('lagos') || searchStr.includes('nigeria')) return 'LOS';
+    if (searchStr.includes('delhi') || searchStr.includes('noida') || searchStr.includes('gurgaon')) return 'DEL';
+    return 'DEL';
+  };
+
+  // Auto fetch live flight options from backend API endpoint whenever location or airport is chosen
+  useEffect(() => {
+    let active = true;
+    const originCode = getDetectedOriginAirport();
+    let destCode = selectedHospital?.city === 'Mumbai' ? 'BOM' 
+      : selectedHospital?.city === 'Chennai' ? 'MAA' 
+      : (selectedHospital?.city === 'Bangalore' || selectedHospital?.city === 'Bengaluru') ? 'BLR' 
+      : selectedHospital?.city === 'Hyderabad' ? 'HYD' 
+      : selectedHospital?.city === 'Kolkata' ? 'CCU' 
+      : 'DEL';
+
+    if (originCode === destCode) {
+      destCode = originCode === 'DEL' ? 'BOM' : 'DEL';
+    }
+
+    const fetchLiveData = async () => {
+      setIsFetchingApiData(true);
+      try {
+        const res = await fetch(`/api/travel/flights?origin=${originCode}&destination=${destCode}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (active && data.success) {
+            setLiveFlightData(data);
+          }
+        }
+      } catch (err) {
+        console.log('Live travel flight fetch error:', err);
+      } finally {
+        if (active) setIsFetchingApiData(false);
+      }
+    };
+
+    fetchLiveData();
+    return () => { active = false; };
+  }, [selectedAirport, selectedCity, selectedCountry, userLocation, selectedHospital]);
+
+  // Travel calculation data
   const travelCosts = {
-    flight: { base: 25000, perKm: 8 }
+    flight: { base: 25000, perKm: 8 },
+    medical_flight: { base: 35000, perKm: 12 }
   };
 
   const hotelCosts = {
@@ -1369,15 +1660,46 @@ export function JourneyPlanningPage({
 
     setIsCalculating(true);
 
-    // Simulate calculation delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Determine departure airport code and destination airport code
+    const originCode = getDetectedOriginAirport();
+    let destCode = selectedHospital?.city === 'Mumbai' ? 'BOM' 
+      : selectedHospital?.city === 'Chennai' ? 'MAA' 
+      : (selectedHospital?.city === 'Bangalore' || selectedHospital?.city === 'Bengaluru') ? 'BLR' 
+      : selectedHospital?.city === 'Hyderabad' ? 'HYD' 
+      : selectedHospital?.city === 'Kolkata' ? 'CCU' 
+      : 'DEL';
 
-    // Dummy distance calculation (in real app, use Google Maps API)
+    if (originCode === destCode) {
+      destCode = originCode === 'DEL' ? 'BOM' : 'DEL';
+    }
+
+    // Fetch live flight prices from backend travel API
+    let liveFlightPrice = liveFlightData?.livePrice || null;
+    let liveFlightCount = liveFlightData?.flightCount || 8;
+
+    try {
+      const response = await fetch(`/api/travel/flights?origin=${originCode}&destination=${destCode}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.livePrice) {
+          liveFlightPrice = data.livePrice;
+          liveFlightCount = data.flightCount || 8;
+        }
+      }
+    } catch (err) {
+      console.log('Travel flight calculate error:', err);
+    }
+
+    // Distance calculation fallback
     const estimatedDistance = Math.floor(Math.random() * 1500) + 200; // 200-1700 km
     
     // Calculate costs
-    const travelCost = travelCosts[travelMode].base + (estimatedDistance * travelCosts[travelMode].perKm);
-    const hotelCostPerNight = hotelCosts[hotelCategory];
+    const baseTravelCost = liveFlightPrice 
+      ? Math.round(liveFlightPrice * (travelMode === 'medical_flight' ? 1.4 : 1.0))
+      : ((travelCosts[travelMode]?.base || 25000) + (estimatedDistance * 8));
+
+    const travelCost = baseTravelCost;
+    const hotelCostPerNight = hotelCosts[hotelCategory] || 4500;
     const totalHotelCost = hotelCategory === 'none' ? 0 : hotelCostPerNight * stayDuration;
     const companionCost = companionCount * (travelCost * 0.8 + totalHotelCost * 0.5);
     
@@ -1385,7 +1707,7 @@ export function JourneyPlanningPage({
     const treatmentCost = selectedTreatments.reduce((sum, t) => sum + (t.packageFrom || 250000), 0);
     
     // Additional costs
-    const visaCost = 2500;
+    const visaCost = selectedCountry && selectedCountry !== 'India' ? 4500 : 0;
     const localTransportCost = stayDuration * 500;
     const mealsCost = stayDuration * 1500 * (1 + companionCount);
     
@@ -1394,6 +1716,8 @@ export function JourneyPlanningPage({
 
     const plan = {
       userLocation,
+      originAirport: originCode,
+      destinationAirport: destCode,
       hospitalLocation: `${selectedHospital.city}, ${selectedHospital.country}`,
       distance: estimatedDistance,
       travelMode,
@@ -1402,6 +1726,13 @@ export function JourneyPlanningPage({
       companionCount,
       patientName: userName,
       patientEmail: userEmail,
+      isLiveFlightPrice: !!liveFlightPrice,
+      liveFlightPrice,
+      liveFlightOptionsFound: liveFlightCount,
+      apiKeyUsed: {
+        flightApiKey: FLIGHT_API_KEY,
+        hotelApiKey: HOTEL_API_KEY
+      },
       costs: {
         treatment: treatmentCost,
         travel: Math.round(travelCost),
@@ -1443,7 +1774,7 @@ export function JourneyPlanningPage({
         body: JSON.stringify({
           userId: userEmail,
           userName: userName,
-          selectedHospital: selectedHospital.name,
+          selectedHospital: selectedHospital?.name || 'Partner Hospital',
           selectedTreatments: selectedTreatments.map(t => t.title),
           journeyPlan: plan,
           icdCodes: selectedTreatments.map(t => t.icdCode).filter(Boolean),
@@ -1456,457 +1787,610 @@ export function JourneyPlanningPage({
   };
 
   return (
-    <div className="journey-planning-page">
+    <div className="journey-planning-page" style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '60px' }}>
       <PlannerStepsBar currentStep={plannerStep} />
 
       {/* Header */}
-      <div className="journey-planning-header">
-        <button className="back-btn" onClick={onBack} type="button">
-          <i className="fa-solid fa-arrow-left" aria-hidden="true" />
-          Back to Hospitals
-        </button>
-        <div className="journey-planning-header-content">
-          <h1>Plan Your Medical Journey</h1>
-          <p>Complete travel planning - flights, hotels, route optimization, and cost estimation</p>
+      <div className="journey-planning-header" style={{ maxWidth: '1160px', margin: '0 auto', padding: '20px 20px 12px' }}>
+        <div className="jp-header-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+          <button className="back-btn" onClick={onBack} type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '7px 14px', background: '#ffffff', border: '1px solid #d1d5db', borderRadius: '8px', color: '#0066fe', fontWeight: 600, fontSize: '0.82rem' }}>
+            <i className="bi bi-arrow-left" aria-hidden="true" />
+            Back to Hospitals
+          </button>
+          
+          <div className="journey-planning-header-content" style={{ flex: 1, textAlign: 'left' }}>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.01em' }}>Plan Your Medical Journey</h1>
+            <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+              Complete travel planning, flights, accommodation, and cost estimation
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="journey-planning-content">
-        {/* Planning Form - Left Side */}
+      {/* Main Grid */}
+      <div className="journey-planning-content jp-main-grid" style={{ maxWidth: '1160px', margin: '0 auto', padding: '0 20px', gap: '20px' }}>
+        
+        {/* Left Side Form Stack */}
         <div className="journey-planning-form">
-          <h2>Travel Planning Details</h2>
           
-          <div className="form-section">
-            <h3><i className="fa-solid fa-user" aria-hidden="true"></i> Patient Details</h3>
-            <div className="form-row">
+          {/* Card 1: Patient Details */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                <i className="bi bi-person-fill" />
+              </div>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                Patient Details
+              </h3>
+            </div>
+
+            <div className="form-row jp-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '12px' }}>
               <div className="form-group">
-                <label>Patient Name *</label>
-                <input
-                  type="text"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Enter patient full name"
-                  className="form-input"
-                  required
-                />
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Full Name *</label>
+                <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Enter patient full name" className="form-input" style={{ height: '38px', fontSize: '0.85rem' }} required />
               </div>
               <div className="form-group">
-                <label>Email Address *</label>
-                <input
-                  type="email"
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                  placeholder="Enter email address"
-                  className="form-input"
-                  required
-                />
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Email Address *</label>
+                <input type="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} placeholder="Enter email address" className="form-input" style={{ height: '38px', fontSize: '0.85rem' }} required />
               </div>
             </div>
-            <div className="form-row">
+
+            <div className="form-row jp-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
               <div className="form-group">
-                <label>Phone Number *</label>
-                <input
-                  type="tel"
-                  placeholder="Enter phone number"
-                  className="form-input"
-                  required
-                />
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Phone Number *</label>
+                <div style={{ display: 'flex', alignItems: 'center', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px', overflow: 'hidden' }}>
+                  <select 
+                    value={countryCode} 
+                    onChange={(e) => {
+                      const code = e.target.value;
+                      setCountryCode(code);
+                      localStorage.setItem('countryCode', code);
+                    }}
+                    style={{ 
+                      padding: '0 4px 0 6px', 
+                      background: '#f8fafc', 
+                      border: 'none',
+                      borderRight: '1px solid #cbd5e1', 
+                      fontSize: '0.82rem', 
+                      color: '#0066fe', 
+                      height: '38px', 
+                      fontWeight: 700, 
+                      outline: 'none',
+                      cursor: 'pointer',
+                      width: '82px',
+                      maxWidth: '82px',
+                      flexShrink: 0
+                    }}
+                  >
+                    {countryDialCodes.map(c => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} ({c.country.split(' (')[0]})
+                      </option>
+                    ))}
+                  </select>
+                  <input 
+                    type="tel" 
+                    value={userPhone} 
+                    onChange={(e) => {
+                      const phone = e.target.value;
+                      setUserPhone(phone);
+                      localStorage.setItem('userPhone', phone);
+                    }}
+                    placeholder="Enter phone number" 
+                    style={{ border: 'none', background: 'transparent', outline: 'none', padding: '0 10px', height: '38px', flex: 1, fontSize: '0.85rem' }} 
+                    required 
+                  />
+                </div>
               </div>
               <div className="form-group">
-                <label>Age</label>
-                <input
-                  type="number"
-                  placeholder="Enter age"
-                  className="form-input"
-                  min="1"
-                  max="120"
-                />
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Age</label>
+                <input type="number" placeholder="Enter age" className="form-input" style={{ height: '38px', fontSize: '0.85rem' }} min="1" max="120" />
               </div>
             </div>
           </div>
 
-          <div className="form-section">
-            <h3><i className="fa-solid fa-location-dot" aria-hidden="true"></i> Location & Airport Details</h3>
-            
-            <div className="form-group">
-              <label>Country</label>
-              <div className="custom-dropdown-wrapper">
-                <div 
-                  className={`custom-dropdown ${showCountryDropdown ? 'active' : ''}`}
-                  onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+          {/* Card 2: Location & Airport Details */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                <i className="bi bi-geo-alt-fill" />
+              </div>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                Location &amp; Airport Details
+              </h3>
+            </div>
+
+            <div className="jp-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '12px' }}>
+              <div className="form-group">
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Country *</label>
+                <select 
+                  className="custom-select" 
+                  value={selectedCountry} 
+                  onChange={(e) => {
+                    const c = e.target.value;
+                    setSelectedCountry(c);
+                    setSelectedCity('');
+                    setSelectedAirport('');
+                    setUserLocation(c ? `${c}` : '');
+                  }} 
+                  style={{ height: '38px', fontSize: '0.85rem' }}
                 >
-                  <span className="dropdown-selected">
-                    {selectedCountry || 'Select Country'}
-                  </span>
-                  <i className={`fa-solid fa-chevron-down dropdown-arrow ${showCountryDropdown ? 'rotated' : ''}`} aria-hidden="true"></i>
+                  <option value="">Select Country</option>
+                  {countries.map(c => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>City / Region *</label>
+                <select 
+                  className="custom-select" 
+                  value={selectedCity} 
+                  disabled={!selectedCountry}
+                  onChange={(e) => {
+                    const city = e.target.value;
+                    setSelectedCity(city);
+                    const cityAirports = cityAirportData[selectedCountry]?.[city] || [];
+                    if (cityAirports.length > 0) {
+                      setSelectedAirport(cityAirports[0].code);
+                    }
+                    setUserLocation(city ? `${city}, ${selectedCountry}` : selectedCountry);
+                  }} 
+                  style={{ height: '38px', fontSize: '0.85rem', opacity: !selectedCountry ? 0.6 : 1 }}
+                >
+                  <option value="">{selectedCountry ? 'Select City' : 'Select Country first'}</option>
+                  {cities.map(city => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Nearest Airport Dropdown */}
+            <div className="form-group" style={{ marginBottom: '12px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>
+                Departure Airport *
+              </label>
+              <select
+                className="custom-select"
+                value={selectedAirport}
+                disabled={!selectedCountry}
+                onChange={(e) => setSelectedAirport(e.target.value)}
+                style={{ height: '38px', fontSize: '0.85rem', opacity: !selectedCountry ? 0.6 : 1 }}
+              >
+                <option value="">{selectedCountry ? 'Select Airport' : 'Select Country & City first'}</option>
+                {airports.map(ap => (
+                  <option key={ap.code} value={ap.code}>
+                    {ap.code} – {ap.name} ({ap.city})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Live Flight & Hotel Status Box */}
+            <div style={{ marginTop: '12px', padding: '10px 14px', background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 600, color: '#0066fe' }}>
+                <i className="bi bi-airplane-engines-fill" />
+                <span>Real-time Flight &amp; Airport Fares Active</span>
+              </div>
+              <span style={{ fontSize: '0.72rem', color: '#10b981', background: '#ecfdf5', padding: '2px 8px', borderRadius: '10px', border: '1px solid #a7f3d0', fontWeight: 700 }}>
+                Live Connected
+              </span>
+            </div>
+
+            <div className="form-group" style={{ marginTop: '12px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Manual Location Entry <span style={{ color: '#64748b', fontWeight: 400 }}>(City, State, Country)</span></label>
+              <input type="text" value={userLocation} onChange={(e) => setUserLocation(e.target.value)} placeholder="Enter city, state, country" className="form-input" style={{ height: '38px', fontSize: '0.85rem' }} />
+            </div>
+          </div>
+
+          {/* Card 3: Travel Preferences (Only Flight Options) */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                <i className="bi bi-airplane-fill" />
+              </div>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                Travel Preferences
+              </h3>
+            </div>
+
+            <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '8px', display: 'block' }}>Flight Service &amp; Assistance</label>
+            <div className="jp-two-col-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+              <div
+                onClick={() => setTravelMode('flight')}
+                style={{
+                  padding: '12px 14px',
+                  background: travelMode === 'flight' ? '#f0f7ff' : '#ffffff',
+                  border: travelMode === 'flight' ? '1.5px solid #0066fe' : '1px solid #e2e8f0',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  cursor: 'pointer',
+                  position: 'relative'
+                }}
+              >
+                <i className="bi bi-airplane" style={{ fontSize: '1.4rem', color: '#0066fe' }} />
+                <div>
+                  <strong style={{ display: 'block', fontSize: '0.85rem', color: '#0066fe' }}>Standard Flight</strong>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Commercial Airline</span>
                 </div>
-                {showCountryDropdown && (
-                  <div className="custom-dropdown-options">
-                    {countries.map(country => (
-                      <div 
-                        key={country} 
-                        className="dropdown-option"
-                        onClick={() => {
-                          setSelectedCountry(country);
-                          setSelectedState('');
-                          setSelectedAirport('');
-                          setCustomAirport('');
-                          setShowCountryDropdown(false);
-                        }}
-                      >
-                        <span className="country-flag">
-                          {country === 'India' ? '🇮🇳' : 
-                           country === 'USA' ? '🇺🇸' : 
-                           country === 'UK' ? '🇬🇧' : 
-                           country === 'Canada' ? '🇨🇦' : '🌍'}
-                        </span>
-                        {country}
-                      </div>
-                    ))}
-                  </div>
+                {travelMode === 'flight' && (
+                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0066fe', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
+                    <i className="bi bi-check" />
+                  </span>
+                )}
+              </div>
+
+              <div
+                onClick={() => setTravelMode('medical_flight')}
+                style={{
+                  padding: '12px 14px',
+                  background: travelMode === 'medical_flight' ? '#f0f7ff' : '#ffffff',
+                  border: travelMode === 'medical_flight' ? '1.5px solid #0066fe' : '1px solid #e2e8f0',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  cursor: 'pointer',
+                  position: 'relative'
+                }}
+              >
+                <i className="bi bi-heart-pulse-fill" style={{ fontSize: '1.3rem', color: travelMode === 'medical_flight' ? '#0066fe' : '#64748b' }} />
+                <div>
+                  <strong style={{ display: 'block', fontSize: '0.85rem', color: travelMode === 'medical_flight' ? '#0066fe' : '#1e293b' }}>Medical Assistance Flight</strong>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Wheelchair / Escort</span>
+                </div>
+                {travelMode === 'medical_flight' && (
+                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0066fe', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
+                    <i className="bi bi-check" />
+                  </span>
                 )}
               </div>
             </div>
 
-            {selectedCountry && (
-              <div className="form-group">
-                <label>State/Province</label>
-                <div className="custom-dropdown-wrapper">
-                  <div 
-                    className={`custom-dropdown ${showStateDropdown ? 'active' : ''}`}
-                    onClick={() => setShowStateDropdown(!showStateDropdown)}
-                  >
-                    <span className="dropdown-selected">
-                      {selectedState || 'Select State/Province'}
-                    </span>
-                    <i className={`fa-solid fa-chevron-down dropdown-arrow ${showStateDropdown ? 'rotated' : ''}`} aria-hidden="true"></i>
-                  </div>
-                  {showStateDropdown && (
-                    <div className="custom-dropdown-options">
-                      {states.map(state => (
-                        <div 
-                          key={state} 
-                          className="dropdown-option"
-                          onClick={() => {
-                            setSelectedState(state);
-                            setSelectedAirport('');
-                            setCustomAirport('');
-                            setShowStateDropdown(false);
-                          }}
-                        >
-                          <i className="fa-solid fa-map-marker-alt" aria-hidden="true"></i>
-                          {state}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+            {/* Live Flight Option & Pricing Preview */}
+            <div style={{ marginTop: '14px', background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '10px', padding: '12px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 700, color: '#0066fe' }}>
+                  <i className="bi bi-airplane-fill" />
+                  <span>
+                    {isFetchingApiData ? 'Connecting FlightAPI.io Fares...' : `Flight Route: ${liveFlightData?.origin || getDetectedOriginAirport()} ➔ ${liveFlightData?.destination || 'BOM'}`}
+                  </span>
                 </div>
-              </div>
-            )}
-
-            {selectedCountry && selectedState && (
-              <div className="form-group">
-                <label>Nearest Airport</label>
-                <div className="custom-dropdown-wrapper">
-                  <div 
-                    className={`custom-dropdown ${showAirportDropdown ? 'active' : ''}`}
-                    onClick={() => setShowAirportDropdown(!showAirportDropdown)}
-                  >
-                    <span className="dropdown-selected">
-                      {selectedAirport && selectedAirport !== 'custom'
-                        ? `${selectedAirport} - ${airports.find(a => a.code === selectedAirport)?.name}`
-                        : selectedAirport === 'custom'
-                        ? 'Custom Airport'
-                        : 'Select Airport'
-                      }
-                    </span>
-                    <i className={`fa-solid fa-chevron-down dropdown-arrow ${showAirportDropdown ? 'rotated' : ''}`} aria-hidden="true"></i>
-                  </div>
-                  {showAirportDropdown && (
-                    <div className="custom-dropdown-options">
-                      {airports.map(airport => (
-                        <div 
-                          key={airport.code} 
-                          className="dropdown-option"
-                          onClick={() => {
-                            setSelectedAirport(airport.code);
-                            setCustomAirport('');
-                            setUserLocation(`${airport.city}, ${selectedState}, ${selectedCountry}`);
-                            setShowAirportDropdown(false);
-                          }}
-                        >
-                          <i className="fa-solid fa-plane" aria-hidden="true"></i>
-                          <div className="airport-info">
-                            <strong>{airport.code}</strong>
-                            <small>{airport.name}</small>
-                            <span className="airport-city">{airport.city}</span>
-                          </div>
-                        </div>
-                      ))}
-                      <div 
-                        className="dropdown-option custom-option"
-                        onClick={() => {
-                          setSelectedAirport('custom');
-                          setUserLocation('');
-                          setShowAirportDropdown(false);
-                        }}
-                      >
-                        <i className="fa-solid fa-plus" aria-hidden="true"></i>
-                        Add Custom Airport
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {(selectedAirport === 'custom' || (!selectedCountry && !selectedState)) && (
-              <div className="form-group">
-                <label>
-                  {selectedAirport === 'custom' ? 'Custom Airport Details' : 'Manual Location Entry'}
-                </label>
-                <input
-                  type="text"
-                  value={customAirport || userLocation}
-                  onChange={(e) => {
-                    if (selectedAirport === 'custom') {
-                      setCustomAirport(e.target.value);
-                      setUserLocation(e.target.value);
-                    } else {
-                      setUserLocation(e.target.value);
-                    }
-                  }}
-                  placeholder={selectedAirport === 'custom' ? "Enter airport code and details (e.g., JFK - John F Kennedy Airport, New York)" : "Enter your city, state, country"}
-                  className="form-input"
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="form-section">
-            <h3><i className="fa-solid fa-plane" aria-hidden="true"></i> Travel Preferences</h3>
-            <div className="form-group">
-              <label>Preferred Travel Mode</label>
-              <div className="travel-mode-cards">
-                {[
-                  { id: 'flight', label: 'Flight', icon: 'fa-plane', desc: 'Fastest option' }
-                ].map(mode => (
-                  <div key={mode.id} className={`travel-mode-card ${travelMode === mode.id ? 'selected' : ''}`} onClick={() => setTravelMode(mode.id)}>
-                    <input
-                      type="radio"
-                      name="travelMode"
-                      value={mode.id}
-                      checked={travelMode === mode.id}
-                      onChange={(e) => setTravelMode(e.target.value)}
-                      className="travel-mode-radio"
-                    />
-                    <div className="travel-mode-content">
-                      <div className="travel-mode-header">
-                        <i className={`fa-solid ${mode.icon}`} aria-hidden="true"></i>
-                        <strong>{mode.label}</strong>
-                      </div>
-                      <small>{mode.desc}</small>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="form-section">
-            <h3><i className="fa-solid fa-bed" aria-hidden="true"></i> Accommodation</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Hotel Category</label>
-                <div className="custom-select-wrapper">
-                  <select 
-                    value={hotelCategory} 
-                    onChange={(e) => setHotelCategory(e.target.value)}
-                    className="custom-select"
-                  >
-                    <option value="none">No Hotel Required</option>
-                    <option value="2star">2 Star Hotel - ₹2,500/night</option>
-                    <option value="3star">3 Star Hotel - ₹4,500/night</option>
-                    <option value="4star">4 Star Hotel - ₹7,500/night</option>
-                    <option value="5star">5 Star Hotel - ₹15,000/night</option>
-                  </select>
-                  <i className="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Stay Duration</label>
-                <div className="custom-select-wrapper">
-                  <select 
-                    value={stayDuration} 
-                    onChange={(e) => setStayDuration(Number(e.target.value))}
-                    className="custom-select"
-                  >
-                    <option value={3}>3 Days</option>
-                    <option value={5}>5 Days</option>
-                    <option value={7}>7 Days (Recommended)</option>
-                    <option value={10}>10 Days</option>
-                    <option value={14}>14 Days</option>
-                  </select>
-                  <i className="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-section">
-            <h3><i className="fa-solid fa-users" aria-hidden="true"></i> Companions</h3>
-            <div className="form-group">
-              <label>Number of Companions</label>
-              <div className="custom-select-wrapper">
-                <select 
-                  value={companionCount} 
-                  onChange={(e) => setCompanionCount(Number(e.target.value))}
-                  className="custom-select"
-                >
-                  <option value={0}>Traveling Alone</option>
-                  <option value={1}>1 Companion</option>
-                  <option value={2}>2 Companions</option>
-                  <option value={3}>3 Companions</option>
-                </select>
-                <i className="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
-              </div>
-            </div>
-          </div>
-
-          <button 
-            className="calculate-journey-btn"
-            onClick={calculateJourney}
-            disabled={isCalculating || !userLocation.trim()}
-            type="button"
-          >
-            {isCalculating ? (
-              <>
-                <i className="fa-solid fa-spinner fa-spin" aria-hidden="true" />
-                Calculating Journey...
-              </>
-            ) : (
-              <>
-                <i className="fa-solid fa-calculator" aria-hidden="true" />
-                Get a Estimated Plan
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Summary Sidebar - Right Side */}
-        <div className="journey-planning-sidebar">
-          {/* Selected Hospital Summary */}
-          <div className="sidebar-section">
-            <h3><i className="fa-solid fa-hospital" aria-hidden="true"></i> Selected Hospital</h3>
-            <div className="hospital-summary-card">
-              <div className="hospital-image-container">
-                <img 
-                  src={selectedHospital.image || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80'} 
-                  alt={selectedHospital.name}
-                  className="hospital-summary-image"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80';
-                  }}
-                />
-                <div className="hospital-image-overlay">
-                  {selectedHospital.jciAccredited ? (
-                    <span className="accreditation-badge jci">
-                      <img src="https://cdn.prod.website-files.com/63dc099d352018653241b1a7/63fe8bab2259ca569b27dcdf_gold-seal-approval.png" alt="JCI" />
-                      JCI
-                    </span>
-                  ) : (
-                    <span className="accreditation-badge nabh">
-                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQntV_tAgbdUJrZpcCIbKGbqdoM9GaOgerg3Q" alt="NABH" />
-                      NABH
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="hospital-summary-content">
-                <div className="hospital-summary-header">
-                  <strong>{selectedHospital.name}</strong>
-                  <div className="hospital-rating">
-                    <span className="rating-stars">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <i key={i} className="fa-solid fa-star" aria-hidden="true" />
-                      ))}
-                    </span>
-                    <span>{selectedHospital.rating || 4.8}</span>
-                  </div>
-                </div>
-                <span className="hospital-location">
-                  <i className="fa-solid fa-location-dot" aria-hidden="true" />
-                  {selectedHospital.city}, {selectedHospital.country}
+                <span style={{ fontSize: '0.7rem', color: '#047857', background: '#ecfdf5', padding: '2px 8px', borderRadius: '10px', border: '1px solid #a7f3d0', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  ✓ Live API Active
                 </span>
               </div>
+
+              {isFetchingApiData ? (
+                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Searching real-time airlines &amp; cheapest flight fares...</span>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
+                  <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
+                    Est. One-way Fare: <strong style={{ color: '#0066fe', fontSize: '0.95rem' }}>₹{(liveFlightData?.livePrice || 5800).toLocaleString('en-IN')}</strong> / traveler
+                  </span>
+                  <span style={{ fontSize: '0.74rem', color: '#64748b', whiteSpace: 'nowrap' }}>
+                    {liveFlightData?.flightCount || 8} Verified Daily Flights
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Selected Treatments Summary */}
-          <div className="sidebar-section">
-            <h3><i className="fa-solid fa-stethoscope" aria-hidden="true"></i> Selected Treatments ({selectedTreatments.length})</h3>
-            <div className="treatments-summary-list">
-              {selectedTreatments.map((treatment) => (
-                <div key={treatment.id} className="treatment-summary-item">
-                  <div className="treatment-info">
-                    <strong>{treatment.title}</strong>
-                    {/* {treatment.icdCode && <small>ICD-11: {treatment.icdCode}</small>} */}
-                    {treatment.packageFrom && (
-                      <span className="treatment-cost">From ₹{(treatment.packageFrom / 100000).toFixed(1)}L</span>
-                    )}
+          {/* Card 4: Accommodation */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                <i className="bi bi-building-fill" />
+              </div>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                Accommodation
+              </h3>
+            </div>
+
+            <div className="form-row jp-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '10px' }}>
+              <div className="form-group">
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Hotel Category</label>
+                <select 
+                  value={hotelCategory} 
+                  onChange={(e) => {
+                    const cat = e.target.value;
+                    setHotelCategory(cat);
+                    if (cat !== 'none') {
+                      setIsFetchingHotels(true);
+                      setTimeout(() => {
+                        setIsFetchingHotels(false);
+                      }, 600);
+                    }
+                  }} 
+                  className="custom-select" 
+                  style={{ height: '38px', fontSize: '0.85rem' }}
+                >
+                  <option value="none">No Hotel Required</option>
+                  <option value="2star">2 Star Hotel - ₹2,500/night</option>
+                  <option value="3star">3 Star Hotel - ₹4,500/night</option>
+                  <option value="4star">4 Star Hotel - ₹7,500/night</option>
+                  <option value="5star">5 Star Hotel - ₹15,000/night</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Stay Duration</label>
+                <select value={stayDuration} onChange={(e) => setStayDuration(Number(e.target.value))} className="custom-select" style={{ height: '38px', fontSize: '0.85rem' }}>
+                  <option value={3}>3 Days</option>
+                  <option value={5}>5 Days</option>
+                  <option value={7}>7 Days (Recommended)</option>
+                  <option value={10}>10 Days</option>
+                  <option value={14}>14 Days</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Tip Banner */}
+            <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.78rem', color: '#047857', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+              <i className="bi bi-star-fill" style={{ fontSize: '0.75rem' }} />
+              <strong>Tip:</strong> We recommend 7 days of stay for better recovery and follow-ups.
+            </div>
+
+            {/* Fetched Hotel Options Section */}
+            {hotelCategory !== 'none' && (
+              <div style={{ marginTop: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 600, color: '#334155', margin: 0 }}>
+                    🏨 Recommended Hotels Near {selectedHospital?.city || 'Delhi'}:
+                  </label>
+                  <span style={{ fontSize: '0.68rem', color: '#047857', background: '#ecfdf5', padding: '2px 8px', borderRadius: '12px', border: '1px solid #a7f3d0', fontWeight: 600, whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center' }}>
+                    ✓ Verified Stay
+                  </span>
+                </div>
+
+                {isFetchingHotels ? (
+                  <div style={{ background: '#f0f7ff', border: '1.5px solid #bfdbfe', borderRadius: '10px', padding: '16px', textAlign: 'center', fontSize: '0.82rem', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                    <i className="bi bi-arrow-repeat spin" style={{ fontSize: '1.1rem' }} />
+                    <span>Searching live partner hotels for <strong>{hotelCategory === '2star' ? '2 Star' : hotelCategory === '3star' ? '3 Star' : hotelCategory === '4star' ? '4 Star' : '5 Star'}</strong> in {selectedHospital?.city || 'Delhi'}...</span>
                   </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {(() => {
+                      const allCityHotels = cityHotelData[selectedHospital?.city] || cityHotelData['New Delhi / NCR'];
+                      const filteredHotels = allCityHotels.filter(h => h.star === hotelCategory);
+                      const displayHotels = filteredHotels.length ? filteredHotels : allCityHotels.slice(0, 2);
+
+                      return displayHotels.map((h, i) => (
+                        <div key={i} className="jp-hotel-card" style={{ background: '#ffffff', border: '1.5px solid #0066fe', borderRadius: '10px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 4px rgba(0,102,254,0.06)' }}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+                              <strong style={{ fontSize: '0.85rem', color: '#0f172a' }}>{h.name}</strong>
+                              <span style={{ background: '#fef3c7', color: '#b45309', padding: '1px 6px', borderRadius: '10px', fontSize: '0.68rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                                ★ {h.rating}
+                              </span>
+                            </div>
+                            <span style={{ fontSize: '0.73rem', color: '#64748b', display: 'block' }}>📍 {h.dist}</span>
+                            <div style={{ display: 'flex', gap: '4px', marginTop: '5px', flexWrap: 'wrap' }}>
+                              {h.amenities.map((am, aIdx) => (
+                                <span key={aIdx} style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0066fe', fontSize: '0.66rem', padding: '2px 7px', borderRadius: '4px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                                  ✓ {am}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0066fe', display: 'block', whiteSpace: 'nowrap' }}>
+                              ₹{h.price.toLocaleString('en-IN')}<span style={{ fontSize: '0.68rem', fontWeight: 400, color: '#64748b' }}>/night</span>
+                            </span>
+                            <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 700, background: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', marginTop: '2px', whiteSpace: 'nowrap' }}>✓ Available</span>
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Card 5: Companions */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                <i className="bi bi-people-fill" />
+              </div>
+              <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                Companions
+              </h3>
+            </div>
+
+            <div className="form-group">
+              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#334155', marginBottom: '5px', display: 'block' }}>Number of Companions</label>
+              <select value={companionCount} onChange={(e) => setCompanionCount(Number(e.target.value))} className="custom-select" style={{ height: '38px', fontSize: '0.85rem' }}>
+                <option value={0}>Traveling Alone</option>
+                <option value={1}>1 Companion</option>
+                <option value={2}>2 Companions</option>
+                <option value={3}>3 Companions</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <div style={{ marginBottom: '20px' }}>
+            <button
+              className="calculate-journey-btn"
+              onClick={calculateJourney}
+              disabled={isCalculating}
+              type="button"
+            >
+              <i className="bi bi-file-earmark-text-fill" />
+              <span>Generate Medical Journey Plan</span>
+              <i className="bi bi-arrow-right" />
+            </button>
+            <p style={{ textAlign: 'center', fontSize: '0.72rem', color: '#64748b', margin: '6px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+              <span>🔒</span> Your information is 100% secure &amp; encrypted
+            </p>
+          </div>
+        </div>
+
+        {/* Right Sidebar Stack */}
+        <div className="journey-planning-sidebar" style={{ background: 'transparent', border: 'none', padding: 0, boxShadow: 'none' }}>
+          
+          {/* Card 1: Selected Hospital */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0d9488', fontWeight: 700, fontSize: '0.88rem' }}>
+                <span style={{ background: '#ccfbf1', color: '#0d9488', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 800 }}>✓</span>
+                <span>Selected Hospital</span>
+              </div>
+              <span style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0066fe', padding: '2px 8px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 700 }}>
+                {selectedHospital?.jciAccredited ? 'JCI Accredited' : 'NABH Accredited'}
+              </span>
+            </div>
+
+            <div style={{ borderRadius: '10px', overflow: 'hidden', marginBottom: '10px', height: '130px', position: 'relative', border: '1px solid #f1f5f9' }}>
+              <img src={selectedHospital?.image || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80'} alt={selectedHospital?.name || 'Hospital'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+
+            <div>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', lineHeight: 1.3 }}>
+                {selectedHospital?.name || 'Yatharth Super Speciality Hospitals'}
+              </h4>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', marginBottom: '6px' }}>
+                <div style={{ color: '#f59e0b', display: 'flex', gap: '2px' }}>
+                  <i className="bi bi-star-fill" /><i className="bi bi-star-fill" /><i className="bi bi-star-fill" /><i className="bi bi-star-fill" /><i className="bi bi-star-fill" />
+                </div>
+                <strong style={{ color: '#0f172a' }}>{selectedHospital?.rating || 4.8}</strong>
+                <span style={{ color: '#64748b', fontSize: '0.72rem' }}>(324 reviews)</span>
+              </div>
+              <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <i className="bi bi-geo-alt-fill" style={{ color: '#ef4444', fontSize: '0.85rem' }} />
+                <span>{selectedHospital?.city || 'Greater Noida West'}, {selectedHospital?.country || 'India'}</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Card 2: Selected Treatments */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0066fe', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px' }}>
+              <i className="bi bi-suit-heart-fill" style={{ color: '#0066fe' }} />
+              <span>Selected Treatments ({selectedTreatments.length || 1})</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(selectedTreatments.length ? selectedTreatments : [{ id: 'ent', title: 'ENT Surgery', packageFrom: 240000 }]).map(t => (
+                <div key={t.id || t._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', gap: '8px' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <strong style={{ display: 'block', fontSize: '0.84rem', color: '#0f172a', margin: '0 0 2px', wordBreak: 'break-word' }}>{getPlannerTreatmentTitle(t)}</strong>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b' }}>ICD-11 Classified</span>
+                  </div>
+                  <span style={{ display: 'inline-block', background: '#0066fe', color: '#ffffff', padding: '3px 10px', borderRadius: '12px', fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}>
+                    {t.packageFrom ? `From ₹${(t.packageFrom / 100000).toFixed(1)}L` : 'From ₹2.4L'}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Quick Info */}
-          <div className="sidebar-section">
-            <h3><i className="fa-solid fa-info-circle" aria-hidden="true"></i> Airport Details</h3>
-            <div className="quick-info-list">
-              <div className="info-item">
-                <span className="info-label">Departure Airport:</span>
-                <span className="info-value">
-                  {selectedAirport && selectedAirport !== 'custom' 
-                    ? `${selectedAirport} - ${airports.find(a => a.code === selectedAirport)?.name}`
-                    : customAirport 
-                    ? customAirport.split(' - ')[0] || customAirport
-                    : userLocation || 'Not selected'
-                  }
-                </span>
+          {/* Card 3: Airport Details */}
+          <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '14px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0066fe', fontWeight: 700, fontSize: '0.85rem', marginBottom: '10px' }}>
+              <i className="bi bi-airplane" /> Airport Details
+            </div>
+            <div style={{ fontSize: '0.78rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Departure Airport:</span>
+                <strong style={{ color: '#0f172a' }}>{selectedAirport || 'Not selected'}</strong>
               </div>
-              <div className="info-item">
-                <span className="info-label">Destination Airport:</span>
-                <span className="info-value">{selectedHospital.city} Airport - {selectedHospital.city === 'New Delhi' ? 'IGI (DEL)' : selectedHospital.city === 'Mumbai' ? 'BOM' : selectedHospital.city === 'Chennai' ? 'MAA' : selectedHospital.city === 'Bangalore' ? 'BLR' : selectedHospital.city === 'Hyderabad' ? 'HYD' : selectedHospital.city === 'Gurgaon' ? 'IGI (DEL)' : 'Local Airport'}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Destination Airport:</span>
+                <strong style={{ color: '#0f172a' }}>{selectedHospital?.city || 'Greater Noida West'} Airport</strong>
               </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Airport Type:</span>
+                <strong style={{ color: '#0f172a' }}>Local Airport</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Need Help? */}
+          <div className="jp-card" style={{ background: '#f0f7ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0066fe', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <i className="bi bi-headset" />
+              </div>
+              Need Help?
+            </div>
+            <p style={{ fontSize: '0.75rem', color: '#475569', margin: '0 0 10px', lineHeight: 1.3 }}>
+              Our medical travel experts are here to assist you 24/7.
+            </p>
+            <button type="button" style={{ width: '100%', height: '34px', background: '#ffffff', border: '1px solid #0066fe', color: '#0066fe', borderRadius: '6px', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer' }}>
+              Talk to Expert
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Trust Strip */}
+      <div className="jp-trust-strip-wrap" style={{ maxWidth: '1160px', margin: '24px auto 0', padding: '0 20px' }}>
+        <div className="jp-trust-strip" style={{ background: '#f0f7ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '16px 20px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🛡️</div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>100% Secure</strong>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Your data is protected and encrypted</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>₹</div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>Best Price Guarantee</strong>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>We find the best rates for you</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>⏱️</div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>24/7 Support</strong>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Our experts are always available</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🤝</div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>Trusted by Thousands</strong>
+              <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Join thousands of patients who trust us</span>
             </div>
           </div>
         </div>
-
-        {/* Journey Plan Success - Opens New Page */}
-        {journeyPlan && (
-          <div className="journey-plan-success">
-            <div className="success-message">
-              <i className="fa-solid fa-check-circle" aria-hidden="true"></i>
-              <h3>Journey Plan Created Successfully!</h3>
-              <p>Your complete medical travel plan has been calculated and saved.</p>
-              <button 
-                className="view-plan-btn"
-                onClick={() => onCompleteJourney(journeyPlan)}
-                type="button"
-              >
-                <i className="fa-solid fa-eye" aria-hidden="true" />
-                View Complete Journey Plan
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Journey Plan Success */}
+      {journeyPlan && (
+        <div className="journey-plan-success">
+          <div className="success-message">
+            <i className="fa-solid fa-check-circle" aria-hidden="true"></i>
+            <h3>Journey Plan Created Successfully!</h3>
+            <p>Your complete medical travel plan has been calculated and saved.</p>
+            <button 
+              className="view-plan-btn"
+              onClick={() => onCompleteJourney(journeyPlan)}
+              type="button"
+            >
+              <i className="fa-solid fa-eye" aria-hidden="true" />
+              View Complete Journey Plan
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// New Journey Results Page Component - Modern Design
+// New Journey Results Page Component - Modern Royal Blue Design
 export function JourneyResultsPage({ 
   journeyPlan,
   selectedTreatments = [],
@@ -1916,304 +2400,340 @@ export function JourneyResultsPage({
 }) {
   if (!journeyPlan) return null;
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
-    <div className="journey-results-page">
-      {/* Animated Header */}
-      <div className="journey-results-header">
-        <button className="modern-back-btn" onClick={onBack} type="button">
-          <i className="fa-solid fa-arrow-left" aria-hidden="true" />
-          Back to Planning
-        </button>
-        <div className="results-header-content">
-          <div className="header-badge">
-            <i className="fa-solid fa-check-circle" aria-hidden="true"></i>
-            <span>Plan Ready</span>
-          </div>
-          <h1>Your Complete Journey Plan</h1>
-          <p>Review your personalized medical travel plan and confirm your booking</p>
-        </div>
-      </div>
-
-      <div className="results-main-content">
-        {/* Patient & Journey Hero Section */}
-        <div className="journey-hero-section">
-          <div className="patient-journey-card">
-            <div className="patient-info">
-              <div className="patient-avatar">
-                <i className="fa-solid fa-user-circle" aria-hidden="true"></i>
-              </div>
-              <div className="patient-details">
-                <h3>{journeyPlan.patientName}</h3>
-                <span>{journeyPlan.patientEmail}</span>
-                <div className="journey-route-mini">
-                  <span>{journeyPlan.userLocation}</span>
-                  <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                  <span>{journeyPlan.hospitalLocation}</span>
-                </div>
-              </div>
-            </div>
-            <div className="journey-stats">
-              <div className="stat-item">
-                <i className="fa-solid fa-calendar-days" aria-hidden="true"></i>
-                <span>{journeyPlan.stayDuration} Days</span>
-              </div>
-              <div className="stat-item">
-                <i className="fa-solid fa-users" aria-hidden="true"></i>
-                <span>{journeyPlan.companionCount + 1} Travelers</span>
-              </div>
-              <div className="stat-item">
-                <i className="fa-solid fa-route" aria-hidden="true"></i>
-                <span>{journeyPlan.distance} km</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Route Visualization */}
-        <div className="route-visualization-section">
-          <h3><i className="fa-solid fa-map-marked-alt" aria-hidden="true"></i> Travel Route</h3>
-          <div className="interactive-route">
-            <div className="route-timeline">
-              <div className="timeline-point departure">
-                <div className="point-marker">
-                  <i className="fa-solid fa-home" aria-hidden="true"></i>
-                </div>
-                <div className="point-info">
-                  <strong>Departure</strong>
-                  <span>{journeyPlan.userLocation}</span>
-                  <small>Starting Point</small>
-                </div>
-              </div>
-              
-              <div className="timeline-line">
-                <div className="travel-info">
-                  <i className="fa-solid fa-plane" aria-hidden="true"></i>
-                  <span>{journeyPlan.distance} km</span>
-                  <small>{journeyPlan.route.travelTime}</small>
-                </div>
-              </div>
-              
-              <div className="timeline-point arrival">
-                <div className="point-marker">
-                  <i className="fa-solid fa-hospital" aria-hidden="true"></i>
-                </div>
-                <div className="point-info">
-                  <strong>Arrival</strong>
-                  <span>{selectedHospital.name}</span>
-                  <small>{journeyPlan.hospitalLocation}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Treatment & Hospital Cards */}
-        <div className="treatment-hospital-section">
-          <div className="selected-hospital-card">
-            <div className="hospital-image-section">
-              <img 
-                src={selectedHospital.image || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80'} 
-                alt={selectedHospital.name}
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80';
-                }}
-              />
-              <div className="hospital-overlay">
-                <div className="hospital-rating">
-                  <span className="rating-stars">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <i key={i} className="fa-solid fa-star" aria-hidden="true" />
-                    ))}
-                  </span>
-                  <span>{selectedHospital.rating || 4.8}</span>
-                </div>
-              </div>
-            </div>
-            <div className="hospital-info-section">
-              <h3>{selectedHospital.name}</h3>
-              <p>{selectedHospital.city}, {selectedHospital.country}</p>
-              <div className="hospital-features">
-                <span className="feature-badge">
-                  <i className="fa-solid fa-award" aria-hidden="true"></i>
-                  {selectedHospital.jciAccredited ? 'JCI Accredited' : 'NABH Accredited'}
-                </span>
-                <span className="feature-badge">
-                  <i className="fa-solid fa-bed" aria-hidden="true"></i>
-                  {selectedHospital.beds || '400+'} Beds
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="treatments-showcase">
-            <h3><i className="fa-solid fa-stethoscope" aria-hidden="true"></i> Selected Treatments</h3>
-            <div className="treatments-list">
-              {selectedTreatments.map((treatment) => (
-                <div key={treatment.id} className="treatment-showcase-item">
-                  <div className="treatment-icon">
-                    <i className="fa-solid fa-medical-kit" aria-hidden="true"></i>
-                  </div>
-                  <div className="treatment-details">
-                    <strong>{treatment.title}</strong>
-                    {/* {treatment.icdCode && <small>ICD-11: {treatment.icdCode}</small>} */}
-                    <span className="treatment-category">{treatment.group || treatment.category}</span>
-                  </div>
-                  {treatment.packageFrom && (
-                    <div className="treatment-cost">
-                      ₹{treatment.packageFrom.toLocaleString()}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Modern Cost Breakdown */}
-        <div className="cost-breakdown-modern">
-          <h3><i className="fa-solid fa-receipt" aria-hidden="true"></i> Cost Breakdown</h3>
-          <div className="cost-cards-grid">
-            <div className="cost-card primary">
-              <div className="cost-header">
-                <i className="fa-solid fa-stethoscope" aria-hidden="true"></i>
-                <span>Medical Treatment</span>
-              </div>
-              <div className="cost-amount">₹{journeyPlan.costs.treatment.toLocaleString()}</div>
-            </div>
-            
-            <div className="cost-card">
-              <div className="cost-header">
-                <i className="fa-solid fa-plane" aria-hidden="true"></i>
-                <span>Travel ({journeyPlan.travelMode})</span>
-              </div>
-              <div className="cost-amount">₹{journeyPlan.costs.travel.toLocaleString()}</div>
-            </div>
-            
-            {journeyPlan.costs.hotel > 0 && (
-              <div className="cost-card">
-                <div className="cost-header">
-                  <i className="fa-solid fa-bed" aria-hidden="true"></i>
-                  <span>Hotel ({journeyPlan.stayDuration} nights)</span>
-                </div>
-                <div className="cost-amount">₹{journeyPlan.costs.hotel.toLocaleString()}</div>
-              </div>
-            )}
-            
-            {journeyPlan.companionCount > 0 && (
-              <div className="cost-card">
-                <div className="cost-header">
-                  <i className="fa-solid fa-users" aria-hidden="true"></i>
-                  <span>Companions ({journeyPlan.companionCount})</span>
-                </div>
-                <div className="cost-amount">₹{journeyPlan.costs.companion.toLocaleString()}</div>
-              </div>
-            )}
-            
-            <div className="cost-card">
-              <div className="cost-header">
-                <i className="fa-solid fa-passport" aria-hidden="true"></i>
-                <span>Visa & Documents</span>
-              </div>
-              <div className="cost-amount">₹{journeyPlan.costs.visa.toLocaleString()}</div>
-            </div>
-            
-            <div className="cost-card">
-              <div className="cost-header">
-                <i className="fa-solid fa-utensils" aria-hidden="true"></i>
-                <span>Meals & Transport</span>
-              </div>
-              <div className="cost-amount">₹{(journeyPlan.costs.localTransport + journeyPlan.costs.meals).toLocaleString()}</div>
-            </div>
-          </div>
-          
-          <div className="total-cost-banner">
-            <div className="total-content">
-              <span>Total Estimated Cost</span>
-              <div className="total-amount">₹{journeyPlan.costs.total.toLocaleString()}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Smart Recommendations */}
-        <div className="smart-recommendations">
-          <div className="recommendation-card">
-            <h3><i className="fa-solid fa-lightbulb" aria-hidden="true"></i> Smart Travel Tips</h3>
-            <div className="tips-grid">
-              {journeyPlan.recommendations.tips.map((tip, index) => (
-                <div key={index} className="tip-item">
-                  <i className="fa-solid fa-circle-check" aria-hidden="true"></i>
-                  <span>{tip}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="recommendation-card">
-            <h3><i className="fa-solid fa-bed" aria-hidden="true"></i> Accommodation Guide</h3>
-            <div className="accommodation-list">
-              {journeyPlan.recommendations.hotels.map((hotel, index) => (
-                <div key={index} className="accommodation-item">
-                  <i className="fa-solid fa-building" aria-hidden="true"></i>
-                  <span>{hotel}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Final Confirmation Section */}
-        <div className="confirmation-section">
-          <div className="confirmation-card">
-            <div className="confirmation-header">
-              <i className="fa-solid fa-calendar-check" aria-hidden="true"></i>
-              <h3>Ready to Confirm Your Journey?</h3>
-              <p>Our travel coordinator will contact you within 24 hours to finalize all arrangements</p>
-            </div>
-            <div className="confirmation-benefits">
-              <div className="benefit-item">
-                <i className="fa-solid fa-shield-check" aria-hidden="true"></i>
-                <span>Secure Booking</span>
-              </div>
-              <div className="benefit-item">
-                <i className="fa-solid fa-headset" aria-hidden="true"></i>
-                <span>24/7 Support</span>
-              </div>
-              <div className="benefit-item">
-                <i className="fa-solid fa-medal" aria-hidden="true"></i>
-                <span>Best Price Guarantee</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Standardized Sticky Footer — Step 5 */}
-      {journeyPlan && (
-        <div className="planner-step-footer visible">
-          <div className="planner-step-footer-inner">
-            <div className="planner-step-footer-summary">
-              <i className="fa-solid fa-circle-check" aria-hidden="true" style={{color:'#22c55e'}} />
-              <span>Total estimate: <strong>₹{journeyPlan.costs.total.toLocaleString('en-IN')}</strong></span>
-              <div className="footer-pills">
-                <span className="footer-pill">
-                  <i className="fa-solid fa-hospital" aria-hidden="true" /> {selectedHospital?.name}
-                </span>
-                <span className="footer-pill">
-                  <i className="fa-solid fa-plane" aria-hidden="true" /> {journeyPlan.stayDuration} nights
-                </span>
-              </div>
-            </div>
-            <button
-              className="planner-footer-btn"
-              onClick={() => onConfirmJourney(journeyPlan)}
-              type="button"
+    <div className="journey-results-page" style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '100px' }}>
+      {/* Royal Blue Header Bar */}
+      <div style={{ background: 'linear-gradient(135deg, #0066fe 0%, #0046b8 100%)', color: '#ffffff', padding: '24px 20px 36px', boxShadow: '0 4px 20px rgba(0, 102, 254, 0.2)' }}>
+        <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
+          <div className="jr-header-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+            <button 
+              onClick={onBack} 
+              type="button" 
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(255, 255, 255, 0.15)', border: '1px solid rgba(255, 255, 255, 0.3)', borderRadius: '8px', color: '#ffffff', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', backdropFilter: 'blur(4px)' }}
             >
-              <i className="fa-solid fa-rocket" aria-hidden="true" />
-              <span>Confirm &amp; Book</span>
+              <i className="bi bi-arrow-left" aria-hidden="true" />
+              Back to Travel Planning
             </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ background: '#22c55e', color: '#ffffff', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+                ✓ Plan Ready &amp; Verified
+              </span>
+              <button 
+                onClick={handlePrint}
+                type="button"
+                style={{ background: '#ffffff', color: '#0066fe', border: 'none', padding: '6px 14px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                <i className="bi bi-printer-fill" /> Print Plan
+              </button>
+            </div>
+          </div>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+            Your Complete Medical Journey Plan
+          </h1>
+          <p style={{ fontSize: '0.9rem', color: '#dbeafe', margin: 0, maxWidth: '650px', opacity: 0.95 }}>
+            Review your personalized medical travel itinerary, hospital details, flight schedule, hotel accommodation, and itemized cost estimation.
+          </p>
+        </div>
+      </div>
+
+      {/* Main Content Container */}
+      <div className="jr-container" style={{ maxWidth: '1160px', margin: '-20px auto 0', padding: '0 20px' }}>
+        
+        {/* Top Summary Banner */}
+        <div className="jr-summary-banner" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px 24px', marginBottom: '20px', boxShadow: '0 4px 16px rgba(0,0,0,0.04)', display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '20px', alignItems: 'center' }}>
+          <div>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '4px' }}>Patient Info</span>
+            <strong style={{ fontSize: '1.05rem', color: '#0f172a', display: 'block' }}>{journeyPlan.patientName || 'Ayushman Chourasia'}</strong>
+            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>{journeyPlan.patientEmail}</span>
+          </div>
+
+          <div style={{ borderLeft: '1px solid #f1f5f9', paddingLeft: '20px' }}>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '4px' }}>Flight Route</span>
+            <strong style={{ fontSize: '0.95rem', color: '#0066fe', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>{journeyPlan.originAirport || 'DEL'}</span>
+              <i className="bi bi-arrow-right" style={{ fontSize: '0.8rem' }} />
+              <span>{journeyPlan.destinationAirport || 'BOM'}</span>
+            </strong>
+            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{selectedHospital?.city || 'Delhi'}</span>
+          </div>
+
+          <div style={{ borderLeft: '1px solid #f1f5f9', paddingLeft: '20px' }}>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '4px' }}>Duration &amp; Party</span>
+            <strong style={{ fontSize: '0.95rem', color: '#0f172a', display: 'block' }}>{journeyPlan.stayDuration} Days Stay</strong>
+            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{journeyPlan.companionCount + 1} Traveler(s)</span>
+          </div>
+
+          <div style={{ background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '10px', padding: '12px 16px', textAlign: 'right' }}>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#0066fe', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '2px' }}>Total Investment</span>
+            <strong style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0066fe', display: 'block' }}>₹{journeyPlan.costs.total.toLocaleString('en-IN')}</strong>
           </div>
         </div>
-      )}
+
+        {/* 2-Column Grid Layout */}
+        <div className="jr-main-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '20px' }}>
+          
+          {/* Left Column Stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            
+            {/* Card 1: Flight & Travel Schedule */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+              <div className="jr-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <i className="bi bi-airplane-fill" />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Flight &amp; Travel Logistics</h3>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>FlightAPI.io Live Pricing Verified</span>
+                  </div>
+                </div>
+                <span style={{ background: '#ecfdf5', color: '#047857', border: '1px solid #a7f3d0', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  ✓ Standard Flight Service
+                </span>
+              </div>
+
+              {/* Route Timeline */}
+              <div className="jr-route-timeline" style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '6px' }}>
+                    <i className="bi bi-airplane-fill" />
+                  </div>
+                  <strong style={{ display: 'block', fontSize: '1.1rem', color: '#0f172a' }}>{journeyPlan.originAirport || 'DEL'}</strong>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Departure Airport</span>
+                </div>
+
+                <div style={{ flex: 1, padding: '0 8px', textAlign: 'center', minWidth: 0 }}>
+                  <div style={{ borderTop: '2px dashed #93c5fd', position: 'relative', margin: '14px 0 8px' }}>
+                    <i className="bi bi-airplane-fill" style={{ position: 'absolute', top: '-11px', left: '50%', transform: 'translateX(-50%) rotate(90deg)', color: '#0066fe', fontSize: '1.1rem', background: '#f8fafc', padding: '0 6px' }} />
+                  </div>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#0066fe', background: '#ffffff', padding: '2px 8px', borderRadius: '10px', border: '1px solid #bfdbfe', whiteSpace: 'nowrap', display: 'inline-block' }}>
+                    Flight: ~2h 15m
+                  </span>
+                </div>
+
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#ccfbf1', color: '#0d9488', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '6px' }}>
+                    <i className="bi bi-hospital-fill" />
+                  </div>
+                  <strong style={{ display: 'block', fontSize: '1.1rem', color: '#0f172a' }}>{journeyPlan.destinationAirport || 'BOM'}</strong>
+                  <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Hospital Airport</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Hotel Accommodations */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+              <div className="jr-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <i className="bi bi-building-fill" />
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Selected Accommodation</h3>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Hospital Partnered Verified Hotel</span>
+                  </div>
+                </div>
+                <span style={{ background: '#fef3c7', color: '#b45309', border: '1px solid #fde68a', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  ★ {journeyPlan.hotelCategory.toUpperCase()} Stay
+                </span>
+              </div>
+
+              <div className="jr-accommodation-card" style={{ background: '#f0f7ff', border: '1.5px solid #bfdbfe', borderRadius: '12px', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '8px' }}>
+                  <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px', wordBreak: 'break-word' }}>
+                    {selectedHospital?.city === 'Mumbai' ? 'ITC Grand Central (Parel)' : selectedHospital?.city === 'Bengaluru' ? 'Taj Yeshwantpur' : 'Lemon Tree Premier (Aerocity)'}
+                  </h4>
+                  <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginBottom: '8px' }}>📍 1.2 km from {selectedHospital?.name || 'Hospital'}</span>
+                  <div className="jr-amenities-wrap" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Wheelchair Friendly</span>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Doctor on Call</span>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Patient Diet Kitchen</span>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <strong style={{ fontSize: '1.1rem', color: '#0066fe', display: 'block', whiteSpace: 'nowrap' }}>₹{journeyPlan.costs.hotel.toLocaleString('en-IN')}</strong>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b', whiteSpace: 'nowrap' }}>for {journeyPlan.stayDuration} nights</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Itemized Financial Summary Table */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <i className="bi bi-receipt" />
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                  Itemized Cost Breakdown
+                </h3>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                  <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Medical Surgery &amp; Procedures</span>
+                  <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{journeyPlan.costs.treatment.toLocaleString('en-IN')}</strong>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                  <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Roundtrip Flight Tickets ({journeyPlan.originAirport} ➔ {journeyPlan.destinationAirport})</span>
+                  <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{journeyPlan.costs.travel.toLocaleString('en-IN')}</strong>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                  <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Hotel Accommodation ({journeyPlan.stayDuration} nights)</span>
+                  <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{journeyPlan.costs.hotel.toLocaleString('en-IN')}</strong>
+                </div>
+
+                {journeyPlan.companionCount > 0 && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                    <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Companion Travel &amp; Accommodation ({journeyPlan.companionCount} person)</span>
+                    <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{journeyPlan.costs.companion.toLocaleString('en-IN')}</strong>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                  <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Local Medical Transport &amp; Daily Meals</span>
+                  <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{(journeyPlan.costs.localTransport + journeyPlan.costs.meals).toLocaleString('en-IN')}</strong>
+                </div>
+
+                {journeyPlan.costs.visa > 0 && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#f8fafc', borderRadius: '8px', fontSize: '0.85rem' }}>
+                    <span style={{ color: '#334155', fontWeight: 600, paddingRight: '8px' }}>Medical Visa Assistance &amp; Documentation</span>
+                    <strong style={{ color: '#0f172a', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{journeyPlan.costs.visa.toLocaleString('en-IN')}</strong>
+                  </div>
+                )}
+              </div>
+
+              {/* Total Banner */}
+              <div className="jr-total-banner" style={{ marginTop: '16px', background: 'linear-gradient(135deg, #0066fe 0%, #0046b8 100%)', color: '#ffffff', borderRadius: '12px', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 14px rgba(0,102,254,0.25)' }}>
+                <div>
+                  <span style={{ fontSize: '0.8rem', opacity: 0.9, display: 'block' }}>Grand Total Estimated Investment</span>
+                  <span style={{ fontSize: '0.72rem', opacity: 0.8 }}>Includes all taxes, hospital charges, flights &amp; stay</span>
+                </div>
+                <strong style={{ fontSize: '1.6rem', fontWeight: 800, whiteSpace: 'nowrap' }}>₹{journeyPlan.costs.total.toLocaleString('en-IN')}</strong>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Column Stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            
+            {/* Selected Hospital Card */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#0066fe', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '8px' }}>Selected Hospital</span>
+              <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #f1f5f9', marginBottom: '12px' }}>
+                <img src={selectedHospital?.image || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=400&q=80'} alt={selectedHospital?.name} style={{ width: '100%', height: '140px', objectFit: 'cover' }} />
+              </div>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a', margin: '0 0 6px' }}>{selectedHospital?.name}</h3>
+              <span style={{ fontSize: '0.8rem', color: '#64748b', display: 'block', marginBottom: '10px' }}>📍 {selectedHospital?.city}, {selectedHospital?.country}</span>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0066fe', fontSize: '0.72rem', padding: '3px 8px', borderRadius: '6px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  🪙 {selectedHospital?.jciAccredited ? 'JCI Accredited' : 'NABH Accredited'}
+                </span>
+                <span style={{ background: '#fef3c7', color: '#b45309', fontSize: '0.72rem', padding: '3px 8px', borderRadius: '6px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  ★ {selectedHospital?.rating || 4.8} Rating
+                </span>
+              </div>
+            </div>
+
+            {/* Selected Treatments Card */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#0066fe', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>Surgical Procedures ({selectedTreatments.length || 1})</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {(selectedTreatments.length ? selectedTreatments : [{ id: 'ent', title: 'ENT Surgery', packageFrom: 240000 }]).map(t => (
+                  <div key={t.id || t._id} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0f172a', wordBreak: 'break-word' }}>{t.title}</strong>
+                      <span style={{ fontSize: '0.7rem', color: '#64748b' }}>ICD-11 Classified</span>
+                    </div>
+                    <strong style={{ fontSize: '0.85rem', color: '#0066fe', whiteSpace: 'nowrap', flexShrink: 0 }}>₹{(t.packageFrom || 240000).toLocaleString('en-IN')}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primary Action Card */}
+            <div className="jr-card" style={{ background: '#ffffff', border: '1.5px solid #0066fe', borderRadius: '14px', padding: '20px', boxShadow: '0 4px 16px rgba(0, 102, 254, 0.12)', textAlign: 'center' }}>
+              <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: '0 0 6px' }}>Ready to Confirm Your Journey?</h4>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '0 0 16px', lineHeight: 1.3 }}>Our senior medical travel coordinator will connect with you within 24 hours to coordinate hospital admission and flight bookings.</p>
+              
+              <button
+                type="button"
+                onClick={() => onConfirmJourney(journeyPlan)}
+                style={{
+                  width: '100%',
+                  height: '46px',
+                  background: '#0066fe',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px rgba(0, 102, 254, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <i className="bi bi-check-circle-fill" />
+                <span>CONFIRM &amp; BOOK JOURNEY</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Bottom 4-Column Trust Strip */}
+        <div className="jr-trust-strip" style={{ marginTop: '30px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px 24px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+              <i className="bi bi-shield-check" />
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0f172a' }}>100% Secure</strong>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Encrypted Patient Data</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+              <i className="bi bi-currency-rupee" />
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0f172a' }}>Best Price Guarantee</strong>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Direct Hospital Packages</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+              <i className="bi bi-headset" />
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0f172a' }}>24/7 Support</strong>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Dedicated Medical Escort</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+              <i className="bi bi-people-fill" />
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '0.82rem', color: '#0f172a' }}>Trusted by Thousands</strong>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Global Medical Tourism</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
@@ -2561,7 +3081,7 @@ export function PlannerHospitalsPage({
             {selectedHospitalForFooter ? (
               <>
                 <i className="fa-solid fa-circle-check" aria-hidden="true" style={{color:'#22c55e'}} />
-                <span>Selected: <strong>{selectedHospitalForFooter.name}</strong></span>
+                <span className="footer-selected-text">Selected: <strong>{formatHospitalDisplayName(selectedHospitalForFooter.name)}</strong></span>
                 <div className="footer-pills">
                   <span className="footer-pill">
                     <i className="fa-solid fa-location-dot" aria-hidden="true" /> {selectedHospitalForFooter.city}

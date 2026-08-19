@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import logoImg from '../../assets/kairacure-logo.png';
-import { formatShortName, API_BASE } from '../../data/constants.js';
+import { formatShortName } from '../../data/constants.js';
 
 export function Header({ currentPatient, hospitals = [], treatments = [], onLogoutPatient, openSearchOption, page, setPage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,32 +46,15 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   const navigate = (id) => { setPage(id); setMobileMenuOpen(false); };
   const logoutAndClose = () => { onLogoutPatient(); setMobileMenuOpen(false); };
 
-  // Generate suggestions from query
-  const computeSuggestions = (q) => {
-    const trimmed = q.trim();
-    if (!trimmed) return [];
-    return getSearchOptionsFromData(trimmed, treatments, hospitals.length ? hospitals : []).map((opt) => ({
-      ...opt,
-      icon: TYPE_ICON[opt.type] || 'fa-magnifying-glass',
-    }));
-  };
-
   const handleChange = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
     setActiveIdx(-1);
-    if (val.trim()) {
-      const results = computeSuggestions(val);
-      setSuggestions(results.length ? results : [{ type: 'Search', label: `Search "${val}"`, meta: 'Browse all results', icon: 'fa-magnifying-glass', query: val }]);
-    } else {
-      setSuggestions([]);
-    }
     setShowSugg(true);
   };
 
   const handleFocus = () => {
     setShowSugg(true);
-    if (!searchQuery.trim()) setSuggestions([]);
   };
 
   const handleSelect = (sugg) => {
@@ -85,18 +68,10 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   };
 
   const handleKeyDown = (e) => {
-    if (!showSugg || !suggestions.length) return;
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, suggestions.length - 1)); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, -1)); }
-    else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (activeIdx >= 0) handleSelect(suggestions[activeIdx]);
-      else if (searchQuery.trim()) { setPage('hospitals'); setShowSugg(false); }
-    }
-    else if (e.key === 'Escape') { setShowSugg(false); setActiveIdx(-1); }
+    if (!showSugg) return;
+    if (e.key === 'Escape') { setShowSugg(false); setActiveIdx(-1); }
   };
 
-  // Close on outside click
   React.useEffect(() => {
     const handler = (e) => { if (searchRef.current && !searchRef.current.contains(e.target)) setShowSugg(false); };
     document.addEventListener('mousedown', handler);
@@ -107,9 +82,9 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
 
   return (
     <header className="site-header">
-      {/* Brand */}
-      <button className="brand-lockup" onClick={() => navigate('home')} type="button">
-        <img src="./src/assets/kairacure-logo.png" alt="Kaira Cure" className="brand-logo-img" />
+      {/* Brand Logo */}
+      <button className="brand-lockup" onClick={() => navigate('home')} type="button" style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+        <img src={logoImg} alt="Kaira Cure" className="brand-logo-img" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
       </button>
 
       {/* Nav */}
@@ -121,7 +96,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         ))}
       </nav>
 
-      {/* ── Beautiful Search Bar ── */}
+      {/* Search Bar */}
       <div className="hs-wrap" ref={searchRef}>
         <div className={`hs-box${showSugg ? ' hs-focused' : ''}`}>
           <i className="fa-solid fa-magnifying-glass hs-icon" aria-hidden="true" />
@@ -135,8 +110,6 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
             onKeyDown={handleKeyDown}
             autoComplete="off"
             aria-label="Search"
-            aria-autocomplete="list"
-            aria-expanded={showSugg}
           />
           {searchQuery && (
             <button className="hs-clear" type="button" onClick={() => { setSearchQuery(''); setSuggestions([]); inputRef.current?.focus(); }} aria-label="Clear">
@@ -157,8 +130,6 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
                 className={`hs-item${activeIdx === i ? ' hs-item-active' : ''}`}
                 type="button"
                 role="option"
-                aria-selected={activeIdx === i}
-                onMouseEnter={() => setActiveIdx(i)}
                 onClick={() => handleSelect(sugg)}
               >
                 <span className="hs-item-icon" style={{ background: `${TYPE_COLOR[sugg.type] || '#64748b'}18`, color: TYPE_COLOR[sugg.type] || '#64748b' }}>
@@ -171,12 +142,6 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
                 <span className="hs-item-type">{sugg.type}</span>
               </button>
             ))}
-            {searchQuery.trim() && suggestions.length === 0 && (
-              <div className="hs-no-results">
-                <i className="fa-solid fa-magnifying-glass" aria-hidden="true" />
-                No results for &ldquo;{searchQuery}&rdquo;
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -240,4 +205,3 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     </header>
   );
 }
-
