@@ -127,7 +127,7 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
         <div className="hcc-header">
           <div className="hcc-header-info">
             <strong className="hcc-title">
-              <i className="fa-solid fa-robot" style={{ color: '#2563eb', marginRight: '6px' }} />
+              <i className="fa-solid fa-robot" style={{ color: '#0d2f5d', marginRight: '6px' }} />
               Kaira AI Assistant
             </strong>
             <span className="hcc-online-text">

@@ -30009,7 +30009,7 @@ a.contact-detail-item:hover .contact-value {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #7c3aed;
+  background: #0d2f5d !important;
   color: #ffffff;
   border: none;
   display: flex;

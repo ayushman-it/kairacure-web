@@ -4,7 +4,7 @@ const METRICS_DATA = [
   {
     icon: 'bi bi-heart-pulse-fill',
     iconBg: '#f0f7ff',
-    iconColor: '#0066fe',
+    iconColor: '#0d2f5d',
     number: '100k+',
     label: 'Patient Journeys Benchmarked',
     subTag: '✓ 99.4% Care Satisfaction'
@@ -93,7 +93,7 @@ export function TrustStrip() {
         .trust-badge-pill {
           background: #f0f7ff;
           border: 1px solid #dbeafe;
-          color: #0066fe;
+          color: #0d2f5d;
           padding: 6px 16px;
           border-radius: 20px;
           font-size: 0.8rem;
@@ -104,9 +104,9 @@ export function TrustStrip() {
           transition: all 0.15s ease;
         }
         .trust-badge-pill:hover {
-          background: #0066fe;
+          background: #0d2f5d;
           color: #ffffff;
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 4px 12px rgba(0, 102, 254, 0.2);
         }
       `}</style>
@@ -140,7 +140,7 @@ export function TrustStrip() {
                 <span style={{ display: 'block', fontSize: '0.84rem', color: '#475569', fontWeight: 600, marginBottom: '4px' }}>
                   {item.label}
                 </span>
-                <span style={{ fontSize: '0.72rem', color: '#0066fe', fontWeight: 700, background: '#f0f7ff', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
+                <span style={{ fontSize: '0.72rem', color: '#0d2f5d', fontWeight: 700, background: '#f0f7ff', padding: '2px 8px', borderRadius: '4px', display: 'inline-block' }}>
                   {item.subTag}
                 </span>
               </div>
