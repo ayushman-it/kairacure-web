@@ -488,7 +488,7 @@
 /* ── Plane icon — resting bob ── */
 .ppa-icon {
   font-size: 1.7rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   filter: drop-shadow(0 4px 12px rgba(43,125,237,0.55));
   display: block;
   animation: ppa-bob 2.5s ease-in-out infinite;
@@ -600,11 +600,11 @@
 .progress-step.completed span { color: #10b981; font-weight: 700; }
 
 .progress-step.active .step-number {
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #fff;
   box-shadow: 0 4px 16px rgba(43,125,237,0.4);
 }
-.progress-step.active span { color: #2b7de9; font-weight: 700; }
+.progress-step.active span { color: #0d2f5d; font-weight: 700; }
 
 .step-number {
   width: 40px; height: 40px;
@@ -719,13 +719,13 @@
 }
 
 .planner-search-bar:focus-within {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 4px 24px rgba(43,125,233,0.18);
 }
 
 .planner-search-bar .search-icon {
   font-size: 1rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   margin-right: 10px;
   flex-shrink: 0;
 }
@@ -812,7 +812,7 @@
   border-radius: 8px;
   flex-shrink: 0;
   overflow: hidden;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 1.2rem;
 }
 
@@ -831,7 +831,7 @@
 }
 
 .autocomplete-item .fa-plus {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.875rem;
 }
 
@@ -868,7 +868,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.9rem;
 }
 
@@ -928,13 +928,13 @@
 }
 
 .category-btn:hover {
-  border-color: #2b7de9;
-  color: #2b7de9;
+  border-color: #0d2f5d;
+  color: #0d2f5d;
 }
 
 .category-btn.active {
-  background: #2b7de9;
-  border-color: #2b7de9;
+  background: #0d2f5d;
+  border-color: #0d2f5d;
   color: #ffffff;
 }
 
@@ -969,7 +969,7 @@
 }
 
 .planner-loading-state i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 2rem;
 }
 
@@ -1001,12 +1001,12 @@
 
 .treatment-card:hover {
   transform: translateY(-4px);
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 8px 24px rgba(43,125,233,0.16);
 }
 
 .treatment-card.selected {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%);
   box-shadow: 0 6px 20px rgba(43,125,233,0.18);
 }
@@ -1025,18 +1025,18 @@
   border: 2px solid #dfe7f3;
   box-shadow: 0 4px 12px rgba(43, 125, 233, 0.1);
   transition: all 0.2s ease;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 1.3rem; /* Reduced from 1.5rem */
 }
 
 .treatment-card:hover .treatment-card-icon {
   background: linear-gradient(135deg, #e8f0ff 0%, #d9e7ff 100%);
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   transform: scale(1.05);
 }
 
 .treatment-card.selected .treatment-card-icon {
-  background: linear-gradient(135deg, #2b7de9 0%, #1a6fd8 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a6fd8 100%);
   border-color: #1a6fd8;
   box-shadow: 0 4px 12px rgba(43, 125, 233, 0.2);
   color: #ffffff;
@@ -1058,7 +1058,7 @@
 /* CATEGORY - Smaller */
 .treatment-category {
   font-size: 0.6rem; /* Further reduced */
-  color: #2b7de9;
+  color: #0d2f5d;
   font-weight: 700;
   margin-bottom: 3px; /* Reduced margin */
   text-align: center;
@@ -1104,7 +1104,7 @@
   top: 12px;
   right: 12px;
   font-size: 1.15rem;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .treatment-card .fa-circle {
@@ -1135,7 +1135,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 36px;
-  background: linear-gradient(135deg, #2b7de9 0%, #1a56c4 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a56c4 100%);
   color: #ffffff;
   border: none;
   border-radius: 999px;
@@ -1201,8 +1201,8 @@
 }
 
 .back-btn:hover {
-  border-color: #2b7de9;
-  color: #2b7de9;
+  border-color: #0d2f5d;
+  color: #0d2f5d;
 }
 
 .hospitals-header-info h1 {
@@ -1246,7 +1246,7 @@
 }
 
 .treatment-badge {
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #ffffff;
   padding: 4px 12px;
   border-radius: 12px;
@@ -1291,7 +1291,7 @@
   background: #ffffff;
 }
 
-.filter-group select:focus { border-color: #2b7de9; }
+.filter-group select:focus { border-color: #0d2f5d; }
 
 /* =============================================
    HOSPITAL CARDS - Exact Screenshot Layout
@@ -1373,7 +1373,7 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
@@ -1606,7 +1606,7 @@
 }
 
 .international-wing-section h4 i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.875rem;
 }
 
@@ -1644,7 +1644,7 @@
 }
 
 .specialty-badge {
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
@@ -1671,12 +1671,12 @@
 }
 
 .contact-link:hover {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .contact-link i {
   font-size: 0.75rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   width: 14px;
   flex-shrink: 0;
 }
@@ -1853,7 +1853,7 @@
 }
 
 .treatment-tag {
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #ffffff;
   padding: 2px 8px;
   border-radius: 12px;
@@ -1888,7 +1888,7 @@
 }
 
 .route-cell i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.7rem;
 }
 
@@ -2124,7 +2124,7 @@
 }
 
 .hospital-location i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.8rem;
 }
 
@@ -2187,7 +2187,7 @@
 .treatment-info small {
   display: block;
   font-size: 0.75rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-family: 'Courier New', monospace;
   margin-bottom: 6px;
 }
@@ -2346,7 +2346,7 @@
 
 .custom-select:focus {
   outline: none;
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 0 0 4px rgba(43, 125, 233, 0.1);
   background: #ffffff;
   transform: translateY(-1px);
@@ -2364,7 +2364,7 @@
 }
 
 .custom-select:focus + .select-arrow {
-  color: #2b7de9;
+  color: #0d2f5d;
   transform: translateY(-50%) rotate(180deg);
 }
 
@@ -2444,7 +2444,7 @@
 }
 
 .travel-mode-card.selected .travel-mode-content strong {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 /* Responsive Design for Travel Cards */
@@ -2497,18 +2497,18 @@
 }
 
 .radio-option:hover {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: #f0f8ff;
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(43, 125, 233, 0.15);
 }
 
 .radio-option input[type="radio"]:checked + .radio-content {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .radio-option:has(input[type="radio"]:checked) {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: linear-gradient(135deg, #f0f8ff 0%, #e8f4ff 100%);
   box-shadow: 0 4px 16px rgba(43, 125, 233, 0.2);
 }
@@ -2529,7 +2529,7 @@
 }
 
 .radio-header i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 1rem;
   width: 16px;
   text-align: center;
@@ -2619,7 +2619,7 @@
 
 .journey-route-card h3 i,
 .journey-cost-card h3 i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 1rem;
 }
 
@@ -2640,7 +2640,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-weight: 600;
   font-size: 0.75rem;
 }
@@ -2669,14 +2669,14 @@
 }
 
 .cost-row.total-cost {
-  border-top: 2px solid #2b7de9;
+  border-top: 2px solid #0d2f5d;
   padding-top: 12px;
   margin-top: 8px;
   font-size: 1.1rem;
 }
 
 .cost-row.total-cost strong {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .journey-recommendations {
@@ -2704,7 +2704,7 @@
 }
 
 .recommendations-section h3 i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.9rem;
 }
 
@@ -2818,7 +2818,7 @@
 .treatment-hero-badge .badge-text {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #2b7de9;
+  color: #0d2f5d;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -2845,7 +2845,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 32px;
-  background: linear-gradient(135deg, #2b7de9 0%, #1a56c4 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a56c4 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -2913,7 +2913,7 @@
 
 .trust-badge-item i {
   font-size: 1.4rem;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .trust-badge-item span {
@@ -2952,14 +2952,14 @@
   border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #2b7de9;
+  color: #0d2f5d;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .view-all-btn:hover {
   background: #f7faff;
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
 }
 
 /* Hospital Cards Grid */
@@ -2981,7 +2981,7 @@
 }
 
 .treatment-hospital-card:hover {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 8px 28px rgba(43, 125, 233, 0.18);
   transform: translateY(-4px);
 }
@@ -3005,7 +3005,7 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #2b7de9;
+  background: #0d2f5d;
   color: #ffffff;
   font-size: 0.75rem;
   font-weight: 700;
@@ -3040,7 +3040,7 @@
 }
 
 .hospital-location i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.82rem;
 }
 
@@ -3063,7 +3063,7 @@
 }
 
 .hospital-quick-info span i {
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 0.82rem;
 }
 
@@ -3071,7 +3071,7 @@
   width: 100%;
   margin-top: auto;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #2b7de9 0%, #1a56c4 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a56c4 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -3334,7 +3334,7 @@
 }
 
 .route-visualization-section h3 i {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .interactive-route {
@@ -3373,7 +3373,7 @@
 }
 
 .timeline-point.arrival .point-marker {
-  background: linear-gradient(135deg, #2b7de9 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1d4ed8 100%);
 }
 
 .point-info strong {
@@ -3411,7 +3411,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #10b981 0%, #2b7de9 100%);
+  background: linear-gradient(90deg, #10b981 0%, #0d2f5d 100%);
   border-radius: 2px;
   transform: translateY(-50%);
 }
@@ -3432,7 +3432,7 @@
 
 .travel-info i {
   font-size: 1.2rem;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .travel-info span {
@@ -3547,7 +3547,7 @@
 }
 
 .treatments-showcase h3 i {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .treatments-list {
@@ -3569,7 +3569,7 @@
 .treatment-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #2b7de9 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #6366f1 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -3752,7 +3752,7 @@
   padding: 12px;
   background: #f0f9ff;
   border-radius: 8px;
-  border-left: 3px solid #2b7de9;
+  border-left: 3px solid #0d2f5d;
 }
 
 .tip-item i {
@@ -4116,7 +4116,7 @@
   gap: 6px;
   padding: 5px 12px;
   background: #eef4ff;
-  color: #2b7de9;
+  color: #0d2f5d;
   border: 1px solid #c7d9f8;
   border-radius: 20px;
   font-size: 0.825rem;
@@ -4157,7 +4157,7 @@
 
 .procedure-empty-state i {
   font-size: 2.5rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   opacity: 0.5;
 }
 
@@ -4188,13 +4188,13 @@
 }
 
 .procedure-card:hover {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 6px 20px rgba(43, 125, 233, 0.14);
   transform: translateY(-2px);
 }
 
 .procedure-card.selected {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%);
   box-shadow: 0 6px 20px rgba(43, 125, 233, 0.2);
 }
@@ -4208,7 +4208,7 @@
   align-items: center;
   gap: 4px;
   background: #f0f4ff;
-  color: #2b7de9;
+  color: #0d2f5d;
   border: 1px solid #c7d9f8;
   border-radius: 6px;
   padding: 3px 8px;
@@ -4238,7 +4238,7 @@
   display: inline-block;
   padding: 3px 10px;
   background: #eef4ff;
-  color: #2b7de9;
+  color: #0d2f5d;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -4267,7 +4267,7 @@
   align-items: center;
   gap: 5px;
   font-size: 0.75rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   text-decoration: none;
   font-weight: 600;
   margin-top: 6px;
@@ -4286,7 +4286,7 @@
   top: 12px;
   right: 14px;
   font-size: 1.1rem;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .procedure-card .fa-circle {
@@ -4313,7 +4313,7 @@
 .procedure-selected-count {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 /* Responsive */
@@ -4427,7 +4427,7 @@
 }
 
 .footer-hint i {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 /* Pill tags showing selected items */
@@ -4444,7 +4444,7 @@
   gap: 5px;
   padding: 4px 10px;
   background: #eef4ff;
-  color: #2b7de9;
+  color: #0d2f5d;
   border: 1px solid #c7d9f8;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -4473,7 +4473,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 26px;
-  background: linear-gradient(135deg, #2b7de9 0%, #1a6fd8 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a6fd8 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -4545,14 +4545,14 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: #2b7de9;
+  color: #0d2f5d;
   flex-shrink: 0;
   margin-bottom: 10px;
   transition: background 0.18s, color 0.18s;
 }
 
 .procedure-card.selected .procedure-card-icon {
-  background: linear-gradient(135deg, #2b7de9 0%, #1a6fd8 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a6fd8 100%);
   border-color: #1a6fd8;
   color: #ffffff;
 }
@@ -4571,7 +4571,7 @@
    HOSPITAL CARD — selected state
    ============================================= */
 .hospital-result-card.hospital-card-selected {
-  border: 2px solid #2b7de9 !important;
+  border: 2px solid #0d2f5d !important;
   box-shadow: 0 6px 24px rgba(43, 125, 233, 0.18) !important;
   background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%) !important;
 }
@@ -4604,12 +4604,12 @@
 }
 
 .custom-dropdown:hover {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: #f7faff;
 }
 
 .custom-dropdown.active {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   box-shadow: 0 0 0 3px rgba(43, 125, 237, 0.1);
 }
 
@@ -4678,7 +4678,7 @@
 
 .dropdown-option:hover {
   background: #f7faff;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .dropdown-option i {
@@ -4688,7 +4688,7 @@
 }
 
 .dropdown-option:hover i {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .country-flag {
@@ -4723,13 +4723,13 @@
 
 .dropdown-option.custom-option {
   background: #f7faff;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-weight: 500;
   border-top: 2px solid #dfe7f3;
 }
 
 .dropdown-option.custom-option i {
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .dropdown-option.custom-option:hover {

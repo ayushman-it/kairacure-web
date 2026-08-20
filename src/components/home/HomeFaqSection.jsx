@@ -84,9 +84,9 @@ export function HomeFaqSection() {
           transition: all 0.15s ease;
         }
         .faq-tab-btn.active {
-          background: #0066fe;
+          background: #0d2f5d;
           color: #ffffff;
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 2px 10px rgba(0, 102, 254, 0.25);
         }
         .faq-item-card {
@@ -98,7 +98,7 @@ export function HomeFaqSection() {
           transition: all 0.2s ease;
         }
         .faq-item-card.is-open {
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 4px 20px rgba(0, 102, 254, 0.08);
         }
         .faq-question-btn {
@@ -117,7 +117,7 @@ export function HomeFaqSection() {
           color: #0f172a;
         }
         .faq-question-btn:hover {
-          color: #0066fe;
+          color: #0d2f5d;
         }
         .faq-answer-panel {
           padding: 0 22px 20px 60px;
@@ -140,7 +140,7 @@ export function HomeFaqSection() {
             style={{
               display: 'inline-block',
               background: '#f0f7ff',
-              color: '#0066fe',
+              color: '#0d2f5d',
               border: '1px solid #bfdbfe',
               padding: '4px 14px',
               borderRadius: '20px',
@@ -210,8 +210,8 @@ export function HomeFaqSection() {
                         width: '32px',
                         height: '32px',
                         borderRadius: '50%',
-                        background: isOpen ? '#0066fe' : '#f0f7ff',
-                        color: isOpen ? '#ffffff' : '#0066fe',
+                        background: isOpen ? '#0d2f5d' : '#f0f7ff',
+                        color: isOpen ? '#ffffff' : '#0d2f5d',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -244,7 +244,7 @@ export function HomeFaqSection() {
                       className="bi bi-chevron-down" 
                       style={{
                         fontSize: '1rem',
-                        color: isOpen ? '#0066fe' : '#64748b',
+                        color: isOpen ? '#0d2f5d' : '#64748b',
                         transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                         transition: 'transform 0.2s ease'
                       }} 

@@ -37,7 +37,7 @@ export function AiExplorationSection({ setPage }) {
           }
         }
         .ai-care-btn-primary {
-          background: #0066fe !important;
+          background: #0d2f5d !important;
           color: #ffffff !important;
           border: none !important;
           padding: 10px 22px !important;
@@ -121,7 +121,7 @@ export function AiExplorationSection({ setPage }) {
                 borderRadius: '20px',
                 fontSize: '0.75rem',
                 fontWeight: 700,
-                color: '#0066fe',
+                color: '#0d2f5d',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
@@ -150,7 +150,7 @@ export function AiExplorationSection({ setPage }) {
               zIndex: 3
             }}
           >
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#f0f7ff', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
               <i className="bi bi-star-fill" />
             </div>
             <div>
@@ -168,7 +168,7 @@ export function AiExplorationSection({ setPage }) {
               style={{
                 display: 'inline-block',
                 background: '#f0f7ff',
-                color: '#0066fe',
+                color: '#0d2f5d',
                 border: '1px solid #bfdbfe',
                 padding: '4px 14px',
                 borderRadius: '20px',
@@ -201,7 +201,7 @@ export function AiExplorationSection({ setPage }) {
                   borderRadius: '12px',
                   background: '#f0f7ff',
                   border: '1px solid #dbeafe',
-                  color: '#0066fe',
+                  color: '#0d2f5d',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -230,7 +230,7 @@ export function AiExplorationSection({ setPage }) {
                   borderRadius: '12px',
                   background: '#f0f7ff',
                   border: '1px solid #dbeafe',
-                  color: '#0066fe',
+                  color: '#0d2f5d',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -267,7 +267,7 @@ export function AiExplorationSection({ setPage }) {
                   borderRadius: '12px',
                   background: '#f0f7ff',
                   border: '1px solid #dbeafe',
-                  color: '#0066fe',
+                  color: '#0d2f5d',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

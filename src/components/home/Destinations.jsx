@@ -130,7 +130,7 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
         .dest-card-v2:hover {
           transform: translateY(-4px);
           box-shadow: 0 14px 30px rgba(0, 102, 254, 0.2);
-          border-color: #0066fe;
+          border-color: #0d2f5d;
         }
         .dest-card-bg-img {
           width: 100%;
@@ -157,7 +157,7 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
           border-radius: 50%;
           background: #ffffff;
           border: 1.5px solid #cbd5e1;
-          color: #0066fe;
+          color: #0d2f5d;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -167,9 +167,9 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
           box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .dest-nav-btn:hover:not(:disabled) {
-          background: #0066fe;
+          background: #0d2f5d;
           color: #ffffff;
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 4px 12px rgba(0, 102, 254, 0.3);
         }
         .dest-nav-btn:disabled {
@@ -187,7 +187,7 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
               style={{
                 display: 'inline-block',
                 background: '#f0f7ff',
-                color: '#0066fe',
+                color: '#0d2f5d',
                 border: '1px solid #bfdbfe',
                 padding: '4px 14px',
                 borderRadius: '20px',
@@ -242,7 +242,7 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
               <div className="dest-card-gradient">
                 {/* Top Clean Airport & Rating Badges (NO duplicate city tags) */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(6px)', color: '#0066fe', fontSize: '0.74rem', fontWeight: 700, padding: '4px 10px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(6px)', color: '#0d2f5d', fontSize: '0.74rem', fontWeight: 700, padding: '4px 10px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     ✈️ {dest.airport}
                   </span>
                   <span style={{ background: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(4px)', color: '#f59e0b', fontSize: '0.74rem', fontWeight: 700, padding: '4px 10px', borderRadius: '12px' }}>
