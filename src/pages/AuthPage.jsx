@@ -287,7 +287,7 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
               </div>
 
               <div className="portal-stat-card">
-                <div className="portal-stat-icon" style={{ background: '#eff6ff', color: '#0066fe' }}>
+                <div className="portal-stat-icon" style={{ background: '#eff6ff', color: '#0d2f5d' }}>
                   <i className="bi bi-wallet2" />
                 </div>
                 <div>
@@ -321,7 +321,7 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
               {/* Journey Timeline */}
               <div className="portal-card-box">
                 <div className="portal-card-head">
-                  <h3><i className="bi bi-clock-history" style={{ color: '#0066fe' }} /> Care Journey Timeline</h3>
+                  <h3><i className="bi bi-clock-history" style={{ color: '#0d2f5d' }} /> Care Journey Timeline</h3>
                   <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>Updated Today</span>
                 </div>
 
@@ -377,7 +377,7 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
         {patientDashboardTab === 'profile' && (
           <div className="portal-card-box">
             <div className="portal-card-head">
-              <h3><i className="bi bi-person-badge-fill" style={{ color: '#0066fe' }} /> Registered Patient Profile</h3>
+              <h3><i className="bi bi-person-badge-fill" style={{ color: '#0d2f5d' }} /> Registered Patient Profile</h3>
               <span style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 700 }}><i className="bi bi-check-circle-fill" /> Verified Account</span>
             </div>
 
@@ -414,8 +414,8 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
         {patientDashboardTab === 'quotes' && (
           <div className="portal-card-box">
             <div className="portal-card-head">
-              <h3><i className="bi bi-receipt-cutoff" style={{ color: '#0066fe' }} /> Treatment Cost Breakdown</h3>
-              <span style={{ fontSize: '0.74rem', color: '#0066fe', fontWeight: 700 }}>Official Quote</span>
+              <h3><i className="bi bi-receipt-cutoff" style={{ color: '#0d2f5d' }} /> Treatment Cost Breakdown</h3>
+              <span style={{ fontSize: '0.74rem', color: '#0d2f5d', fontWeight: 700 }}>Official Quote</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '1.5rem' }}>
@@ -435,8 +435,8 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '14px', background: '#eff6ff', borderRadius: '10px', border: '1.5px solid #bfdbfe' }}>
-                <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0066fe' }}>Total Package Estimate</span>
-                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0066fe' }}>₹1,85,000</span>
+                <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0d2f5d' }}>Total Package Estimate</span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0d2f5d' }}>₹1,85,000</span>
               </div>
             </div>
           </div>
@@ -446,19 +446,19 @@ export function AuthPage({ onPatientLogin, onPatientLogout, onPatientUpdate, onG
         {patientDashboardTab === 'concierge' && (
           <div className="portal-card-box">
             <div className="portal-card-head">
-              <h3><i className="bi bi-headset" style={{ color: '#0066fe' }} /> Dedicated Medical Concierge</h3>
+              <h3><i className="bi bi-headset" style={{ color: '#0d2f5d' }} /> Dedicated Medical Concierge</h3>
               <span style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 700 }}><i className="bi bi-circle-fill" style={{ fontSize: '0.5rem' }} /> Online Now</span>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '1rem', background: '#f8fafc', borderRadius: '12px', marginBottom: '1.5rem' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0066fe', color: '#fff', display: 'grid', placeItems: 'center', fontSize: '1.3rem', fontWeight: 800 }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0d2f5d', color: '#fff', display: 'grid', placeItems: 'center', fontSize: '1.3rem', fontWeight: 800 }}>
                 P
               </div>
               <div style={{ flex: 1 }}>
                 <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', display: 'block' }}>Priya Sharma</span>
                 <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Senior International Patient Manager • 24/7 Desk</span>
               </div>
-              <a href="tel:+919999988888" className="btn-portal-sec" style={{ background: '#0066fe', textDecoration: 'none' }}>
+              <a href="tel:+919999988888" className="btn-portal-sec" style={{ background: '#0d2f5d', textDecoration: 'none' }}>
                 <i className="bi bi-telephone-fill" /> Call Desk
               </a>
             </div>

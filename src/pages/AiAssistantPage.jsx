@@ -184,10 +184,10 @@ export function AiAssistantPage({ setPage, initialMessage }) {
                                   padding: isHospitalHeader ? '6px 10px' : '0',
                                   background: isHospitalHeader ? 'rgba(0, 102, 254, 0.05)' : 'transparent',
                                   borderRadius: '8px',
-                                  borderLeft: isHospitalHeader ? '3px solid #0066fe' : 'none'
+                                  borderLeft: isHospitalHeader ? '3px solid #0d2f5d' : 'none'
                                 }}
                               >
-                                <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.9rem', lineHeight: '1.4' }}>•</span>
+                                <span style={{ color: '#0d2f5d', fontWeight: 800, fontSize: '0.9rem', lineHeight: '1.4' }}>•</span>
                                 <span style={{ fontSize: '0.88rem', color: '#1e293b', lineHeight: '1.5', fontWeight: isHospitalHeader ? 700 : 500 }}>
                                   {bulletText}
                                 </span>

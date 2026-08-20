@@ -34393,7 +34393,7 @@ select:focus {
 a.pdl-btn-primary,
 button.pdl-btn-primary {
   padding: 0.65rem 1.35rem !important;
-  background: linear-gradient(135deg, #0066fe 0%, #0052cc 100%) !important;
+  background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%) !important;
   color: #ffffff !important;
   border-radius: 10px !important;
   font-weight: 700 !important;
@@ -34423,7 +34423,7 @@ button.pdl-btn-primary:hover {
 a.pdl-btn-enquire,
 button.pdl-btn-enquire {
   padding: 0.5rem 1.1rem !important;
-  background: linear-gradient(135deg, #0066fe 0%, #0052cc 100%) !important;
+  background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%) !important;
   color: #ffffff !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
@@ -34450,8 +34450,8 @@ a.pdl-btn-outline,
 button.pdl-btn-outline {
   padding: 0.65rem 1.15rem !important;
   background: #ffffff !important;
-  color: #0066fe !important;
-  border: 1.5px solid #0066fe !important;
+  color: #0d2f5d !important;
+  border: 1.5px solid #0d2f5d !important;
   border-radius: 10px !important;
   font-weight: 700 !important;
   font-size: 0.88rem !important;
@@ -34502,8 +34502,8 @@ button.pdl-btn-outline:hover {
 
 .pdl-tab-btn.active {
   font-weight: 800;
-  color: #0066fe;
-  border-bottom: 3px solid #0066fe;
+  color: #0d2f5d;
+  border-bottom: 3px solid #0d2f5d;
 }
 
 .pdl-main-grid {
@@ -34680,7 +34680,7 @@ button.pdl-btn-outline:hover {
 .pdl-form-submit {
   width: 100%;
   padding: 0.7rem;
-  background: linear-gradient(135deg, #0066fe 0%, #0052cc 100%) !important;
+  background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%) !important;
   color: #ffffff !important;
   border: none;
   border-radius: 8px !important;
@@ -35652,7 +35652,7 @@ button.pdl-btn-outline:hover {
 }
 
 .kc-treatments-header-v2 h2 span {
-  color: #0066fe !important;
+  color: #0d2f5d !important;
 }
 
 .kc-treatments-header-v2 p {
@@ -35692,7 +35692,7 @@ button.pdl-btn-outline:hover {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   flex-shrink: 0 !important;
@@ -35700,9 +35700,9 @@ button.pdl-btn-outline:hover {
 }
 
 .kc-tab-arrow-v2:hover {
-  background: #0066fe !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
-  border-color: #0066fe !important;
+  border-color: #0d2f5d !important;
 }
 
 .kc-treatments-tabs-container-v2 {
@@ -35736,14 +35736,14 @@ button.pdl-btn-outline:hover {
 
 .kc-treatment-tab-v2:hover {
   background: #f0f7ff !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   border-color: #bfdbfe !important;
 }
 
 .kc-treatment-tab-v2.active {
-  background: #0066fe !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
-  border-color: #0066fe !important;
+  border-color: #0d2f5d !important;
   box-shadow: 0 4px 14px rgba(0, 102, 254, 0.3) !important;
   font-weight: 700 !important;
 }
@@ -35780,11 +35780,11 @@ button.pdl-btn-outline:hover {
 .kc-treatment-card-v2:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 12px 28px rgba(0, 102, 254, 0.15) !important;
-  border-color: #0066fe !important;
+  border-color: #0d2f5d !important;
 }
 
 .kc-treatment-card-v2.active {
-  border: 2px solid #0066fe !important;
+  border: 2px solid #0d2f5d !important;
   box-shadow: 0 8px 24px rgba(0, 102, 254, 0.2) !important;
 }
 
@@ -35802,7 +35802,7 @@ button.pdl-btn-outline:hover {
   min-width: 44px !important;
   border-radius: 12px !important;
   background: #eff6ff !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -35813,14 +35813,14 @@ button.pdl-btn-outline:hover {
 
 .kc-treatment-icon-box-v2 i,
 .kc-treatment-icon-box-v2 .treatment-vector-icon {
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   font-size: 1.25rem !important;
 }
 
 .kc-treatment-tag-v2 {
   font-size: 0.72rem !important;
   font-weight: 700 !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   background: #f0f7ff !important;
   padding: 4px 10px !important;
   border-radius: 20px !important;
@@ -35860,7 +35860,7 @@ button.pdl-btn-outline:hover {
 .kc-treatment-btn-v2 {
   font-size: 0.84rem !important;
   font-weight: 700 !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 3px !important;
@@ -35882,7 +35882,7 @@ button.pdl-btn-outline:hover {
 }
 
 .kc-load-more-btn-v2 {
-  background: #0066fe !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
   border: none !important;
   padding: 12px 32px !important;
@@ -36057,7 +36057,7 @@ button.pdl-btn-outline:hover {
 }
 
 .auth-pro-hero {
-  background: linear-gradient(145deg, #0052cc 0%, #0066fe 100%);
+  background: linear-gradient(145deg, #0052cc 0%, #0d2f5d 100%);
   color: #ffffff;
   padding: 2.25rem 2rem;
   display: flex;
@@ -36129,7 +36129,7 @@ button.pdl-btn-outline:hover {
   height: 30px;
   border-radius: 50%;
   background: #ffffff;
-  color: #0066fe;
+  color: #0d2f5d;
   display: grid;
   place-items: center;
   font-size: 0.95rem;
@@ -36179,7 +36179,7 @@ button.pdl-btn-outline:hover {
 
 .auth-mode-btn.active {
   background: #ffffff;
-  color: #0066fe;
+  color: #0d2f5d;
   box-shadow: 0 2px 6px rgba(0, 102, 254, 0.1);
 }
 
@@ -36282,7 +36282,7 @@ button.pdl-btn-outline:hover {
 }
 
 .auth-form-input:focus {
-  border-color: #0066fe;
+  border-color: #0d2f5d;
   box-shadow: 0 0 0 3px rgba(0, 102, 254, 0.12);
 }
 
@@ -36290,7 +36290,7 @@ button.pdl-btn-outline:hover {
   width: 100%;
   padding: 9px 14px;
   height: 38px;
-  background: linear-gradient(135deg, #0066fe 0%, #0052cc 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%);
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -36356,7 +36356,7 @@ button.pdl-btn-outline:hover {
 }
 
 .portal-hero-card {
-  background: linear-gradient(135deg, #0052cc 0%, #0066fe 100%);
+  background: linear-gradient(135deg, #0052cc 0%, #0d2f5d 100%);
   color: #ffffff;
   border-radius: 16px;
   padding: 2rem 2.25rem;
@@ -36468,7 +36468,7 @@ button.pdl-btn-outline:hover {
 }
 
 .portal-tab-btn.active {
-  background: #0066fe;
+  background: #0d2f5d;
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 102, 254, 0.2);
 }
@@ -36563,7 +36563,7 @@ button.pdl-btn-outline:hover {
   height: 28px;
   border-radius: 50%;
   background: #f0f7ff;
-  color: #0066fe;
+  color: #0d2f5d;
   display: grid;
   place-items: center;
   font-size: 0.85rem;
@@ -36634,7 +36634,7 @@ button.pdl-btn-outline:hover {
 }
 
 .rpc-human-card:hover {
-  border-color: #0066fe !important;
+  border-color: #0d2f5d !important;
   box-shadow: 0 8px 30px rgba(0, 102, 254, 0.08) !important;
 }
 
@@ -36717,7 +36717,7 @@ button.pdl-btn-outline:hover {
 }
 
 .mobile-side-auth-btn.primary {
-  background: #0066fe !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
 }
 
@@ -36753,17 +36753,17 @@ button.pdl-btn-outline:hover {
 
 .site-header .mobile-offcanvas .mobile-nav button .nav-icon {
   font-size: 1rem !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
 }
 
 .site-header .mobile-offcanvas .mobile-nav button:hover {
   background: #f0f7ff !important;
   border-color: #bfdbfe !important;
-  color: #0066fe !important;
+  color: #0d2f5d !important;
 }
 
 .site-header .mobile-offcanvas .mobile-nav button.active {
-  background: linear-gradient(135deg, #0066fe 0%, #0046b8 100%) !important;
+  background: linear-gradient(135deg, #0d2f5d 0%, #0046b8 100%) !important;
   color: #ffffff !important;
   border-color: transparent !important;
   box-shadow: 0 3px 10px rgba(0, 102, 254, 0.25) !important;

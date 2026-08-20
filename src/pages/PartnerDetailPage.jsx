@@ -148,8 +148,8 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
                     {hospitalAddress}
                   </div>
                   <div className="pdl-location-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <span className="pdl-pill" style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0066fe', fontSize: '0.74rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center' }}>
-                      <i className="bi bi-airplane-fill" style={{ color: '#0066fe', marginRight: '0.3rem' }} /> International Airport Access
+                    <span className="pdl-pill" style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#0d2f5d', fontSize: '0.74rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center' }}>
+                      <i className="bi bi-airplane-fill" style={{ color: '#0d2f5d', marginRight: '0.3rem' }} /> International Airport Access
                     </span>
                     <span className="pdl-pill" style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#16a34a', fontSize: '0.74rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center' }}>
                       <i className="bi bi-person-badge-fill" style={{ color: '#16a34a', marginRight: '0.3rem' }} /> Care Concierge Desk
@@ -232,19 +232,19 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
                 <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <i className="bi bi-search" style={{ fontSize: '1.25rem', color: '#0066fe', marginBottom: '0.35rem', display: 'block' }} />
+                  <i className="bi bi-search" style={{ fontSize: '1.25rem', color: '#0d2f5d', marginBottom: '0.35rem', display: 'block' }} />
                   <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>Advanced Diagnostics</strong>
                   <span style={{ fontSize: '0.78rem', color: '#64748b' }}>PET-CT, 3T MRI, 128-Slice CT</span>
                 </div>
 
                 <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <i className="bi bi-activity" style={{ fontSize: '1.25rem', color: '#0066fe', marginBottom: '0.35rem', display: 'block' }} />
+                  <i className="bi bi-activity" style={{ fontSize: '1.25rem', color: '#0d2f5d', marginBottom: '0.35rem', display: 'block' }} />
                   <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>ICU &amp; Critical Care</strong>
                   <span style={{ fontSize: '0.78rem', color: '#64748b' }}>24/7 Monitored Cardiac ICUs</span>
                 </div>
 
                 <div style={{ padding: '0.85rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <i className="bi bi-globe" style={{ fontSize: '1.25rem', color: '#0066fe', marginBottom: '0.35rem', display: 'block' }} />
+                  <i className="bi bi-globe" style={{ fontSize: '1.25rem', color: '#0d2f5d', marginBottom: '0.35rem', display: 'block' }} />
                   <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a' }}>International Lounge</strong>
                   <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Visa Invitation &amp; Translators</span>
                 </div>
@@ -269,7 +269,7 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
                     <div style={{ marginTop: '0.75rem', paddingTop: '0.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
                         <span style={{ fontSize: '0.68rem', color: '#64748b', display: 'block' }}>Starts from</span>
-                        <strong style={{ fontSize: '0.95rem', color: '#0066fe' }}>{money(t.packageFrom)}</strong>
+                        <strong style={{ fontSize: '0.95rem', color: '#0d2f5d' }}>{money(t.packageFrom)}</strong>
                       </div>
                       <a href="#connect-form" className="pdl-btn-primary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.78rem' }}>
                         Enquire
@@ -290,11 +290,11 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
               <div className="pdl-doctor-grid">
                 {hospitalDoctors.map((doc, idx) => (
                   <div key={idx} className="pdl-doctor-card">
-                    <div className="pdl-doc-avatar" style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'grid', placeItems: 'center', margin: '0 auto 0.5rem', fontSize: '1.35rem' }}>
+                    <div className="pdl-doc-avatar" style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#f0f7ff', color: '#0d2f5d', display: 'grid', placeItems: 'center', margin: '0 auto 0.5rem', fontSize: '1.35rem' }}>
                       <i className="bi bi-person-badge-fill" />
                     </div>
                     <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 700, marginBottom: '0.15rem' }}>{doc.name}</h4>
-                    <span style={{ display: 'block', fontSize: '0.78rem', color: '#0066fe', fontWeight: 600, marginBottom: '0.35rem' }}>{doc.title}</span>
+                    <span style={{ display: 'block', fontSize: '0.78rem', color: '#0d2f5d', fontWeight: 600, marginBottom: '0.35rem' }}>{doc.title}</span>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '0.4rem', fontSize: '0.72rem', color: '#64748b', marginBottom: '0.75rem' }}>
                       <span>{doc.exp}</span>
                       <span>•</span>

@@ -112,8 +112,8 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
               style={{
                 cursor: 'pointer',
                 fontWeight: activeTab === tab ? 800 : 600,
-                color: activeTab === tab ? '#0066fe' : '#64748b',
-                borderBottom: activeTab === tab ? '2px solid #0066fe' : '2px solid transparent',
+                color: activeTab === tab ? '#0d2f5d' : '#64748b',
+                borderBottom: activeTab === tab ? '2px solid #0d2f5d' : '2px solid transparent',
                 paddingBottom: '6px',
                 transition: 'all 0.2s ease'
               }}
@@ -146,7 +146,7 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
           style={{
             cursor: 'pointer',
             fontWeight: 800,
-            color: '#0066fe',
+            color: '#0d2f5d',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',

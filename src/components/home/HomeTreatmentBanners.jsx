@@ -7,7 +7,7 @@ const BASE_SPECIALTIES = [
     defaultSubtitle: 'Joint Replacement & Spine',
     iconClass: 'bi bi-person-fill-gear',
     iconBg: '#eff6ff',
-    iconColor: '#0066fe',
+    iconColor: '#0d2f5d',
     defaultCount: '120+ Procedures',
     defaultPrice: 'From ₹1.8L'
   },
@@ -211,7 +211,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
           box-sizing: border-box;
         }
         .specialty-interactive-card:hover {
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           transform: translateY(-2px);
           box-shadow: 0 8px 20px rgba(0, 102, 254, 0.12);
         }
@@ -230,7 +230,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
           transition: all 0.2s ease;
         }
         .specialty-interactive-card:hover .specialty-arrow-btn {
-          background: #0066fe;
+          background: #0d2f5d;
           color: #ffffff;
           transform: translateX(3px);
         }
@@ -245,7 +245,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
               style={{
                 display: 'inline-block',
                 background: '#f0f7ff',
-                color: '#0066fe',
+                color: '#0d2f5d',
                 border: '1px solid #bfdbfe',
                 padding: '4px 12px',
                 borderRadius: '20px',
@@ -270,7 +270,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
             type="button"
             onClick={() => setPage && setPage('planner')}
             style={{
-              background: '#0066fe',
+              background: '#0d2f5d',
               color: '#ffffff',
               border: 'none',
               padding: '8px 18px',
@@ -341,7 +341,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
                 <span 
                   style={{
                     background: '#f0f7ff',
-                    color: '#0066fe',
+                    color: '#0d2f5d',
                     fontSize: '0.68rem',
                     fontWeight: 700,
                     padding: '2px 6px',
@@ -364,7 +364,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
         {/* Bottom Banner */}
         <div 
           style={{
-            background: 'linear-gradient(135deg, #0066fe 0%, #0046b8 100%)',
+            background: 'linear-gradient(135deg, #0d2f5d 0%, #0046b8 100%)',
             color: '#ffffff',
             borderRadius: '14px',
             padding: '18px 24px',
@@ -391,7 +391,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
             onClick={() => setPage && setPage('planner')}
             style={{
               background: '#ffffff',
-              color: '#0066fe',
+              color: '#0d2f5d',
               border: 'none',
               padding: '8px 18px',
               borderRadius: '8px',

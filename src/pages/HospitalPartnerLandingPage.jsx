@@ -52,7 +52,7 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
     <div className="hpl-wrap" style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '40px', fontFamily: "'Noto Sans', sans-serif" }}>
       <style>{`
         .hpl-hero-v2 {
-          background: linear-gradient(135deg, #0066fe 0%, #0046b8 100%);
+          background: linear-gradient(135deg, #0d2f5d 0%, #0046b8 100%);
           color: #ffffff;
           padding: 44px 16px 50px;
           text-align: center;
@@ -89,12 +89,12 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
           transition: all 0.2s ease;
         }
         .hpl-card-v2:hover {
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           transform: translateY(-2px);
           box-shadow: 0 6px 18px rgba(0, 102, 254, 0.1);
         }
         .hpl-btn-primary-v2 {
-          background: #0066fe !important;
+          background: #0d2f5d !important;
           color: #ffffff !important;
           padding: 8px 18px !important;
           border-radius: 8px !important;
@@ -176,7 +176,7 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
           </p>
 
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '22px' }}>
-            <a href="#hpl-form" className="hpl-btn-primary-v2" style={{ background: '#ffffff', color: '#0066fe' }}>
+            <a href="#hpl-form" className="hpl-btn-primary-v2" style={{ background: '#ffffff', color: '#0d2f5d' }}>
               <i className="bi bi-person-plus-fill" />
               <span>Become a Partner Hospital</span>
             </a>
@@ -198,19 +198,19 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
       <section style={{ padding: '20px 16px', background: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
         <div className="hpl-container-v2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', textAlign: 'center' }}>
           <div className="hpl-card-v2" style={{ padding: '14px' }}>
-            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0066fe', fontWeight: 800, marginBottom: '2px' }}>120+</strong>
+            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '2px' }}>120+</strong>
             <span style={{ color: '#475569', fontSize: '0.78rem', fontWeight: 600 }}>Partner Hospitals Enrolled</span>
           </div>
           <div className="hpl-card-v2" style={{ padding: '14px' }}>
-            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0066fe', fontWeight: 800, marginBottom: '2px' }}>48 Hours</strong>
+            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '2px' }}>48 Hours</strong>
             <span style={{ color: '#475569', fontSize: '0.78rem', fontWeight: 600 }}>Fast-Track Case Opinion Target</span>
           </div>
           <div className="hpl-card-v2" style={{ padding: '14px' }}>
-            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0066fe', fontWeight: 800, marginBottom: '2px' }}>100%</strong>
+            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '2px' }}>100%</strong>
             <span style={{ color: '#475569', fontSize: '0.78rem', fontWeight: 600 }}>Verified Pre-Screened Reports</span>
           </div>
           <div className="hpl-card-v2" style={{ padding: '14px' }}>
-            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0066fe', fontWeight: 800, marginBottom: '2px' }}>24/7</strong>
+            <strong style={{ display: 'block', fontSize: '1.5rem', color: '#0d2f5d', fontWeight: 800, marginBottom: '2px' }}>24/7</strong>
             <span style={{ color: '#475569', fontSize: '0.78rem', fontWeight: 600 }}>Dedicated Patient Care Concierge</span>
           </div>
         </div>
@@ -219,7 +219,7 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
       {/* ── PARTNERSHIP BENEFITS SECTION ── */}
       <section id="hpl-benefits" style={{ padding: '40px 16px', background: '#ffffff' }}>
         <div className="hpl-container-v2" style={{ textAlign: 'center' }}>
-          <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
+          <span style={{ color: '#0d2f5d', fontWeight: 800, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
             KAIRACURE ALLIANCE ADVANTAGE
           </span>
           <h2 style={{ fontSize: 'clamp(1.35rem, 2.5vw, 1.8rem)', color: '#0f172a', fontWeight: 800, marginBottom: '8px', letterSpacing: '-0.01em' }}>
@@ -232,7 +232,7 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
           {/* 4 Feature Cards Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', marginBottom: '28px' }}>
             <div className="hpl-card-v2" style={{ textAlign: 'center' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', margin: '0 auto 10px' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: '#f0f7ff', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', margin: '0 auto 10px' }}>
                 <i className="bi bi-globe-americas" />
               </div>
               <strong style={{ display: 'block', fontSize: '0.9rem', color: '#0f172a', marginBottom: '2px', fontWeight: 700 }}>Global Patient Inflows</strong>
@@ -283,10 +283,10 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
 
       {/* ── PARTNER FORM SECTION ── */}
       <section id="hpl-form" style={{ padding: '40px 16px', background: '#f8fafc' }}>
-        <div className="hpl-container-v2 hpl-form-card-grid" style={{ background: '#ffffff', border: '1.5px solid #0066fe', borderRadius: '16px', padding: '28px 24px', boxShadow: '0 8px 24px rgba(0, 102, 254, 0.06)' }}>
+        <div className="hpl-container-v2 hpl-form-card-grid" style={{ background: '#ffffff', border: '1.5px solid #0d2f5d', borderRadius: '16px', padding: '28px 24px', boxShadow: '0 8px 24px rgba(0, 102, 254, 0.06)' }}>
           
           <div>
-            <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
+            <span style={{ color: '#0d2f5d', fontWeight: 800, fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '6px' }}>
               JOIN KAIRACURE ALLIANCE
             </span>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px', letterSpacing: '-0.01em' }}>
@@ -298,15 +298,15 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#0f172a', fontWeight: 600 }}>
-                <i className="bi bi-check-circle-fill" style={{ color: '#0066fe', fontSize: '0.95rem' }} />
+                <i className="bi bi-check-circle-fill" style={{ color: '#0d2f5d', fontSize: '0.95rem' }} />
                 <span>Zero registration fee for accredited healthcare providers</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#0f172a', fontWeight: 600 }}>
-                <i className="bi bi-check-circle-fill" style={{ color: '#0066fe', fontSize: '0.95rem' }} />
+                <i className="bi bi-check-circle-fill" style={{ color: '#0d2f5d', fontSize: '0.95rem' }} />
                 <span>Dedicated international case desk &amp; report translation</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#0f172a', fontWeight: 600 }}>
-                <i className="bi bi-check-circle-fill" style={{ color: '#0066fe', fontSize: '0.95rem' }} />
+                <i className="bi bi-check-circle-fill" style={{ color: '#0d2f5d', fontSize: '0.95rem' }} />
                 <span>Direct patient intake &amp; package quote presentation</span>
               </div>
             </div>
@@ -378,7 +378,7 @@ export function HospitalPartnerLandingPage({ onBackToDetails, selectedHospital, 
               </div>
 
               {formStatus && (
-                <div style={{ color: formStatus.includes('submitted') || formStatus.includes('Thank you') ? '#16a34a' : '#0066fe', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{ color: formStatus.includes('submitted') || formStatus.includes('Thank you') ? '#16a34a' : '#0d2f5d', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <i className="bi bi-check-circle-fill" />
                   <span>{formStatus}</span>
                 </div>

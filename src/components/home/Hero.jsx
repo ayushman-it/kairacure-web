@@ -33,10 +33,10 @@ function renderFormattedAiMessage(text = '', isUser = false) {
                 padding: isHospitalHeader ? '4px 8px' : '0',
                 background: isHospitalHeader ? 'rgba(0, 102, 254, 0.04)' : 'transparent',
                 borderRadius: '6px',
-                borderLeft: isHospitalHeader ? '2.5px solid #0066fe' : 'none'
+                borderLeft: isHospitalHeader ? '2.5px solid #0d2f5d' : 'none'
               }}
             >
-              <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.8rem', lineHeight: '1.4' }}>•</span>
+              <span style={{ color: '#0d2f5d', fontWeight: 800, fontSize: '0.8rem', lineHeight: '1.4' }}>•</span>
               <span style={{ fontSize: '0.8rem', color: '#1e293b', lineHeight: '1.45', fontWeight: isHospitalHeader ? 700 : 500 }}>
                 {bulletText}
               </span>

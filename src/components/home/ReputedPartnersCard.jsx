@@ -6,7 +6,7 @@ const FALLBACK_REPUTED_PARTNERS = [
     location: 'Delhi / NCR & Pan-India',
     accreditation: 'JCI & NABH',
     specialties: 'Oncology, Organ Transplant & Cardiac',
-    badgeColor: '#0066fe',
+    badgeColor: '#0d2f5d',
   },
   {
     name: 'Fortis Healthcare',
@@ -35,7 +35,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
   const displayPartners = useMemo(() => {
     if (Array.isArray(hospitals) && hospitals.length > 0) {
       return hospitals.slice(0, 4).map((h, i) => {
-        const colors = ['#0066fe', '#059669', '#0284c7', '#d97706'];
+        const colors = ['#0d2f5d', '#059669', '#0284c7', '#d97706'];
         const acc = Array.isArray(h.accreditations) && h.accreditations.length > 0
           ? h.accreditations.join(' & ')
           : (h.accreditation || 'JCI & NABH');
@@ -83,7 +83,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
           {/* Top Title Bar */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #f1f5f9' }}>
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', fontWeight: 800, color: '#0066fe', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', fontWeight: 800, color: '#0d2f5d', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                 <i className="bi bi-building-check" style={{ fontSize: '0.9rem' }} />
                 <span>ACCREDITED HEALTHCARE NETWORK</span>
               </div>
@@ -97,7 +97,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
               type="button"
               className="rpc-human-btn"
               style={{
-                background: '#0066fe',
+                background: '#0d2f5d',
                 color: '#ffffff',
                 border: 'none',
                 padding: '8px 18px',
@@ -145,7 +145,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
                   </div>
 
                   <div style={{ fontSize: '0.76rem', color: '#64748b', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <i className="bi bi-geo-alt-fill" style={{ color: '#0066fe', fontSize: '0.78rem' }} />
+                    <i className="bi bi-geo-alt-fill" style={{ color: '#0d2f5d', fontSize: '0.78rem' }} />
                     <span>{hosp.location}</span>
                   </div>
 
@@ -157,7 +157,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
                   </div>
                 </div>
 
-                <div style={{ marginTop: '12px', paddingTop: '8px', borderTop: '1px dashed #cbd5e1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.74rem', color: '#0066fe', fontWeight: 700 }}>
+                <div style={{ marginTop: '12px', paddingTop: '8px', borderTop: '1px dashed #cbd5e1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.74rem', color: '#0d2f5d', fontWeight: 700 }}>
                   <span>Verified Medical Partner</span>
                   <i className="bi bi-chevron-right" />
                 </div>
@@ -168,10 +168,10 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
           {/* Bottom Trust Note */}
           <div style={{ background: '#eff6ff', borderRadius: '10px', padding: '10px 14px', border: '1px solid #bfdbfe', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#1e3a8a', fontWeight: 600 }}>
-              <i className="bi bi-check-circle-fill" style={{ color: '#0066fe', fontSize: '0.95rem' }} />
+              <i className="bi bi-check-circle-fill" style={{ color: '#0d2f5d', fontSize: '0.95rem' }} />
               <span>Looking for a specific doctor or hospital package? Get free doctor opinions &amp; negotiated estimates.</span>
             </div>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0066fe', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0d2f5d', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               Explore Hospital Directory <i className="bi bi-arrow-right" />
             </span>
           </div>

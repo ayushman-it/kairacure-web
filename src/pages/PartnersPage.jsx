@@ -119,17 +119,17 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
           width: 100%;
         }
         .partner-select-control.has-value {
-          border-color: #0066fe;
-          color: #0066fe;
+          border-color: #0d2f5d;
+          color: #0d2f5d;
           background-color: #f0f7ff;
         }
         .partner-select-control:focus {
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 0 0 3px rgba(0, 102, 254, 0.12);
         }
         .partner-search-btn-v2 {
           height: 44px !important;
-          background: #0066fe !important;
+          background: #0d2f5d !important;
           color: #ffffff !important;
           border: none !important;
           border-radius: 10px !important;
@@ -159,9 +159,9 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
           transition: all 0.15s ease;
         }
         .partner-quick-pill-v2.active {
-          background: #0066fe;
+          background: #0d2f5d;
           color: #ffffff;
-          border-color: #0066fe;
+          border-color: #0d2f5d;
           box-shadow: 0 2px 8px rgba(0, 102, 254, 0.25);
         }
         .hospital-card-v2-wide {
@@ -323,7 +323,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
         <button
           type="button"
           onClick={() => setPage('partner-growth')}
-          style={{ background: '#0066fe', color: '#ffffff', fontWeight: 700, marginLeft: 'auto', borderRadius: '10px', padding: '8px 18px', border: 'none', cursor: 'pointer', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 14px rgba(0,102,254,0.22)' }}
+          style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, marginLeft: 'auto', borderRadius: '10px', padding: '8px 18px', border: 'none', cursor: 'pointer', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 14px rgba(0,102,254,0.22)' }}
         >
           <i className="bi bi-broadcast-pin" style={{ color: '#ffffff' }} /> Hospital Partner Growth &amp; DOOH Ads
         </button>
@@ -396,7 +396,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                     setSelectedHospital(hospital);
                     setPage('partner-detail');
                   }}
-                  style={{ fontSize: '0.8rem', color: '#0066fe', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                  style={{ fontSize: '0.8rem', color: '#0d2f5d', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                 >
                   View Hospital Profile &amp; Doctors →
                 </span>
@@ -423,7 +423,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                   style={{
                     height: '42px',
                     width: '100%',
-                    background: '#0066fe',
+                    background: '#0d2f5d',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '10px',
@@ -450,7 +450,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
               <button 
                 onClick={() => setVisibleHospitalCount((prev) => prev + 5)} 
                 type="button"
-                style={{ background: '#ffffff', border: '1.5px solid #0066fe', color: '#0066fe', padding: '12px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 8px rgba(0,102,254,0.08)' }}
+                style={{ background: '#ffffff', border: '1.5px solid #0d2f5d', color: '#0d2f5d', padding: '12px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 8px rgba(0,102,254,0.08)' }}
               >
                 <span>Load More Partner Hospitals</span>
                 <i className="bi bi-chevron-down" />
@@ -461,7 +461,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
 
         {/* Right Sidebar Consultation Form */}
         <div>
-          <div style={{ background: '#ffffff', border: '1.5px solid #0066fe', borderRadius: '18px', padding: '22px', boxShadow: '0 4px 20px rgba(0, 102, 254, 0.08)', position: 'sticky', top: '90px' }}>
+          <div style={{ background: '#ffffff', border: '1.5px solid #0d2f5d', borderRadius: '18px', padding: '22px', boxShadow: '0 4px 20px rgba(0, 102, 254, 0.08)', position: 'sticky', top: '90px' }}>
             <EvaluationForm selectedHospital={hospitals[0]} title="Quick Consultation" />
           </div>
         </div>

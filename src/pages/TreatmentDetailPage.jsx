@@ -168,7 +168,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
               {/* SPEC PILLS BAR */}
               <div className="pdl-specs-grid" style={{ marginBottom: '1rem' }}>
                 <div>
-                  <strong className="pdl-spec-val" style={{ color: '#0066fe' }}>{backendPackage ? money(backendPackage) : 'On Request'}</strong>
+                  <strong className="pdl-spec-val" style={{ color: '#0d2f5d' }}>{backendPackage ? money(backendPackage) : 'On Request'}</strong>
                   <span className="pdl-spec-lbl">Est. Package</span>
                 </div>
                 <div>
@@ -257,12 +257,12 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
           {/* AI MEDICAL GUIDANCE ASSISTANT WIDGET */}
           <div className="pdl-card" style={{ padding: '1.25rem', borderRadius: '14px', border: '1.5px solid #bfdbfe', background: 'linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%)', marginBottom: '1.25rem', boxShadow: '0 2px 10px rgba(0, 102, 254, 0.05)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #0066fe 0%, #0052cc 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', boxShadow: '0 3px 10px rgba(0, 102, 254, 0.3)', flexShrink: 0 }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', boxShadow: '0 3px 10px rgba(0, 102, 254, 0.3)', flexShrink: 0 }}>
                 <i className="bi bi-robot" />
               </div>
               <div>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Ask Kairacure AI Expert</h3>
-                <span style={{ fontSize: '0.8rem', color: '#0066fe', fontWeight: 600 }}>Instant medical guidance for {pageTreatmentTitle}</span>
+                <span style={{ fontSize: '0.8rem', color: '#0d2f5d', fontWeight: 600 }}>Instant medical guidance for {pageTreatmentTitle}</span>
               </div>
             </div>
 
@@ -284,7 +284,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                     padding: '0.4rem 0.9rem',
                     fontSize: '0.78rem',
                     fontWeight: 700,
-                    color: '#0066fe',
+                    color: '#0d2f5d',
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -293,14 +293,14 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                     transition: 'all 0.2s ease',
                   }}
                 >
-                  <i className={`bi ${chip.icon}`} style={{ color: '#0066fe', fontSize: '0.85rem' }} />
+                  <i className={`bi ${chip.icon}`} style={{ color: '#0d2f5d', fontSize: '0.85rem' }} />
                   <span>{chip.label}</span>
                 </button>
               ))}
             </div>
 
             {aiLoading && (
-              <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '8px', border: '1px solid #bfdbfe', color: '#0066fe', fontSize: '0.85rem', fontWeight: 600 }}>
+              <div style={{ padding: '0.85rem', background: '#ffffff', borderRadius: '8px', border: '1px solid #bfdbfe', color: '#0d2f5d', fontSize: '0.85rem', fontWeight: 600 }}>
                 <i className="bi bi-arrow-repeat spin" style={{ marginRight: '0.5rem' }} /> Consulting Kairacure AI Expert for {pageTreatmentTitle}...
               </div>
             )}
@@ -315,7 +315,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                 ))}
                 <div style={{ marginTop: '0.75rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <small style={{ color: '#64748b', fontSize: '0.75rem' }}>Educational guidance only · Consult a qualified specialist</small>
-                  <button onClick={() => setPage('ai-assistant')} type="button" style={{ border: 'none', background: 'transparent', color: '#0066fe', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
+                  <button onClick={() => setPage('ai-assistant')} type="button" style={{ border: 'none', background: 'transparent', color: '#0d2f5d', fontWeight: 700, fontSize: '0.82rem', cursor: 'pointer' }}>
                     Open Full AI Chat →
                   </button>
                 </div>
@@ -330,7 +330,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                 <h3 className="pdl-section-h3" style={{ fontSize: '1.02rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                   Procedures &amp; Surgical Options
                 </h3>
-                <span className="pdl-badge-blue" style={{ background: '#f0f7ff', border: '1px solid #bfdbfe', color: '#0066fe', fontSize: '0.74rem', padding: '3px 10px', borderRadius: '12px', fontWeight: 700 }}>
+                <span className="pdl-badge-blue" style={{ background: '#f0f7ff', border: '1px solid #bfdbfe', color: '#0d2f5d', fontSize: '0.74rem', padding: '3px 10px', borderRadius: '12px', fontWeight: 700 }}>
                   <i className="bi bi-list-check" style={{ marginRight: '4px' }} /> {icdProcedures.length} Procedures
                 </span>
               </div>
@@ -371,7 +371,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                               width: '36px',
                               height: '36px',
                               borderRadius: '10px',
-                              background: 'linear-gradient(135deg, #0066fe 0%, #0052cc 100%)',
+                              background: 'linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%)',
                               color: '#ffffff',
                               display: 'flex',
                               alignItems: 'center',
@@ -399,7 +399,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                             <span style={{ display: 'block', fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
                               Starting From
                             </span>
-                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: hasPrice ? '#0066fe' : '#64748b', whiteSpace: 'nowrap', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: hasPrice ? '#0d2f5d' : '#64748b', whiteSpace: 'nowrap', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {hasPrice ? money(proc.packageFrom) : 'Quote on request'}
                             </span>
                           </div>
@@ -411,7 +411,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                             }}
                             type="button"
                             style={{
-                              background: 'linear-gradient(135deg, #0066fe 0%, #0052cc 100%)',
+                              background: 'linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%)',
                               color: '#ffffff',
                               border: 'none',
                               borderRadius: '8px',
@@ -512,7 +512,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
           {(activeTab === 'faqs' || activeTab === 'overview') && (
             <div className="pdl-card" style={{ padding: '1.25rem', borderRadius: '14px', border: '1px solid #e2e8f0', background: '#ffffff', marginBottom: '1.5rem', boxShadow: '0 2px 10px rgba(0,102,254,0.04)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#f0f7ff', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#f0f7ff', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>
                   <i className="bi bi-question-circle-fill" />
                 </div>
                 <h3 className="pdl-section-h3" style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>
@@ -528,7 +528,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                       key={i} 
                       style={{ 
                         background: isOpen ? '#f0f7ff' : '#ffffff', 
-                        border: isOpen ? '1.5px solid #0066fe' : '1px solid #e2e8f0', 
+                        border: isOpen ? '1.5px solid #0d2f5d' : '1px solid #e2e8f0', 
                         borderRadius: '10px', 
                         overflow: 'hidden',
                         transition: 'all 0.2s ease'
@@ -544,7 +544,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                           border: 'none', 
                           textAlign: 'left', 
                           fontWeight: 700, 
-                          color: isOpen ? '#0066fe' : '#0f172a', 
+                          color: isOpen ? '#0d2f5d' : '#0f172a', 
                           display: 'flex', 
                           justify: 'space-between', 
                           alignItems: 'center', 
@@ -554,7 +554,7 @@ export function TreatmentDetailPage({ allTreatments = [], hospitals = [], money,
                         }}
                       >
                         <span style={{ flex: 1 }}>{faq.q}</span>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: isOpen ? '#0066fe' : '#f1f5f9', color: isOpen ? '#ffffff' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>
+                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: isOpen ? '#0d2f5d' : '#f1f5f9', color: isOpen ? '#ffffff' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>
                           <i className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`} />
                         </div>
                       </button>

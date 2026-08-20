@@ -185,7 +185,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
           {currentPatient ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'grid', placeItems: 'center', fontSize: '1.1rem' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'grid', placeItems: 'center', fontSize: '1.1rem' }}>
                   <i className="bi bi-person-fill" />
                 </div>
                 <div>
@@ -229,10 +229,10 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
             <i className="bi bi-compass-fill nav-icon" /> <span>Plan My Journey</span>
           </button>
           <button className={page === 'partner-growth' ? 'active' : ''} onClick={() => navigate('partner-growth')} type="button">
-            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0066fe' }} /> <span>Hospital Growth Partner</span>
+            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0d2f5d' }} /> <span>Hospital Growth Partner</span>
           </button>
           <button className={page === 'ai-assistant' ? 'active' : ''} onClick={() => navigate('ai-assistant')} type="button">
-            <i className="bi bi-robot nav-icon" style={{ color: '#0066fe' }} /> <span>Kaira AI Concierge</span>
+            <i className="bi bi-robot nav-icon" style={{ color: '#0d2f5d' }} /> <span>Kaira AI Concierge</span>
           </button>
         </nav>
 
