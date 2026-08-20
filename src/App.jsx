@@ -238,7 +238,7 @@ function App() {
           />
         )}
 
-        {showHome && <ReputedPartnersCard setPage={setPage} setSelectedHospital={setSelectedHospital} />}
+        {showHome && <ReputedPartnersCard setPage={setPage} setSelectedHospital={setSelectedHospital} hospitals={contentHospitals} />}
 
         {showHome && <HomeTreatmentBanners setActiveGroup={setActiveGroup} setPage={setPage} setSelectedTreatment={setSelectedTreatment} treatments={contentTreatments} />}
 

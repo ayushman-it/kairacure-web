@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-const REPUTED_PARTNERS = [
+const FALLBACK_REPUTED_PARTNERS = [
   {
     name: 'Apollo Hospitals',
     location: 'Delhi / NCR & Pan-India',
-    accreditation: 'JCI & NABH Accredited',
+    accreditation: 'JCI & NABH',
     specialties: 'Oncology, Organ Transplant & Cardiac',
     badgeColor: '#0066fe',
   },
@@ -25,13 +25,43 @@ const REPUTED_PARTNERS = [
   {
     name: 'Manipal Hospitals',
     location: 'Bengaluru & South India',
-    accreditation: 'JCI & NABH Accredited',
+    accreditation: 'JCI & NABH',
     specialties: 'Cardiology & Bone Marrow',
     badgeColor: '#d97706',
   },
 ];
 
-export function ReputedPartnersCard({ setPage }) {
+export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = [] }) {
+  const displayPartners = useMemo(() => {
+    if (Array.isArray(hospitals) && hospitals.length > 0) {
+      return hospitals.slice(0, 4).map((h, i) => {
+        const colors = ['#0066fe', '#059669', '#0284c7', '#d97706'];
+        const acc = Array.isArray(h.accreditations) && h.accreditations.length > 0
+          ? h.accreditations.join(' & ')
+          : (h.accreditation || 'JCI & NABH');
+        return {
+          name: h.name,
+          location: h.city || h.location || 'Pan-India',
+          accreditation: acc,
+          specialties: h.centerOfExcellence || h.specialties || h.category || 'Multi-Specialty & Organ Transplant',
+          badgeColor: colors[i % colors.length],
+          rawItem: h,
+        };
+      });
+    }
+    return FALLBACK_REPUTED_PARTNERS;
+  }, [hospitals]);
+
+  const handleCardClick = (e, partner) => {
+    e.stopPropagation();
+    if (partner.rawItem && setSelectedHospital) {
+      setSelectedHospital(partner.rawItem);
+      setPage('partner-detail', partner.rawItem);
+    } else {
+      setPage('partners');
+    }
+  };
+
   return (
     <section className="rpc-section" style={{ padding: '36px 16px', background: '#f8fafc', fontFamily: "'Noto Sans', sans-serif" }}>
       <div className="rpc-container" style={{ maxWidth: '1180px', margin: '0 auto' }}>
@@ -83,16 +113,17 @@ export function ReputedPartnersCard({ setPage }) {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>View All 120+ Partner Hospitals</span>
+              <span>View All {hospitals.length > 0 ? hospitals.length : 120}+ Partner Hospitals</span>
               <i className="bi bi-arrow-right" />
             </button>
           </div>
 
           {/* Partner Hospitals Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: '20px' }}>
-            {REPUTED_PARTNERS.map((hosp) => (
+            {displayPartners.map((hosp, idx) => (
               <div
-                key={hosp.name}
+                key={idx}
+                onClick={(e) => handleCardClick(e, hosp)}
                 style={{
                   background: '#f8fafc',
                   border: '1px solid #e2e8f0',
@@ -101,7 +132,8 @@ export function ReputedPartnersCard({ setPage }) {
                   transition: 'all 0.2s ease',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  cursor: 'pointer'
                 }}
               >
                 <div>
@@ -119,7 +151,9 @@ export function ReputedPartnersCard({ setPage }) {
 
                   <div style={{ fontSize: '0.78rem', color: '#334155', fontWeight: 600, lineHeight: 1.4 }}>
                     <span style={{ color: '#64748b', fontSize: '0.72rem', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Center of Excellence:</span>
-                    {hosp.specialties}
+                    <span style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {hosp.specialties}
+                    </span>
                   </div>
                 </div>
 

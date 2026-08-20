@@ -322,8 +322,21 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
                 <strong style={{ display: 'block', fontSize: '0.92rem', color: '#0f172a', marginBottom: '2px', fontWeight: 800 }}>
                   {item.title}
                 </strong>
-                <span style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', marginBottom: '4px' }}>
-                  {item.subtitle}
+                <span 
+                  style={{ 
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    fontSize: '0.74rem', 
+                    color: '#64748b', 
+                    marginBottom: '4px',
+                    lineHeight: 1.35
+                  }}
+                  title={item.subtitle}
+                >
+                  {item.subtitle && item.subtitle.length > 40 ? item.subtitle.slice(0, 38).trim() + '...' : item.subtitle}
                 </span>
                 <span 
                   style={{
