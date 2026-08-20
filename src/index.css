@@ -36642,4 +36642,156 @@ button.pdl-btn-outline:hover {
   background: #0052cc !important;
 }
 
+/* ── ULTRA-PROFESSIONAL MOBILE OFFCANVAS SIDEBAR ── */
+.mobile-offcanvas {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: min(320px, 85vw) !important;
+  background: #ffffff !important;
+  box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15) !important;
+  z-index: 9999 !important;
+  padding: 20px 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transform: translateX(105%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-family: 'Noto Sans', sans-serif !important;
+}
+
+.mobile-offcanvas.open {
+  transform: translateX(0) !important;
+}
+
+.mobile-offcanvas-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.mobile-offcanvas-close-btn {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  display: grid !important;
+  place-items: center !important;
+  cursor: pointer !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.mobile-offcanvas-close-btn:hover {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border-color: #fca5a5 !important;
+}
+
+.mobile-side-profile-card {
+  margin: 14px 0 !important;
+  padding: 12px 14px !important;
+  background: #f0f7ff !important;
+  border: 1px solid #bfdbfe !important;
+  border-radius: 12px !important;
+}
+
+.mobile-side-auth-btn {
+  flex: 1 !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.mobile-side-auth-btn.primary {
+  background: #0066fe !important;
+  color: #ffffff !important;
+}
+
+.mobile-side-auth-btn.secondary {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin: 10px 0 !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav button {
+  width: 100% !important;
+  min-height: 42px !important;
+  border: 1px solid #f1f5f9 !important;
+  border-radius: 10px !important;
+  padding: 0 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  color: #334155 !important;
+  background: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.86rem !important;
+  transition: all 0.2s ease !important;
+  text-align: left !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav button .nav-icon {
+  font-size: 1rem !important;
+  color: #0066fe !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav button:hover {
+  background: #f0f7ff !important;
+  border-color: #bfdbfe !important;
+  color: #0066fe !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav button.active {
+  background: linear-gradient(135deg, #0066fe 0%, #0046b8 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 3px 10px rgba(0, 102, 254, 0.25) !important;
+}
+
+.site-header .mobile-offcanvas .mobile-nav button.active .nav-icon {
+  color: #ffffff !important;
+}
+
+.mobile-side-footer {
+  padding-top: 14px !important;
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+.mobile-side-call-btn {
+  width: 100% !important;
+  height: 40px !important;
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 800 !important;
+  font-size: 0.84rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  box-shadow: 0 3px 10px rgba(22, 163, 74, 0.25) !important;
+}
+
 

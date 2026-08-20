@@ -168,39 +168,84 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         <i className="fa-solid fa-bars" aria-hidden="true" />
       </button>
       {mobileMenuOpen && <button aria-label="Close menu overlay" className="mobile-menu-backdrop" onClick={() => setMobileMenuOpen(false)} type="button" />}
+      {/* Mobile Menu Offcanvas Drawer */}
       <aside className={mobileMenuOpen ? 'mobile-offcanvas open' : 'mobile-offcanvas'} aria-hidden={!mobileMenuOpen}>
+        {/* Header */}
         <div className="mobile-offcanvas-head">
-          <strong>Menu</strong>
-          <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button">
-            <i className="fa-solid fa-xmark" aria-hidden="true" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src={logoImg} alt="KairaCure" style={{ height: '30px', width: 'auto', objectFit: 'contain' }} />
+          </div>
+          <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button" className="mobile-offcanvas-close-btn">
+            <i className="bi bi-x-lg" aria-hidden="true" />
           </button>
         </div>
-        {/* Mobile search */}
-        <div className="mobile-search-wrap">
-          <div className="hs-box">
-            <i className="fa-solid fa-magnifying-glass hs-icon" aria-hidden="true" />
-            <input className="hs-input" placeholder="Search treatments, hospitals..." autoComplete="off" />
-          </div>
+
+        {/* Patient Status / Auth Profile Card */}
+        <div className="mobile-side-profile-card">
+          {currentPatient ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'grid', placeItems: 'center', fontSize: '1.1rem' }}>
+                  <i className="bi bi-person-fill" />
+                </div>
+                <div>
+                  <strong style={{ fontSize: '0.86rem', color: '#0f172a', display: 'block', fontWeight: 800 }}>{patientLabel}</strong>
+                  <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                    <i className="bi bi-check-circle-fill" /> Active Session
+                  </span>
+                </div>
+              </div>
+              <button onClick={logoutAndClose} type="button" style={{ background: '#fee2e2', color: '#dc2626', border: 'none', padding: '6px 12px', borderRadius: '6px', fontSize: '0.76rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <i className="bi bi-box-arrow-right" /> Logout
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+              <button className="mobile-side-auth-btn primary" onClick={() => navigate('login')} type="button">
+                <i className="bi bi-person-fill" /> Sign In
+              </button>
+              <button className="mobile-side-auth-btn secondary" onClick={() => navigate('login')} type="button">
+                <i className="bi bi-person-plus-fill" /> Register
+              </button>
+            </div>
+          )}
         </div>
+
+        {/* Mobile Nav Links List */}
         <nav className="mobile-nav">
-          {nav.map(([id, label]) => (
-            <button className={page === id ? 'active' : ''} key={id} onClick={() => navigate(id)} type="button">
-              {label}
-            </button>
-          ))}
-        </nav>
-        {currentPatient ? (
-          <button className="header-cta mobile-header-cta header-user-cta" onClick={logoutAndClose} title={currentPatient.name || currentPatient.email} type="button">
-            <i className="fa-solid fa-user-check" aria-hidden="true" />
-            <span>{patientLabel}</span>
-            <b>Logout</b>
+          <button className={page === 'home' ? 'active' : ''} onClick={() => navigate('home')} type="button">
+            <i className="bi bi-house-door-fill nav-icon" /> <span>Home</span>
           </button>
-        ) : (
-          <div className="header-auth-btns mobile-auth-btns">
-            <button className="header-login-btn" onClick={() => navigate('login')} type="button">Login</button>
-            <button className="header-signup-btn" onClick={() => navigate('login')} type="button">Sign Up</button>
-          </div>
-        )}
+          <button className={page === 'treatments' ? 'active' : ''} onClick={() => navigate('treatments')} type="button">
+            <i className="bi bi-stethoscope nav-icon" /> <span>Treatments Catalog</span>
+          </button>
+          <button className={page === 'destinations' ? 'active' : ''} onClick={() => navigate('destinations')} type="button">
+            <i className="bi bi-geo-alt-fill nav-icon" /> <span>Medical Destinations</span>
+          </button>
+          <button className={page === 'partners' ? 'active' : ''} onClick={() => navigate('partners')} type="button">
+            <i className="bi bi-building-check nav-icon" /> <span>Partner Hospitals</span>
+          </button>
+          <button className={page === 'planner' ? 'active' : ''} onClick={() => navigate('planner')} type="button">
+            <i className="bi bi-compass-fill nav-icon" /> <span>Plan My Journey</span>
+          </button>
+          <button className={page === 'partner-growth' ? 'active' : ''} onClick={() => navigate('partner-growth')} type="button">
+            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0066fe' }} /> <span>Hospital Growth Partner</span>
+          </button>
+          <button className={page === 'ai-assistant' ? 'active' : ''} onClick={() => navigate('ai-assistant')} type="button">
+            <i className="bi bi-robot nav-icon" style={{ color: '#0066fe' }} /> <span>Kaira AI Concierge</span>
+          </button>
+        </nav>
+
+        {/* Bottom Contact & Care Desk */}
+        <div className="mobile-side-footer">
+          <a href="tel:+919876543210" className="mobile-side-call-btn">
+            <i className="bi bi-telephone-fill" />
+            <span>24/7 Medical Care Desk</span>
+          </a>
+          <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', textAlign: 'center', marginTop: '8px' }}>
+            Email: care@kairacure.com
+          </span>
+        </div>
       </aside>
     </header>
   );
