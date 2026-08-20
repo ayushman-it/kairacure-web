@@ -298,7 +298,15 @@ function App() {
         {showHome && <HomeFaqSection />}
       </main>
 
-      {!showAdmin && !showAuth && page !== 'partner-detail' && <Footer setPage={setPage} />}
+      {!showAdmin && !showAuth && page !== 'partner-detail' && (
+        <Footer
+          setPage={setPage}
+          treatments={contentTreatments}
+          hospitals={contentHospitals}
+          setSelectedTreatment={setSelectedTreatment}
+          setSelectedHospital={setSelectedHospital}
+        />
+      )}
       {showJourneyModal && page !== 'ai-assistant' && !showAdmin && <JourneyModal onClose={() => setShowJourneyModal(false)} setPage={setPage} treatments={contentTreatments} />}
     </div>
   );
