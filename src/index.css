@@ -17694,7 +17694,7 @@ main {
   --blue: #2874fc;
   --navy: #171a35;
   --orange: #7c4dff;
-  --flight-gradient: linear-gradient(135deg, #0693e3 0%, #2874fc 48%, #9b51e0 100%);
+  --flight-gradient: linear-gradient(135deg, #020381 0%, #151a7a 46%, #2874fc 100%);
   --flight-dark-gradient: linear-gradient(135deg, #020381 0%, #151a7a 46%, #2874fc 100%);
   --page-max: 1240px;
   --page-gutter: clamp(18px, 4vw, 56px);
