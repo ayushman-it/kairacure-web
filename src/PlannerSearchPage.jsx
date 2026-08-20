@@ -492,7 +492,7 @@ export function PlannerSearchPage({
         <div className="treatments-grid-container">
           {effectiveTreatments.length === 0 && (
             <div className="planner-loading-state" style={{ background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '16px', padding: '2.5rem 1.5rem', textAlign: 'center', gridColumn: '1 / -1' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#eff6ff', color: '#0066fe', display: 'grid', placeItems: 'center', margin: '0 auto 0.85rem', fontSize: '1.4rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#eff6ff', color: '#0d2f5d', display: 'grid', placeItems: 'center', margin: '0 auto 0.85rem', fontSize: '1.4rem' }}>
                 <i className="bi bi-folder-x" aria-hidden="true" />
               </div>
               <strong style={{ display: 'block', fontSize: '1.05rem', color: '#0f172a', marginBottom: '0.35rem' }}>No Catalog Records Found</strong>
@@ -523,7 +523,7 @@ export function PlannerSearchPage({
                 style={{
                   padding: '1.25rem',
                   background: isSelected ? '#f0f7ff' : '#ffffff',
-                  border: isSelected ? '2px solid #0066fe' : '1px solid #e2e8f0',
+                  border: isSelected ? '2px solid #0d2f5d' : '1px solid #e2e8f0',
                   borderRadius: '14px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -541,8 +541,8 @@ export function PlannerSearchPage({
                       width: '40px',
                       height: '40px',
                       borderRadius: '12px',
-                      background: isSelected ? '#0066fe' : '#eff6ff',
-                      color: isSelected ? '#ffffff' : '#0066fe',
+                      background: isSelected ? '#0d2f5d' : '#eff6ff',
+                      color: isSelected ? '#ffffff' : '#0d2f5d',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -556,7 +556,7 @@ export function PlannerSearchPage({
                     <span style={{
                       fontSize: '0.72rem',
                       fontWeight: 700,
-                      color: '#0066fe',
+                      color: '#0d2f5d',
                       background: '#f0f7ff',
                       padding: '0.2rem 0.65rem',
                       borderRadius: '20px',
@@ -579,14 +579,14 @@ export function PlannerSearchPage({
                   <span style={{
                     fontSize: '0.82rem',
                     fontWeight: 700,
-                    color: isSelected ? '#0066fe' : '#94a3b8',
+                    color: isSelected ? '#0d2f5d' : '#94a3b8',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.35rem'
                   }}>
                     {isSelected ? (
                       <>
-                        <i className="bi bi-check-circle-fill" style={{ fontSize: '1.15rem', color: '#0066fe' }} />
+                        <i className="bi bi-check-circle-fill" style={{ fontSize: '1.15rem', color: '#0d2f5d' }} />
                         <span>Selected</span>
                       </>
                     ) : (
@@ -1793,7 +1793,7 @@ export function JourneyPlanningPage({
       {/* Header */}
       <div className="journey-planning-header" style={{ maxWidth: '1160px', margin: '0 auto', padding: '20px 20px 12px' }}>
         <div className="jp-header-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
-          <button className="back-btn" onClick={onBack} type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '7px 14px', background: '#ffffff', border: '1px solid #d1d5db', borderRadius: '8px', color: '#0066fe', fontWeight: 600, fontSize: '0.82rem' }}>
+          <button className="back-btn" onClick={onBack} type="button" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '7px 14px', background: '#ffffff', border: '1px solid #d1d5db', borderRadius: '8px', color: '#0d2f5d', fontWeight: 600, fontSize: '0.82rem' }}>
             <i className="bi bi-arrow-left" aria-hidden="true" />
             Back to Hospitals
           </button>
@@ -1816,7 +1816,7 @@ export function JourneyPlanningPage({
           {/* Card 1: Patient Details */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
                 <i className="bi bi-person-fill" />
               </div>
               <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
@@ -1852,7 +1852,7 @@ export function JourneyPlanningPage({
                       border: 'none',
                       borderRight: '1px solid #cbd5e1', 
                       fontSize: '0.82rem', 
-                      color: '#0066fe', 
+                      color: '#0d2f5d', 
                       height: '38px', 
                       fontWeight: 700, 
                       outline: 'none',
@@ -1892,7 +1892,7 @@ export function JourneyPlanningPage({
           {/* Card 2: Location & Airport Details */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
                 <i className="bi bi-geo-alt-fill" />
               </div>
               <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
@@ -1972,7 +1972,7 @@ export function JourneyPlanningPage({
 
             {/* Live Flight & Hotel Status Box */}
             <div style={{ marginTop: '12px', padding: '10px 14px', background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 600, color: '#0066fe' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 600, color: '#0d2f5d' }}>
                 <i className="bi bi-airplane-engines-fill" />
                 <span>Real-time Flight &amp; Airport Fares Active</span>
               </div>
@@ -1990,7 +1990,7 @@ export function JourneyPlanningPage({
           {/* Card 3: Travel Preferences (Only Flight Options) */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
                 <i className="bi bi-airplane-fill" />
               </div>
               <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
@@ -2005,7 +2005,7 @@ export function JourneyPlanningPage({
                 style={{
                   padding: '12px 14px',
                   background: travelMode === 'flight' ? '#f0f7ff' : '#ffffff',
-                  border: travelMode === 'flight' ? '1.5px solid #0066fe' : '1px solid #e2e8f0',
+                  border: travelMode === 'flight' ? '1.5px solid #0d2f5d' : '1px solid #e2e8f0',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -2014,13 +2014,13 @@ export function JourneyPlanningPage({
                   position: 'relative'
                 }}
               >
-                <i className="bi bi-airplane" style={{ fontSize: '1.4rem', color: '#0066fe' }} />
+                <i className="bi bi-airplane" style={{ fontSize: '1.4rem', color: '#0d2f5d' }} />
                 <div>
-                  <strong style={{ display: 'block', fontSize: '0.85rem', color: '#0066fe' }}>Standard Flight</strong>
+                  <strong style={{ display: 'block', fontSize: '0.85rem', color: '#0d2f5d' }}>Standard Flight</strong>
                   <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Commercial Airline</span>
                 </div>
                 {travelMode === 'flight' && (
-                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0066fe', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
+                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0d2f5d', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
                     <i className="bi bi-check" />
                   </span>
                 )}
@@ -2031,7 +2031,7 @@ export function JourneyPlanningPage({
                 style={{
                   padding: '12px 14px',
                   background: travelMode === 'medical_flight' ? '#f0f7ff' : '#ffffff',
-                  border: travelMode === 'medical_flight' ? '1.5px solid #0066fe' : '1px solid #e2e8f0',
+                  border: travelMode === 'medical_flight' ? '1.5px solid #0d2f5d' : '1px solid #e2e8f0',
                   borderRadius: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -2040,13 +2040,13 @@ export function JourneyPlanningPage({
                   position: 'relative'
                 }}
               >
-                <i className="bi bi-heart-pulse-fill" style={{ fontSize: '1.3rem', color: travelMode === 'medical_flight' ? '#0066fe' : '#64748b' }} />
+                <i className="bi bi-heart-pulse-fill" style={{ fontSize: '1.3rem', color: travelMode === 'medical_flight' ? '#0d2f5d' : '#64748b' }} />
                 <div>
-                  <strong style={{ display: 'block', fontSize: '0.85rem', color: travelMode === 'medical_flight' ? '#0066fe' : '#1e293b' }}>Medical Assistance Flight</strong>
+                  <strong style={{ display: 'block', fontSize: '0.85rem', color: travelMode === 'medical_flight' ? '#0d2f5d' : '#1e293b' }}>Medical Assistance Flight</strong>
                   <span style={{ fontSize: '0.72rem', color: '#64748b' }}>Wheelchair / Escort</span>
                 </div>
                 {travelMode === 'medical_flight' && (
-                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0066fe', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
+                  <span style={{ position: 'absolute', top: '8px', right: '8px', background: '#0d2f5d', color: '#ffffff', borderRadius: '50%', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem' }}>
                     <i className="bi bi-check" />
                   </span>
                 )}
@@ -2056,7 +2056,7 @@ export function JourneyPlanningPage({
             {/* Live Flight Option & Pricing Preview */}
             <div style={{ marginTop: '14px', background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '10px', padding: '12px 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 700, color: '#0066fe' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', fontWeight: 700, color: '#0d2f5d' }}>
                   <i className="bi bi-airplane-fill" />
                   <span>
                     {isFetchingApiData ? 'Connecting FlightAPI.io Fares...' : `Flight Route: ${liveFlightData?.origin || getDetectedOriginAirport()} ➔ ${liveFlightData?.destination || 'BOM'}`}
@@ -2072,7 +2072,7 @@ export function JourneyPlanningPage({
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 600 }}>
-                    Est. One-way Fare: <strong style={{ color: '#0066fe', fontSize: '0.95rem' }}>₹{(liveFlightData?.livePrice || 5800).toLocaleString('en-IN')}</strong> / traveler
+                    Est. One-way Fare: <strong style={{ color: '#0d2f5d', fontSize: '0.95rem' }}>₹{(liveFlightData?.livePrice || 5800).toLocaleString('en-IN')}</strong> / traveler
                   </span>
                   <span style={{ fontSize: '0.74rem', color: '#64748b', whiteSpace: 'nowrap' }}>
                     {liveFlightData?.flightCount || 8} Verified Daily Flights
@@ -2085,7 +2085,7 @@ export function JourneyPlanningPage({
           {/* Card 4: Accommodation */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
                 <i className="bi bi-building-fill" />
               </div>
               <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
@@ -2150,7 +2150,7 @@ export function JourneyPlanningPage({
                 </div>
 
                 {isFetchingHotels ? (
-                  <div style={{ background: '#f0f7ff', border: '1.5px solid #bfdbfe', borderRadius: '10px', padding: '16px', textAlign: 'center', fontSize: '0.82rem', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                  <div style={{ background: '#f0f7ff', border: '1.5px solid #bfdbfe', borderRadius: '10px', padding: '16px', textAlign: 'center', fontSize: '0.82rem', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
                     <i className="bi bi-arrow-repeat spin" style={{ fontSize: '1.1rem' }} />
                     <span>Searching live partner hotels for <strong>{hotelCategory === '2star' ? '2 Star' : hotelCategory === '3star' ? '3 Star' : hotelCategory === '4star' ? '4 Star' : '5 Star'}</strong> in {selectedHospital?.city || 'Delhi'}...</span>
                   </div>
@@ -2162,7 +2162,7 @@ export function JourneyPlanningPage({
                       const displayHotels = filteredHotels.length ? filteredHotels : allCityHotels.slice(0, 2);
 
                       return displayHotels.map((h, i) => (
-                        <div key={i} className="jp-hotel-card" style={{ background: '#ffffff', border: '1.5px solid #0066fe', borderRadius: '10px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 4px rgba(0,102,254,0.06)' }}>
+                        <div key={i} className="jp-hotel-card" style={{ background: '#ffffff', border: '1.5px solid #0d2f5d', borderRadius: '10px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 4px rgba(0,102,254,0.06)' }}>
                           <div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
                               <strong style={{ fontSize: '0.85rem', color: '#0f172a' }}>{h.name}</strong>
@@ -2173,14 +2173,14 @@ export function JourneyPlanningPage({
                             <span style={{ fontSize: '0.73rem', color: '#64748b', display: 'block' }}>📍 {h.dist}</span>
                             <div style={{ display: 'flex', gap: '4px', marginTop: '5px', flexWrap: 'wrap' }}>
                               {h.amenities.map((am, aIdx) => (
-                                <span key={aIdx} style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0066fe', fontSize: '0.66rem', padding: '2px 7px', borderRadius: '4px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                                <span key={aIdx} style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0d2f5d', fontSize: '0.66rem', padding: '2px 7px', borderRadius: '4px', fontWeight: 600, whiteSpace: 'nowrap' }}>
                                   ✓ {am}
                                 </span>
                               ))}
                             </div>
                           </div>
                           <div style={{ textAlign: 'right' }}>
-                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0066fe', display: 'block', whiteSpace: 'nowrap' }}>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0d2f5d', display: 'block', whiteSpace: 'nowrap' }}>
                               ₹{h.price.toLocaleString('en-IN')}<span style={{ fontSize: '0.68rem', fontWeight: 400, color: '#64748b' }}>/night</span>
                             </span>
                             <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 700, background: '#ecfdf5', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', marginTop: '2px', whiteSpace: 'nowrap' }}>✓ Available</span>
@@ -2197,7 +2197,7 @@ export function JourneyPlanningPage({
           {/* Card 5: Companions */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '18px 20px', marginBottom: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+              <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
                 <i className="bi bi-people-fill" />
               </div>
               <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
@@ -2244,7 +2244,7 @@ export function JourneyPlanningPage({
                 <span style={{ background: '#ccfbf1', color: '#0d9488', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 800 }}>✓</span>
                 <span>Selected Hospital</span>
               </div>
-              <span style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0066fe', padding: '2px 8px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 700 }}>
+              <span style={{ background: '#f0f7ff', border: '1px solid #dbeafe', color: '#0d2f5d', padding: '2px 8px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 700 }}>
                 {selectedHospital?.jciAccredited ? 'JCI Accredited' : 'NABH Accredited'}
               </span>
             </div>
@@ -2273,8 +2273,8 @@ export function JourneyPlanningPage({
 
           {/* Card 2: Selected Treatments */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '14px 16px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0066fe', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px' }}>
-              <i className="bi bi-suit-heart-fill" style={{ color: '#0066fe' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0d2f5d', fontWeight: 700, fontSize: '0.88rem', marginBottom: '12px' }}>
+              <i className="bi bi-suit-heart-fill" style={{ color: '#0d2f5d' }} />
               <span>Selected Treatments ({selectedTreatments.length || 1})</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -2284,7 +2284,7 @@ export function JourneyPlanningPage({
                     <strong style={{ display: 'block', fontSize: '0.84rem', color: '#0f172a', margin: '0 0 2px', wordBreak: 'break-word' }}>{getPlannerTreatmentTitle(t)}</strong>
                     <span style={{ fontSize: '0.7rem', color: '#64748b' }}>ICD-11 Classified</span>
                   </div>
-                  <span style={{ display: 'inline-block', background: '#0066fe', color: '#ffffff', padding: '3px 10px', borderRadius: '12px', fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  <span style={{ display: 'inline-block', background: '#0d2f5d', color: '#ffffff', padding: '3px 10px', borderRadius: '12px', fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}>
                     {t.packageFrom ? `From ₹${(t.packageFrom / 100000).toFixed(1)}L` : 'From ₹2.4L'}
                   </span>
                 </div>
@@ -2294,7 +2294,7 @@ export function JourneyPlanningPage({
 
           {/* Card 3: Airport Details */}
           <div className="jp-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '14px', marginBottom: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0066fe', fontWeight: 700, fontSize: '0.85rem', marginBottom: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0d2f5d', fontWeight: 700, fontSize: '0.85rem', marginBottom: '10px' }}>
               <i className="bi bi-airplane" /> Airport Details
             </div>
             <div style={{ fontSize: '0.78rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -2315,8 +2315,8 @@ export function JourneyPlanningPage({
 
           {/* Card 4: Need Help? */}
           <div className="jp-card" style={{ background: '#f0f7ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '14px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0066fe', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>
-              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0d2f5d', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <i className="bi bi-headset" />
               </div>
               Need Help?
@@ -2324,7 +2324,7 @@ export function JourneyPlanningPage({
             <p style={{ fontSize: '0.75rem', color: '#475569', margin: '0 0 10px', lineHeight: 1.3 }}>
               Our medical travel experts are here to assist you 24/7.
             </p>
-            <button type="button" style={{ width: '100%', height: '34px', background: '#ffffff', border: '1px solid #0066fe', color: '#0066fe', borderRadius: '6px', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer' }}>
+            <button type="button" style={{ width: '100%', height: '34px', background: '#ffffff', border: '1px solid #0d2f5d', color: '#0d2f5d', borderRadius: '6px', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer' }}>
               Talk to Expert
             </button>
           </div>
@@ -2335,7 +2335,7 @@ export function JourneyPlanningPage({
       <div className="jp-trust-strip-wrap" style={{ maxWidth: '1160px', margin: '24px auto 0', padding: '0 20px' }}>
         <div className="jp-trust-strip" style={{ background: '#f0f7ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '16px 20px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🛡️</div>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🛡️</div>
             <div>
               <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>100% Secure</strong>
               <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Your data is protected and encrypted</span>
@@ -2343,7 +2343,7 @@ export function JourneyPlanningPage({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>₹</div>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>₹</div>
             <div>
               <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>Best Price Guarantee</strong>
               <span style={{ fontSize: '0.7rem', color: '#64748b' }}>We find the best rates for you</span>
@@ -2351,7 +2351,7 @@ export function JourneyPlanningPage({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>⏱️</div>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>⏱️</div>
             <div>
               <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>24/7 Support</strong>
               <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Our experts are always available</span>
@@ -2359,7 +2359,7 @@ export function JourneyPlanningPage({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🤝</div>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>🤝</div>
             <div>
               <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>Trusted by Thousands</strong>
               <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Join thousands of patients who trust us</span>
@@ -2407,7 +2407,7 @@ export function JourneyResultsPage({
   return (
     <div className="journey-results-page" style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '100px' }}>
       {/* Royal Blue Header Bar */}
-      <div style={{ background: 'linear-gradient(135deg, #0066fe 0%, #0046b8 100%)', color: '#ffffff', padding: '24px 20px 36px', boxShadow: '0 4px 20px rgba(0, 102, 254, 0.2)' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0d2f5d 0%, #0046b8 100%)', color: '#ffffff', padding: '24px 20px 36px', boxShadow: '0 4px 20px rgba(0, 102, 254, 0.2)' }}>
         <div style={{ maxWidth: '1160px', margin: '0 auto' }}>
           <div className="jr-header-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <button 
@@ -2425,7 +2425,7 @@ export function JourneyResultsPage({
               <button 
                 onClick={handlePrint}
                 type="button"
-                style={{ background: '#ffffff', color: '#0066fe', border: 'none', padding: '6px 14px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ background: '#ffffff', color: '#0d2f5d', border: 'none', padding: '6px 14px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
                 <i className="bi bi-printer-fill" /> Print Plan
               </button>
@@ -2453,7 +2453,7 @@ export function JourneyResultsPage({
 
           <div style={{ borderLeft: '1px solid #f1f5f9', paddingLeft: '20px' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '4px' }}>Flight Route</span>
-            <strong style={{ fontSize: '0.95rem', color: '#0066fe', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <strong style={{ fontSize: '0.95rem', color: '#0d2f5d', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span>{journeyPlan.originAirport || 'DEL'}</span>
               <i className="bi bi-arrow-right" style={{ fontSize: '0.8rem' }} />
               <span>{journeyPlan.destinationAirport || 'BOM'}</span>
@@ -2468,8 +2468,8 @@ export function JourneyResultsPage({
           </div>
 
           <div style={{ background: '#f0f7ff', border: '1px solid #bfdbfe', borderRadius: '10px', padding: '12px 16px', textAlign: 'right' }}>
-            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#0066fe', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '2px' }}>Total Investment</span>
-            <strong style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0066fe', display: 'block' }}>₹{journeyPlan.costs.total.toLocaleString('en-IN')}</strong>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#0d2f5d', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '2px' }}>Total Investment</span>
+            <strong style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0d2f5d', display: 'block' }}>₹{journeyPlan.costs.total.toLocaleString('en-IN')}</strong>
           </div>
         </div>
 
@@ -2483,7 +2483,7 @@ export function JourneyResultsPage({
             <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
               <div className="jr-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <i className="bi bi-airplane-fill" />
                   </div>
                   <div>
@@ -2499,7 +2499,7 @@ export function JourneyResultsPage({
               {/* Route Timeline */}
               <div className="jr-route-timeline" style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#dbeafe', color: '#0066fe', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '6px' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#dbeafe', color: '#0d2f5d', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', marginBottom: '6px' }}>
                     <i className="bi bi-airplane-fill" />
                   </div>
                   <strong style={{ display: 'block', fontSize: '1.1rem', color: '#0f172a' }}>{journeyPlan.originAirport || 'DEL'}</strong>
@@ -2508,9 +2508,9 @@ export function JourneyResultsPage({
 
                 <div style={{ flex: 1, padding: '0 8px', textAlign: 'center', minWidth: 0 }}>
                   <div style={{ borderTop: '2px dashed #93c5fd', position: 'relative', margin: '14px 0 8px' }}>
-                    <i className="bi bi-airplane-fill" style={{ position: 'absolute', top: '-11px', left: '50%', transform: 'translateX(-50%) rotate(90deg)', color: '#0066fe', fontSize: '1.1rem', background: '#f8fafc', padding: '0 6px' }} />
+                    <i className="bi bi-airplane-fill" style={{ position: 'absolute', top: '-11px', left: '50%', transform: 'translateX(-50%) rotate(90deg)', color: '#0d2f5d', fontSize: '1.1rem', background: '#f8fafc', padding: '0 6px' }} />
                   </div>
-                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#0066fe', background: '#ffffff', padding: '2px 8px', borderRadius: '10px', border: '1px solid #bfdbfe', whiteSpace: 'nowrap', display: 'inline-block' }}>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#0d2f5d', background: '#ffffff', padding: '2px 8px', borderRadius: '10px', border: '1px solid #bfdbfe', whiteSpace: 'nowrap', display: 'inline-block' }}>
                     Flight: ~2h 15m
                   </span>
                 </div>
@@ -2529,7 +2529,7 @@ export function JourneyResultsPage({
             <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
               <div className="jr-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <i className="bi bi-building-fill" />
                   </div>
                   <div>
@@ -2549,13 +2549,13 @@ export function JourneyResultsPage({
                   </h4>
                   <span style={{ fontSize: '0.78rem', color: '#64748b', display: 'block', marginBottom: '8px' }}>📍 1.2 km from {selectedHospital?.name || 'Hospital'}</span>
                   <div className="jr-amenities-wrap" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Wheelchair Friendly</span>
-                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Doctor on Call</span>
-                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0066fe', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Patient Diet Kitchen</span>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0d2f5d', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Wheelchair Friendly</span>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0d2f5d', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Doctor on Call</span>
+                    <span style={{ background: '#ffffff', border: '1px solid #93c5fd', color: '#0d2f5d', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px', fontWeight: 600, whiteSpace: 'nowrap' }}>✓ Patient Diet Kitchen</span>
                   </div>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <strong style={{ fontSize: '1.1rem', color: '#0066fe', display: 'block', whiteSpace: 'nowrap' }}>₹{journeyPlan.costs.hotel.toLocaleString('en-IN')}</strong>
+                  <strong style={{ fontSize: '1.1rem', color: '#0d2f5d', display: 'block', whiteSpace: 'nowrap' }}>₹{journeyPlan.costs.hotel.toLocaleString('en-IN')}</strong>
                   <span style={{ fontSize: '0.72rem', color: '#64748b', whiteSpace: 'nowrap' }}>for {journeyPlan.stayDuration} nights</span>
                 </div>
               </div>
@@ -2564,7 +2564,7 @@ export function JourneyResultsPage({
             {/* Card 3: Itemized Financial Summary Table */}
             <div className="jr-card" style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0066fe', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <i className="bi bi-receipt" />
                 </div>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>

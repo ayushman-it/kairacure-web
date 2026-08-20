@@ -74,13 +74,13 @@
 }
 
 .trip-style-card:hover {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(43, 125, 233, 0.15);
 }
 
 .trip-style-card.selected {
-  border-color: #2b7de9;
+  border-color: #0d2f5d;
   background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%);
   box-shadow: 0 6px 20px rgba(43, 125, 233, 0.2);
 }
@@ -94,13 +94,13 @@
   justify-content: center;
   background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
   border-radius: 16px;
-  color: #2b7de9;
+  color: #0d2f5d;
   font-size: 1.8rem;
   transition: all 0.2s ease;
 }
 
 .trip-style-card.selected .trip-style-icon {
-  background: linear-gradient(135deg, #2b7de9 0%, #1a6fd8 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a6fd8 100%);
   color: #ffffff;
 }
 
@@ -123,7 +123,7 @@
   top: 16px;
   right: 16px;
   font-size: 1.25rem;
-  color: #2b7de9;
+  color: #0d2f5d;
 }
 
 .trip-style-card .fa-circle {
@@ -142,7 +142,7 @@
   align-items: center;
   gap: 12px;
   padding: 16px 36px;
-  background: linear-gradient(135deg, #2b7de9 0%, #1a56c4 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #1a56c4 100%);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -224,7 +224,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #4a90e2, #6a5acd, #ff6b6b);
+  background: linear-gradient(90deg, #0d2f5d, #6a5acd, #ff6b6b);
 }
 
 .login-modal-header {
@@ -245,7 +245,7 @@
 }
 
 .login-modal-header i {
-  color: #4a90e2;
+  color: #0d2f5d;
   font-size: 1.1rem;
 }
 
@@ -310,7 +310,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #4a90e2;
+  border-color: #0d2f5d;
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
   background: #ffffff;
 }
@@ -330,7 +330,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
-  background: linear-gradient(135deg, #4a90e2 0%, #6a5acd 100%);
+  background: linear-gradient(135deg, #0d2f5d 0%, #6a5acd 100%);
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(74, 144, 226, 0.35);
 }
@@ -356,13 +356,13 @@
   cursor: pointer;
   transition: all 0.2s ease;
   background: #f1f5f9;
-  color: #4a90e2;
+  color: #0d2f5d;
   border: 1px solid #e2e8f0;
 }
 
 .secondary-btn:hover {
   background: #e2e8f0;
-  border-color: #4a90e2;
+  border-color: #0d2f5d;
 }
 
 .form-actions {
