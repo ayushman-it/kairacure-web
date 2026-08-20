@@ -2143,13 +2143,11 @@ body,
 
 @media (max-width: 760px) {
   .site-header {
-    display: flex !important;
-    justify-content: space-between !important;
+    min-height: 64px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
     align-items: center !important;
-    min-height: 60px !important;
     padding: 10px 14px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
   }
 
   .site-header .desktop-nav,
@@ -2158,40 +2156,28 @@ body,
   }
 
   .brand-lockup {
-    display: flex !important;
-    align-items: center !important;
-    min-width: 0 !important;
-    flex-shrink: 0 !important;
+    min-width: 0;
   }
 
-  .brand-logo-img {
-    height: 34px !important;
-    width: auto !important;
-    max-width: 140px !important;
-    object-fit: contain !important;
-    display: block !important;
+  .brand-mark {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
   }
 
-  .hs-wrap {
-    flex: 1 !important;
-    max-width: 200px !important;
-    margin: 0 8px !important;
+  .brand-lockup small {
+    display: none !important;
   }
 
   .mobile-menu-toggle {
-    width: 40px !important;
-    height: 40px !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #0d2f5d !important;
-    background: #ffffff !important;
-    font-size: 1.1rem !important;
-    cursor: pointer !important;
-    margin-left: auto !important;
-    flex-shrink: 0 !important;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #dbe4f2;
+    border-radius: 10px;
+    display: grid !important;
+    place-items: center;
+    color: #07133d;
+    background: #ffffff;
   }
 
   .mobile-menu-backdrop {
@@ -2403,348 +2389,4 @@ body,
 
 .ref-analytics-panel article::after {
   background: rgba(40, 116, 252, 0.08) !important;
-}
-
-/* Sidebar Font Family (Poppins) & Enhanced Font Sizes */
-.ref-sidebar,
-.ref-sidebar *,
-.admin-sidebar,
-.admin-sidebar * {
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif !important;
-}
-
-.ref-brand strong {
-  font-size: 1.18rem !important;
-  font-weight: 700 !important;
-}
-
-.ref-brand small {
-  font-size: 0.82rem !important;
-  font-weight: 500 !important;
-  opacity: 0.9 !important;
-}
-
-.ref-nav-group-label {
-  font-size: 0.76rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.09em !important;
-  margin-bottom: 8px !important;
-  color: #a3c4dc !important;
-}
-
-.ref-sidebar nav button {
-  min-height: 44px !important;
-  padding: 0 14px !important;
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-  gap: 12px !important;
-  border-radius: 8px !important;
-  margin: 3px 0 !important;
-}
-
-.ref-sidebar nav button .admin-svg-icon {
-  width: 20px !important;
-  height: 20px !important;
-  font-size: 1.1rem !important;
-}
-
-.ref-sidebar nav button span {
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
-}
-
-.ref-secure strong {
-  font-size: 0.88rem !important;
-  font-weight: 700 !important;
-}
-
-.ref-secure span {
-  font-size: 0.78rem !important;
-}
-
-/* Remove background, border box, and shadows from main header navigation active states */
-.site-header nav button,
-.desktop-nav button,
-.mobile-nav button {
-  background: transparent !important;
-  border: none !important;
-  border-bottom: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-.site-header nav button.active,
-.desktop-nav button.active,
-.mobile-nav button.active,
-.ref-nav-btn.active,
-.nav-link.active,
-.header-login-btn.active,
-.header-signup-btn.active,
-.header-cta.active {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: none !important;
-  border-bottom: none !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  text-shadow: none !important;
-  filter: none !important;
-  color: #0d2f5d !important;
-  font-weight: 700 !important;
-}
-
-/* Planner Page Shell & Banner Fallbacks */
-.planner-page-shell {
-  min-height: 100vh;
-  background: #f8fafc;
-  padding-bottom: 3rem;
-}
-.planner-hero-banner {
-  background: linear-gradient(135deg, #0d2f5d 0%, #1e40af 100%);
-  color: #ffffff;
-  padding: 2.5rem 1.5rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-.planner-hero-banner h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-.planner-hero-banner p {
-  opacity: 0.9;
-  font-size: 1rem;
-}
-
-/* Preserve Icon Font Families for Bootstrap Icons & FontAwesome */
-.bi,
-[class^="bi-"],
-[class*=" bi-"],
-.admin-bi-icon,
-.bi::before,
-[class^="bi-"]::before,
-[class*=" bi-"]::before {
-  font-family: "bootstrap-icons" !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-variant: normal !important;
-  text-transform: none !important;
-  line-height: 1 !important;
-  vertical-align: -0.125em !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  display: inline-block !important;
-}
-
-.fa,
-.fas,
-.far,
-.fab,
-.fa-solid,
-.fa-regular,
-.fa-brands,
-[class^="fa-"],
-[class*=" fa-"],
-.fa-solid::before,
-.fa-regular::before,
-.fa-brands::before,
-[class^="fa-"]::before,
-[class*=" fa-"]::before {
-  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
-}
-
-.planner-hero-banner p {
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-/* ==========================================================================
-   EXECUTIVE MEDICAL JOURNEY PLANNING PAGE REDESIGN
-   ========================================================================== */
-.journey-planning-page {
-  min-height: 100vh;
-  background: #f8fafc !important;
-  padding-bottom: 60px;
-}
-
-.journey-planning-header {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 20px 16px;
-}
-
-.journey-planning-header .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  color: #0d2f5d;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.journey-planning-header .back-btn:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
-  transform: translateX(-2px);
-}
-
-.journey-planning-header-content {
-  text-align: center;
-  margin-top: 12px;
-}
-
-.journey-planning-header-content h1 {
-  font-size: 1.75rem !important;
-  font-weight: 800 !important;
-  color: #0d2f5d !important;
-  margin: 0 0 6px !important;
-  letter-spacing: -0.02em !important;
-}
-
-.journey-planning-header-content p {
-  font-size: 0.9rem !important;
-  color: #64748b !important;
-  margin: 0 auto !important;
-  max-width: 560px !important;
-}
-
-.journey-planning-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: grid !important;
-  grid-template-columns: 1fr 340px !important;
-  gap: 24px !important;
-  align-items: start;
-}
-
-.journey-planning-form {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 16px !important;
-  padding: 28px !important;
-  box-shadow: 0 4px 20px rgba(13, 47, 93, 0.05) !important;
-}
-
-.journey-planning-form h2 {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-  color: #0d2f5d !important;
-  margin: 0 0 24px !important;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #f1f5f9;
-}
-
-.journey-planning-form h2::after {
-  display: none !important;
-}
-
-.form-section {
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  padding: 18px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-}
-
-.form-section h3 {
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  color: #0d2f5d !important;
-  margin: 0 0 14px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
-
-.form-section h3 i {
-  color: #2563eb !important;
-  font-size: 1rem !important;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 0.82rem !important;
-  font-weight: 600 !important;
-  color: #475569 !important;
-  margin-bottom: 6px !important;
-}
-
-.form-input,
-.custom-select {
-  width: 100% !important;
-  height: 42px !important;
-  padding: 0 14px !important;
-  background: #f8fafc !important;
-  border: 1px solid #cbd5e1 !important;
-  border-radius: 10px !important;
-  font-size: 0.88rem !important;
-  color: #0f172a !important;
-  transition: all 0.2s ease !important;
-}
-
-.form-input:focus,
-.custom-select:focus {
-  background: #ffffff !important;
-  border-color: #2563eb !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
-  outline: none !important;
-}
-
-.calculate-journey-btn {
-  width: 100% !important;
-  height: 50px !important;
-  background: linear-gradient(135deg, #0d2f5d 0%, #1e40af 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-  border-radius: 12px !important;
-  font-size: 1rem !important;
-  font-weight: 700 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-  cursor: pointer !important;
-  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.25) !important;
-  transition: all 0.22s ease !important;
-  margin-top: 10px !important;
-}
-
-.calculate-journey-btn:hover:not(:disabled) {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 10px 26px rgba(30, 64, 175, 0.35) !important;
-}
-
-.calculate-journey-btn:disabled {
-  opacity: 0.65 !important;
-  cursor: not-allowed !important;
-}
-
-.journey-planning-sidebar {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 16px !important;
-  padding: 20px !important;
-  box-shadow: 0 4px 20px rgba(13, 47, 93, 0.06) !important;
-  position: sticky !important;
-  top: 24px !important;
 }

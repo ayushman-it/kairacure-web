@@ -59,31 +59,31 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
   };
 
   return (
-    <section className="page-section kc-treatments-page-v2" id="treatments-directory-page">
+    <section className="page-section treatments-section-redesigned" id="treatments">
       <MedicalVideoBackdrop />
 
       {/* Centered Section Header */}
-      <div className="kc-treatments-header-v2">
+      <div className="treatments-section-header">
         <h2>Find <span>Treatments</span></h2>
         <p>Find the right speciality and compare estimated starting packages.</p>
       </div>
 
       {/* Card-based Tab Navigation */}
-      <div className="kc-treatments-tabs-card-v2">
-        <div className="kc-treatments-tabs-wrapper-v2">
+      <div className="treatments-tabs-card">
+        <div className="treatments-tabs-wrapper">
           <button
             aria-label="Previous treatment categories"
-            className="kc-tab-arrow-v2"
+            className="tab-nav-arrow left"
             onClick={() => scrollTreatmentTabs(-1)}
             type="button"
           >
             <i className="fa-solid fa-chevron-left" aria-hidden="true" />
           </button>
 
-          <div className="kc-treatments-tabs-container-v2" ref={tabRowRef}>
+          <div className="treatments-tabs-container" ref={tabRowRef}>
             {groups.map((group) => (
               <button
-                className={`kc-treatment-tab-v2 ${activeGroup === group ? 'active' : ''}`}
+                className={`treatment-tab ${activeGroup === group ? 'active' : ''}`}
                 key={group}
                 onClick={() => setActiveGroup(group)}
                 type="button"
@@ -95,7 +95,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
 
           <button
             aria-label="Next treatment categories"
-            className="kc-tab-arrow-v2"
+            className="tab-nav-arrow right"
             onClick={() => scrollTreatmentTabs(1)}
             type="button"
           >
@@ -105,53 +105,34 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
       </div>
 
       {/* Treatment Grid */}
-      <div className="kc-treatments-grid-v2">
+      <div className="treatment-grid">
         {isLoading ? Array.from({ length: 8 }, (_, index) => <SkeletonCard className="treatment-skeleton" key={`treatment-skeleton-${index}`} />) : visibleItems.map((item) => {
           const displayTitle = getTreatmentDisplayTitle(item);
 
           return (
-            <div
-              className={`kc-treatment-card-v2 ${selectedTreatment?.id === item.id ? 'active' : ''}`}
-              key={item.id || item._id}
+            <button
+              className={selectedTreatment?.id === item.id ? 'treatment-card active' : 'treatment-card'}
+              key={item.id}
               onClick={() => {
                 setSelectedTreatment(item);
                 setPage('treatment-detail');
               }}
+              type="button"
+              title={item.title} // Full original title on hover
             >
-              <div>
-                <div className="kc-card-top-row">
-                  <div className="kc-treatment-icon-box-v2">
-                    <TreatmentVectorIcon treatment={item} />
-                  </div>
-                  <span className="kc-treatment-tag-v2">
-                    {item.group || item.category || item.specialty || 'Medical'}
-                  </span>
-                </div>
-
-                <h3 className="kc-treatment-title-v2">
-                  {displayTitle}
-                </h3>
-              </div>
-
-              <div className="kc-treatment-footer-v2">
-                <span className="kc-treatment-price-v2">
-                  {item.packageFrom ? `From ₹${(item.packageFrom / 100000).toFixed(1)}L` : 'Estimate on request'}
-                </span>
-                <span className="kc-treatment-btn-v2">
-                  Details <i className="bi bi-arrow-right-short" style={{ fontSize: '1.1rem' }} />
-                </span>
-              </div>
-            </div>
+              <i className="treatment-card-icon" aria-hidden="true"><TreatmentVectorIcon treatment={item} /></i>
+              <strong>{displayTitle}</strong>
+              <small>{item.group || item.category || 'Medical'}</small>
+            </button>
           );
         })}
       </div>
-
       {!isLoading && visibleCount < items.length && (
-        <div className="kc-load-more-row-v2">
-          <button className="kc-load-more-btn-v2" onClick={() => setVisibleCount((count) => Math.min(count + 8, items.length))} type="button">
+        <div className="load-more-row">
+          <button onClick={() => setVisibleCount((count) => Math.min(count + 8, items.length))} type="button">
             Load more treatments
           </button>
-          <span className="kc-load-more-count-v2">{visibleItems.length} of {items.length}</span>
+          <span>{visibleItems.length} of {items.length}</span>
         </div>
       )}
     </section>

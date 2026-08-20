@@ -56,11 +56,6 @@ export function getPatientAttribution() {
   };
 }
 
-export function getPlannerTreatmentTitle(t) {
-  if (!t) return 'Treatment';
-  return t.title || t.name || t.group || 'Treatment';
-}
-
 export function formatShortName(name = '') {
   const trimmed = String(name || '').trim();
   return trimmed.length > 16 ? `${trimmed.slice(0, 15)}...` : trimmed;
@@ -98,7 +93,16 @@ export function pathForPage(page) {
 
 export const TREATMENT_GROUPS = ['Medical', 'Aesthetic', 'Wellness'];
 
-export const DEFAULT_TREATMENTS = [];
+export const DEFAULT_TREATMENTS = [
+  { id: 't-cabg', title: 'Heart Bypass Surgery (CABG)', group: 'Medical', specialty: 'Cardiology', packageFrom: 250000, value: 95, description: 'Coronary artery bypass grafting surgery for severe heart blockages with post-op cardiac ICU care.' },
+  { id: 't-knee', title: 'Total Knee Replacement', group: 'Medical', specialty: 'Orthopedics', packageFrom: 180000, value: 92, description: 'Minimally invasive total knee replacement surgery with ceramic/metal implants and rehabilitation.' },
+  { id: 't-chemo', title: 'Chemotherapy & Targeted Oncology Care', group: 'Medical', specialty: 'Oncology', packageFrom: 150000, value: 90, description: 'Targeted immunotherapy, radiation planning, and chemotherapy under senior oncologists.' },
+  { id: 't-spine', title: 'Lumbar Spine Discectomy & Fusion', group: 'Medical', specialty: 'Spine Surgery', packageFrom: 220000, value: 88, description: 'Decompression and spinal fusion surgery for chronic back pain, herniated discs, and nerve compression.' },
+  { id: 't-urology', title: 'Robotic Prostate Surgery & Kidney Stone RIRSL', group: 'Medical', specialty: 'Urology', packageFrom: 160000, value: 87, description: 'Laser stone removal and DaVinci robotic prostatectomy surgery.' },
+  { id: 't-ivf', title: 'IVF & Fertility Treatment Package', group: 'Wellness', specialty: 'Fertility', packageFrom: 140000, value: 91, description: 'Advanced IVF cycle with ICSI, embryo freezing, and blastocyst culture support.' },
+  { id: 't-lasik', title: 'Femto-LASIK Eye Surgery', group: 'Aesthetic', specialty: 'Ophthalmology', packageFrom: 65000, value: 94, description: 'Blade-free 100% laser vision correction for myopia, hyperopia, and astigmatism.' },
+  { id: 't-hair', title: 'FUE Hair Transplant (3500 Grafts)', group: 'Aesthetic', specialty: 'Cosmetic', packageFrom: 75000, value: 93, description: 'High-density painless FUE hair restoration with PRP growth factor therapy.' },
+];
 
 export const TREATMENTS = DEFAULT_TREATMENTS;
 export const HOSPITALS = clientHospitals;
@@ -166,10 +170,6 @@ export function formatCurrency(value, currency = 'INR') {
     currency: current.code,
     maximumFractionDigits: 0,
   }).format(value * current.rate);
-}
-
-export function money(value) {
-  return formatCurrency(value, 'INR');
 }
 
 export function formatPackageEstimate(value, money) {
@@ -350,12 +350,12 @@ export function buildTreatmentMeaning(treatment = {}) {
   const rawCondition = treatment.icdMatchedText || treatment.icdTitle || treatment.title || displayTitle;
   const condition = getTreatmentDisplayTitle({ title: rawCondition });
   const code = treatment.icdCode || treatment.procedureCode || treatment.code || '';
-  const source = treatment.sourceSystem || 'Treatment Catalog';
+  const source = treatment.sourceSystem || (code ? 'ICD-11 medical catalog' : 'Treatment catalog');
   const release = treatment.sourceRelease || '';
   const backendDescription = String(treatment.meaning || treatment.overview || treatment.description || '').trim();
   const description = hasUsefulTreatmentDescription(backendDescription)
     ? backendDescription
-    : `${pageTitle} is mapped as ${condition}. Kairacure uses this treatment catalog to understand your case, prepare the report checklist, shortlist suitable hospitals, and build a practical journey plan.`;
+    : `${pageTitle} is mapped as ${condition}. Kairacure uses this treatment mapping to understand the patient case, prepare the report checklist, shortlist suitable hospitals, and build a practical journey plan.`;
 
   return {
     code,
@@ -436,7 +436,7 @@ export function getSearchOptionsFromData(query, treatments, hospitals) {
     const aliases = SEARCH_ALIASES[treatment.id] ?? [];
     const haystack = normalizeSearch([treatment.title, treatment.group, treatment.specialty, treatment.category, treatment.procedureCode, treatment.icdCode, treatment.sourceSystem, ...aliases].join(' '));
     if (haystack.includes(search) || aliases.some((alias) => normalizeSearch(alias).includes(search))) {
-      options.push({ type: 'Treatment', label: treatment.title, meta: `${treatment.group || 'Specialty'} package estimate`, treatment });
+      options.push({ type: 'Treatment', label: treatment.title, meta: treatment.icdCode ? `ICD-11 ${treatment.icdCode} - ${treatment.group}` : `${treatment.group} package estimate`, treatment });
     }
   });
 
