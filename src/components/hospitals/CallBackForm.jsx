@@ -136,6 +136,15 @@ export function CallBackForm({ selectedHospital }) {
           type="submit"
           className="callback-submit-btn"
           disabled={isSubmitting}
+          style={{
+            background: '#0d2f5d',
+            backgroundColor: '#0d2f5d',
+            backgroundImage: 'none',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '10px',
+            boxShadow: '0 4px 14px rgba(13, 47, 93, 0.3)'
+          }}
         >
           {isSubmitting ? (
             <>

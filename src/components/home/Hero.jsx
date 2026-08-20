@@ -115,7 +115,7 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
           <button className="hero-btn-primary" onClick={() => setPage('planner')} type="button" style={{ background: '#0d2f5d', backgroundColor: '#0d2f5d', backgroundImage: 'none', borderColor: '#0d2f5d', color: '#ffffff', boxShadow: '0 4px 18px rgba(13, 47, 93, 0.4)' }}>
             <i className="fa-solid fa-route" aria-hidden="true" /> Plan My Journey
           </button>
-          <button className="hero-btn-secondary" onClick={() => setPage('treatments')} type="button" style={{ background: 'rgba(13, 47, 93, 0.85)', backgroundColor: 'rgba(13, 47, 93, 0.85)', borderColor: '#0d2f5d', color: '#ffffff' }}>
+          <button className="hero-btn-secondary" onClick={() => setPage('treatments')} type="button" style={{ background: '#0d2f5d', backgroundColor: '#0d2f5d', backgroundImage: 'none', borderColor: '#0d2f5d', color: '#ffffff', boxShadow: '0 4px 18px rgba(13, 47, 93, 0.4)' }}>
             Browse Treatments
           </button>
         </div>
