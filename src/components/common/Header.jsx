@@ -84,7 +84,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     <header className="site-header">
       {/* Brand Logo */}
       <button className="brand-lockup" onClick={() => navigate('home')} type="button" style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-        <img src={logoImg} alt="Kaira Cure" className="brand-logo-img" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
+        <img src={logoImg} alt="Kaira Cure" className="brand-logo-img" style={{ height: '52px', width: 'auto', objectFit: 'contain', maxHeight: '52px' }} />
       </button>
 
       {/* Nav */}
@@ -173,7 +173,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         {/* Header */}
         <div className="mobile-offcanvas-head">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src={logoImg} alt="KairaCure" style={{ height: '30px', width: 'auto', objectFit: 'contain' }} />
+            <img src={logoImg} alt="KairaCure" style={{ height: '44px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button" className="mobile-offcanvas-close-btn">
             <i className="bi bi-x-lg" aria-hidden="true" />

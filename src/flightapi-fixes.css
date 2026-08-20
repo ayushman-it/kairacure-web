@@ -1544,7 +1544,7 @@ body,
 .hospital-filter-bar > button {
   color: #ffffff !important;
   border-color: #2475f2 !important;
-  background: linear-gradient(135deg, #1496e8 0%, #2874fc 58%, #7c4dff 100%) !important;
+  background: #0d2f5d !important;
 }
 
 .hospital-directory-layout {
@@ -1912,7 +1912,7 @@ body,
 .ai-chat-primary {
   color: #ffffff !important;
   border-color: #2475f2 !important;
-  background: linear-gradient(135deg, #1496e8 0%, #2874fc 58%, #7c4dff 100%) !important;
+  background: #0d2f5d !important;
   box-shadow: none !important;
 }
 
@@ -1929,7 +1929,7 @@ body,
 .planner-city-chips button.active {
   color: #ffffff !important;
   border-color: #2475f2 !important;
-  background: linear-gradient(135deg, #1496e8 0%, #2874fc 58%, #7c4dff 100%) !important;
+  background: #0d2f5d !important;
 }
 
 .planner-hero-actions button .fa-circle {
