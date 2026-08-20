@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { API_BASE } from '../data/constants.js';
 
-export function AiAssistantPage({ setPage, initialMessage = '' }) {
-  const WELCOME = 'Welcome to Kairacure AI. Tell me your treatment, diagnosis, preferred Indian city, reports summary, budget in INR, or travel month. I will suggest hospitals, doctors, approximate INR packages, and your next steps. You can write in Hindi, English, or Hinglish — I will reply in the same language.';
+const WELCOME = 'Welcome to Kairacure AI. Tell me your treatment, diagnosis, preferred Indian city, reports summary, budget in INR, or travel month. I will suggest hospitals, doctors, approximate INR packages, and your next steps. You can write in Hindi, English, or Hinglish — I will reply in the same language.';
 
+export function AiAssistantPage({ setPage, initialMessage }) {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState([{ role: 'assistant', content: WELCOME }]);
   const [loading, setLoading] = useState(false);
-  const threadRef = React.useRef(null);
+  const threadRef = useRef(null);
 
   const quickPrompts = [
     'मुझे heart bypass surgery के लिए India में best hospitals बताओ',
@@ -19,22 +19,20 @@ export function AiAssistantPage({ setPage, initialMessage = '' }) {
   ];
 
   // Auto-scroll to bottom on new message
-  React.useEffect(() => {
+  useEffect(() => {
     if (threadRef.current) {
       threadRef.current.scrollTo({ top: threadRef.current.scrollHeight, behavior: 'smooth' });
     }
   }, [messages, loading]);
 
   // Auto-send initialMessage if passed from hero card
-  React.useEffect(() => {
+  useEffect(() => {
     if (initialMessage && initialMessage.trim()) {
       setQuestion(initialMessage.trim());
-      // Slight delay so component has mounted
       setTimeout(() => {
         sendMessage(initialMessage.trim());
       }, 300);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = async (text) => {
@@ -53,7 +51,7 @@ export function AiAssistantPage({ setPage, initialMessage = '' }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: trimmed,
-          history: nextMessages.slice(-10), // send last 10 for context
+          history: nextMessages.slice(-10),
         }),
       });
       const data = await response.json();
@@ -61,7 +59,7 @@ export function AiAssistantPage({ setPage, initialMessage = '' }) {
     } catch {
       setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: 'The AI backend is not running. Start the Express API server and set OPENROUTER_API_KEY in .env to enable live responses.',
+        content: 'The AI backend is currently offline. Please ensure the Express server is running.',
       }]);
     } finally {
       setLoading(false);
@@ -157,9 +155,56 @@ export function AiAssistantPage({ setPage, initialMessage = '' }) {
                 />
               )}
               <div className="ai-bubble">
-                {msg.content.split('\n').filter((l) => l.trim()).map((line, li) => (
-                  <p key={li}>{line}</p>
-                ))}
+                {msg.role === 'user' ? (
+                  <span style={{ whiteSpace: 'pre-wrap', color: '#ffffff' }}>{msg.content}</span>
+                ) : (
+                  (() => {
+                    let processed = String(msg.content || '');
+                    processed = processed.replace(/([^\n])\s+-\s+([A-Z0-9])/g, '$1\n- $2');
+                    const lines = processed.split('\n').map((l) => l.trim()).filter(Boolean);
+
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {lines.map((line, idx) => {
+                          const cleanLine = line.replace(/^#{1,6}\s+/, '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').trim();
+                          const isBullet = /^[-•*]\s+/.test(cleanLine) || /^\d+[\.\)]\s+/.test(cleanLine);
+
+                          if (isBullet) {
+                            const bulletText = cleanLine.replace(/^[-•*]\s+/, '').replace(/^\d+[\.\)]\s+/, '');
+                            const isHospitalHeader = /Accreditation|Hospital|Speciality|Center|Clinic|Institute|Care/i.test(bulletText) && !bulletText.toLowerCase().includes('cost');
+
+                            return (
+                              <div
+                                key={idx}
+                                style={{
+                                  display: 'flex',
+                                  gap: '8px',
+                                  alignItems: 'flex-start',
+                                  margin: '3px 0',
+                                  padding: isHospitalHeader ? '6px 10px' : '0',
+                                  background: isHospitalHeader ? 'rgba(0, 102, 254, 0.05)' : 'transparent',
+                                  borderRadius: '8px',
+                                  borderLeft: isHospitalHeader ? '3px solid #0066fe' : 'none'
+                                }}
+                              >
+                                <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.9rem', lineHeight: '1.4' }}>•</span>
+                                <span style={{ fontSize: '0.88rem', color: '#1e293b', lineHeight: '1.5', fontWeight: isHospitalHeader ? 700 : 500 }}>
+                                  {bulletText}
+                                </span>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <p key={idx} style={{ margin: '3px 0', fontSize: '0.88rem', color: '#0f172a', lineHeight: '1.5' }}>
+                              {cleanLine}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()
+                )}
                 <small>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
               </div>
             </article>
@@ -212,4 +257,3 @@ export function AiAssistantPage({ setPage, initialMessage = '' }) {
     </section>
   );
 }
-

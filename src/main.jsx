@@ -6,6 +6,7 @@ import App from './App';
 import './index.css';
 import './flightapi-fixes.css';
 import './planner-search.css';
+import './responsive-fixes.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

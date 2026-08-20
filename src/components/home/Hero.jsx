@@ -2,6 +2,58 @@ import React, { useState, useRef, useEffect } from 'react';
 import medicalVideoSrc from '../../assets/new+website+video+desktop+(1).mp4';
 import { API_BASE, MEDICAL_VIDEO } from '../../data/constants.js';
 
+function renderFormattedAiMessage(text = '', isUser = false) {
+  if (isUser) {
+    return <span style={{ whiteSpace: 'pre-wrap', color: '#ffffff' }}>{text}</span>;
+  }
+
+  let processed = String(text || '');
+  processed = processed.replace(/([^\n])\s+-\s+([A-Z0-9])/g, '$1\n- $2');
+
+  const lines = processed.split('\n').map((l) => l.trim()).filter(Boolean);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      {lines.map((line, idx) => {
+        const cleanLine = line.replace(/^#{1,6}\s+/, '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').trim();
+        const isBullet = /^[-•*]\s+/.test(cleanLine) || /^\d+[\.\)]\s+/.test(cleanLine);
+
+        if (isBullet) {
+          const bulletText = cleanLine.replace(/^[-•*]\s+/, '').replace(/^\d+[\.\)]\s+/, '');
+          const isHospitalHeader = /Accreditation|Hospital|Speciality|Center|Clinic|Institute|Care/i.test(bulletText) && !bulletText.toLowerCase().includes('cost');
+
+          return (
+            <div
+              key={idx}
+              style={{
+                display: 'flex',
+                gap: '6px',
+                alignItems: 'flex-start',
+                margin: '2px 0',
+                padding: isHospitalHeader ? '4px 8px' : '0',
+                background: isHospitalHeader ? 'rgba(0, 102, 254, 0.04)' : 'transparent',
+                borderRadius: '6px',
+                borderLeft: isHospitalHeader ? '2.5px solid #0066fe' : 'none'
+              }}
+            >
+              <span style={{ color: '#0066fe', fontWeight: 800, fontSize: '0.8rem', lineHeight: '1.4' }}>•</span>
+              <span style={{ fontSize: '0.8rem', color: '#1e293b', lineHeight: '1.45', fontWeight: isHospitalHeader ? 700 : 500 }}>
+                {bulletText}
+              </span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={idx} style={{ margin: '2px 0', fontSize: '0.82rem', color: '#0f172a', lineHeight: '1.45' }}>
+            {cleanLine}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, setQuery, setPage, setAiInitialMessage }) {
   const WELCOME = 'Tell me your treatment, city, or budget — I\'ll suggest the right hospital, doctor, and next steps.';
   const [messages, setMessages] = useState([{ role: 'assistant', content: WELCOME }]);
@@ -73,11 +125,17 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
       <div className="hero-visual ai-chat-card hero-chat-card">
         {/* Card header */}
         <div className="hcc-header">
-          <div>
-            <strong className="hcc-title">Kaira Assistant</strong>
-            <span className="hcc-online"><span className="hcc-dot" />Online · Kaira AI</span>
+          <div className="hcc-header-info">
+            <strong className="hcc-title">
+              <i className="fa-solid fa-robot" style={{ color: '#2563eb', marginRight: '6px' }} />
+              Kaira AI Assistant
+            </strong>
+            <span className="hcc-online-text">
+              <span className="hcc-dot" />
+              Online · Kaira AI Care
+            </span>
           </div>
-          <button className="hcc-badge hcc-open-full-btn" type="button" onClick={() => setPage('ai-assistant')} title="Open full chat">
+          <button className="hcc-open-full-btn" type="button" onClick={() => setPage('ai-assistant')} title="Open full chat">
             <i className="fa-solid fa-up-right-from-square" aria-hidden="true" />
           </button>
         </div>
@@ -90,7 +148,7 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
                 <div className="hcc-avatar-icon"><i className="fa-solid fa-robot" aria-hidden="true" /></div>
               )}
               <div className={`hcc-bubble${msg.role === 'user' ? ' hcc-bubble-user' : ''}`}>
-                {msg.content}
+                {renderFormattedAiMessage(msg.content, msg.role === 'user')}
               </div>
             </div>
           ))}
@@ -103,21 +161,6 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
             </div>
           )}
         </div>
-
-        {/* Quick chips — show only if just welcome message */}
-        {messages.length === 1 && (
-          <div className="hcc-chips">
-            <button onClick={() => sendMessage('Best hospitals for heart surgery')} type="button">
-              <i className="fa-solid fa-heart-pulse" aria-hidden="true" /> Heart Surgery
-            </button>
-            <button onClick={() => sendMessage('Knee replacement cost in Delhi')} type="button">
-              <i className="fa-solid fa-bone" aria-hidden="true" /> Knee Replacement
-            </button>
-            <button onClick={() => sendMessage('What reports should I upload?')} type="button">
-              <i className="fa-solid fa-file-medical" aria-hidden="true" /> My Reports
-            </button>
-          </div>
-        )}
 
         {/* Input */}
         <form className="hcc-input-row" onSubmit={handleSubmit}>
@@ -134,8 +177,6 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
             <i className="fa-solid fa-paper-plane" aria-hidden="true" />
           </button>
         </form>
-
-        <p className="hcc-disclaimer">Kaira AI — please double-check all responses</p>
       </div>
     </section>
   );

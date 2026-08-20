@@ -15,6 +15,7 @@ import { Destinations } from './components/home/Destinations.jsx';
 import { HomeTreatmentBanners } from './components/home/HomeTreatmentBanners.jsx';
 import { AiExplorationSection } from './components/home/AiExplorationSection.jsx';
 import { HomeFaqSection } from './components/home/HomeFaqSection.jsx';
+import { ReputedPartnersCard } from './components/home/ReputedPartnersCard.jsx';
 
 // Pages
 import { TreatmentsPage } from './pages/TreatmentsPage.jsx';
@@ -196,7 +197,7 @@ function App() {
 
   return (
     <div className="site-shell">
-      {!showAdmin && page !== 'partner-detail' && (
+      {!showAdmin && (
         <Header
           currentPatient={currentPatient}
           hospitals={contentHospitals}
@@ -236,6 +237,8 @@ function App() {
             setSelectedTreatment={setSelectedTreatment}
           />
         )}
+
+        {showHome && <ReputedPartnersCard setPage={setPage} setSelectedHospital={setSelectedHospital} />}
 
         {showHome && <HomeTreatmentBanners setActiveGroup={setActiveGroup} setPage={setPage} setSelectedTreatment={setSelectedTreatment} treatments={contentTreatments} />}
 
