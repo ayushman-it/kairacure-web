@@ -1,89 +1,141 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-const SPECIALTIES_DATA = [
+const BASE_SPECIALTIES = [
   {
     key: 'orthopedics',
     title: 'Orthopedics',
-    subtitle: 'Joint Replacement & Spine',
+    defaultSubtitle: 'Joint Replacement & Spine',
     iconClass: 'bi bi-person-fill-gear',
     iconBg: '#eff6ff',
     iconColor: '#0066fe',
-    count: '120+ Procedures',
-    startingPrice: 'From ₹1.8L'
+    defaultCount: '120+ Procedures',
+    defaultPrice: 'From ₹1.8L'
   },
   {
     key: 'cardiac',
     title: 'Cardiac Surgery',
-    subtitle: 'CABG, Valve & Angioplasty',
+    defaultSubtitle: 'CABG, Valve & Angioplasty',
     iconClass: 'bi bi-heart-pulse-fill',
     iconBg: '#fef2f2',
     iconColor: '#ef4444',
-    count: '95+ Procedures',
-    startingPrice: 'From ₹2.4L'
+    defaultCount: '95+ Procedures',
+    defaultPrice: 'From ₹2.4L'
   },
   {
     key: 'gastroenterology',
     title: 'Gastroenterology',
-    subtitle: 'GI Surgery & Endoscopy',
+    defaultSubtitle: 'GI Surgery & Endoscopy',
     iconClass: 'bi bi-stethoscope',
     iconBg: '#ecfdf5',
     iconColor: '#10b981',
-    count: '80+ Procedures',
-    startingPrice: 'From ₹1.2L'
+    defaultCount: '80+ Procedures',
+    defaultPrice: 'From ₹1.2L'
   },
   {
     key: 'urology',
     title: 'Urology',
-    subtitle: 'Kidney Stone & Prostate',
+    defaultSubtitle: 'Kidney Stone & Prostate',
     iconClass: 'bi bi-shield-plus',
     iconBg: '#f0f9ff',
     iconColor: '#0284c7',
-    count: '75+ Procedures',
-    startingPrice: 'From ₹95k'
+    defaultCount: '75+ Procedures',
+    defaultPrice: 'From ₹95k'
   },
   {
     key: 'infertility',
     title: 'Infertility & IVF',
-    subtitle: 'IVF, IUI & Fertility Care',
+    defaultSubtitle: 'IVF, IUI & Fertility Care',
     iconClass: 'bi bi-heart-fill',
     iconBg: '#fdf2f8',
     iconColor: '#ec4899',
-    count: '50+ Procedures',
-    startingPrice: 'From ₹1.5L'
+    defaultCount: '50+ Procedures',
+    defaultPrice: 'From ₹1.5L'
   },
   {
     key: 'ent',
     title: 'Ear, Nose, Throat',
-    subtitle: 'ENT Surgery & Sinus',
+    defaultSubtitle: 'ENT Surgery & Sinus',
     iconClass: 'bi bi-person-badge',
     iconBg: '#f5f3ff',
     iconColor: '#8b5cf6',
-    count: '65+ Procedures',
-    startingPrice: 'From ₹65k'
+    defaultCount: '65+ Procedures',
+    defaultPrice: 'From ₹65k'
   },
   {
     key: 'oncology',
     title: 'Oncology Care',
-    subtitle: 'Chemo, Tumor & Onco Surgery',
+    defaultSubtitle: 'Chemo, Tumor & Onco Surgery',
     iconClass: 'bi bi-award-fill',
     iconBg: '#fffbeb',
     iconColor: '#f59e0b',
-    count: '110+ Procedures',
-    startingPrice: 'From ₹2.8L'
+    defaultCount: '110+ Procedures',
+    defaultPrice: 'From ₹2.8L'
   },
   {
     key: 'neuro',
     title: 'Spine & Neuro',
-    subtitle: 'Brain & Disc Surgery',
+    defaultSubtitle: 'Brain & Disc Surgery',
     iconClass: 'bi bi-cpu-fill',
     iconBg: '#ecfeff',
     iconColor: '#06b6d4',
-    count: '85+ Procedures',
-    startingPrice: 'From ₹2.2L'
+    defaultCount: '85+ Procedures',
+    defaultPrice: 'From ₹2.2L'
   }
 ];
 
 export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreatment, treatments = [] }) {
+  // Compute dynamic starting prices, procedure counts, and subtitles live from database treatments array
+  const dynamicSpecialties = useMemo(() => {
+    return BASE_SPECIALTIES.map((base) => {
+      const matched = treatments.filter((t) => {
+        const cat = (t.category || t.group || t.title || '').toLowerCase();
+        const key = base.key.toLowerCase();
+        const title = base.title.toLowerCase();
+        return (
+          cat.includes(key) ||
+          title.includes(cat) ||
+          (key === 'cardiac' && (cat.includes('heart') || cat.includes('cabg'))) ||
+          (key === 'neuro' && (cat.includes('brain') || cat.includes('spine'))) ||
+          (key === 'orthopedics' && (cat.includes('joint') || cat.includes('knee'))) ||
+          (key === 'infertility' && cat.includes('ivf'))
+        );
+      });
+
+      let startingPrice = base.defaultPrice;
+      if (matched.length > 0) {
+        const costs = matched
+          .map((t) => Number(t.costInr || t.startingPriceInr || t.priceInr || t.cost || 0))
+          .filter((c) => c > 0);
+        if (costs.length > 0) {
+          const minCost = Math.min(...costs);
+          if (minCost >= 100000) {
+            startingPrice = `From ₹${(minCost / 100000).toFixed(1)}L`;
+          } else if (minCost >= 1000) {
+            startingPrice = `From ₹${Math.round(minCost / 1000)}k`;
+          } else {
+            startingPrice = `From ₹${minCost.toLocaleString('en-IN')}`;
+          }
+        }
+      }
+
+      const countText = matched.length > 0 ? `${matched.length}+ Procedures` : base.defaultCount;
+
+      let subtitle = base.defaultSubtitle;
+      if (matched.length > 0) {
+        const titles = matched.map((t) => t.title || t.name).filter(Boolean).slice(0, 2);
+        if (titles.length > 0) {
+          subtitle = titles.join(' & ');
+        }
+      }
+
+      return {
+        ...base,
+        startingPrice,
+        count: countText,
+        subtitle
+      };
+    });
+  }, [treatments]);
 
   const handleClick = (item) => {
     const matchedTreatment = treatments.find((t) => {
@@ -240,7 +292,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
 
         {/* 8 Specialty Cards Grid */}
         <div className="treatment-specialty-grid">
-          {SPECIALTIES_DATA.map((item) => (
+          {dynamicSpecialties.map((item) => (
             <button
               key={item.key}
               type="button"
