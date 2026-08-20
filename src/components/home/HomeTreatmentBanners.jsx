@@ -5,7 +5,7 @@ const SPECIALTIES_DATA = [
     key: 'orthopedics',
     title: 'Orthopedics',
     subtitle: 'Joint Replacement & Spine',
-    iconClass: 'fa-solid fa-bone',
+    iconClass: 'bi bi-person-fill-gear',
     iconBg: '#eff6ff',
     iconColor: '#0066fe',
     count: '120+ Procedures',
@@ -15,7 +15,7 @@ const SPECIALTIES_DATA = [
     key: 'cardiac',
     title: 'Cardiac Surgery',
     subtitle: 'CABG, Valve & Angioplasty',
-    iconClass: 'fa-solid fa-heart-pulse',
+    iconClass: 'bi bi-heart-pulse-fill',
     iconBg: '#fef2f2',
     iconColor: '#ef4444',
     count: '95+ Procedures',
@@ -25,7 +25,7 @@ const SPECIALTIES_DATA = [
     key: 'gastroenterology',
     title: 'Gastroenterology',
     subtitle: 'GI Surgery & Endoscopy',
-    iconClass: 'fa-solid fa-stethoscope',
+    iconClass: 'bi bi-stethoscope',
     iconBg: '#ecfdf5',
     iconColor: '#10b981',
     count: '80+ Procedures',
@@ -35,7 +35,7 @@ const SPECIALTIES_DATA = [
     key: 'urology',
     title: 'Urology',
     subtitle: 'Kidney Stone & Prostate',
-    iconClass: 'fa-solid fa-hand-holding-medical',
+    iconClass: 'bi bi-shield-plus',
     iconBg: '#f0f9ff',
     iconColor: '#0284c7',
     count: '75+ Procedures',
@@ -45,7 +45,7 @@ const SPECIALTIES_DATA = [
     key: 'infertility',
     title: 'Infertility & IVF',
     subtitle: 'IVF, IUI & Fertility Care',
-    iconClass: 'fa-solid fa-baby',
+    iconClass: 'bi bi-heart-fill',
     iconBg: '#fdf2f8',
     iconColor: '#ec4899',
     count: '50+ Procedures',
@@ -55,7 +55,7 @@ const SPECIALTIES_DATA = [
     key: 'ent',
     title: 'Ear, Nose, Throat',
     subtitle: 'ENT Surgery & Sinus',
-    iconClass: 'fa-solid fa-head-side-cough',
+    iconClass: 'bi bi-person-badge',
     iconBg: '#f5f3ff',
     iconColor: '#8b5cf6',
     count: '65+ Procedures',
@@ -65,7 +65,7 @@ const SPECIALTIES_DATA = [
     key: 'oncology',
     title: 'Oncology Care',
     subtitle: 'Chemo, Tumor & Onco Surgery',
-    iconClass: 'fa-solid fa-ribbon',
+    iconClass: 'bi bi-award-fill',
     iconBg: '#fffbeb',
     iconColor: '#f59e0b',
     count: '110+ Procedures',
@@ -75,7 +75,7 @@ const SPECIALTIES_DATA = [
     key: 'neuro',
     title: 'Spine & Neuro',
     subtitle: 'Brain & Disc Surgery',
-    iconClass: 'fa-solid fa-brain',
+    iconClass: 'bi bi-cpu-fill',
     iconBg: '#ecfeff',
     iconColor: '#06b6d4',
     count: '85+ Procedures',
@@ -100,27 +100,37 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
   };
 
   return (
-    <section className="home-treatment-banners-v2" style={{ padding: '60px 16px', background: '#f8fafc' }}>
+    <section className="home-treatment-banners-v2" style={{ padding: '40px 16px', background: '#f8fafc', fontFamily: "'Noto Sans', sans-serif" }}>
       <style>{`
         .treatment-card-container {
-          max-width: 1380px;
+          max-width: 1240px;
           margin: 0 auto;
           background: #ffffff;
           border: 1.5px solid #e2e8f0;
-          border-radius: 24px;
-          padding: 44px 48px;
-          box-shadow: 0 10px 36px rgba(0, 102, 254, 0.05);
+          border-radius: 20px;
+          padding: 36px 32px;
+          box-shadow: 0 8px 30px rgba(0, 102, 254, 0.05);
         }
         @media (max-width: 768px) {
           .treatment-card-container {
-            padding: 28px 20px;
+            padding: 16px 12px !important;
+            border-radius: 16px !important;
+          }
+          .treatment-specialty-grid {
+            gap: 10px !important;
+            margin-bottom: 20px !important;
+          }
+          .specialty-interactive-card {
+            padding: 14px 12px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
         }
         .treatment-specialty-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-          margin-bottom: 32px;
+          gap: 16px;
+          margin-bottom: 28px;
         }
         @media (max-width: 1100px) {
           .treatment-specialty-grid {
@@ -134,33 +144,35 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
         }
         .specialty-interactive-card {
           background: #ffffff;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 16px;
-          padding: 22px 20px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 16px 14px;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 14px;
           text-align: left;
           cursor: pointer;
           transition: all 0.2s ease;
           position: relative;
           box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+          width: 100%;
+          box-sizing: border-box;
         }
         .specialty-interactive-card:hover {
           border-color: #0066fe;
-          transform: translateY(-3px);
-          box-shadow: 0 10px 25px rgba(0, 102, 254, 0.12);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 102, 254, 0.12);
         }
         .specialty-arrow-btn {
-          width: 32px;
-          height: 32px;
+          width: 28px;
+          height: 28px;
           border-radius: 50%;
           background: #f1f5f9;
           color: #64748b;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           margin-left: auto;
           flex-shrink: 0;
           transition: all 0.2s ease;
@@ -175,7 +187,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
       <div className="treatment-card-container">
         
         {/* Header Badge & Title */}
-        <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px' }}>
           <div>
             <span 
               style={{
@@ -183,21 +195,21 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
                 background: '#f0f7ff',
                 color: '#0066fe',
                 border: '1px solid #bfdbfe',
-                padding: '4px 14px',
+                padding: '4px 12px',
                 borderRadius: '20px',
-                fontSize: '0.78rem',
-                fontWeight: 700,
+                fontSize: '0.74rem',
+                fontWeight: 800,
                 letterSpacing: '0.04em',
                 textTransform: 'uppercase',
-                marginBottom: '10px'
+                marginBottom: '8px'
               }}
             >
               EXPLORE MEDICAL SPECIALTIES
             </span>
-            <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(1.35rem, 2.5vw, 1.8rem)', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
               Find Your Treatment
             </h2>
-            <p style={{ fontSize: '0.94rem', color: '#64748b', margin: 0, maxWidth: '680px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, maxWidth: '680px', lineHeight: 1.5 }}>
               Browse surgical procedures by medical specialty, compare accredited hospital packages, starting prices, and top surgeon availability.
             </p>
           </div>
@@ -209,15 +221,16 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
               background: '#0066fe',
               color: '#ffffff',
               border: 'none',
-              padding: '10px 20px',
-              borderRadius: '10px',
-              fontSize: '0.85rem',
+              padding: '8px 18px',
+              borderRadius: '8px',
+              fontSize: '0.82rem',
               fontWeight: 700,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 4px 14px rgba(0, 102, 254, 0.22)'
+              height: '38px',
+              boxShadow: '0 3px 10px rgba(0, 102, 254, 0.22)'
             }}
           >
             <i className="bi bi-grid-fill" style={{ color: '#ffffff' }} />
@@ -237,15 +250,15 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
               {/* Icon Badge */}
               <div 
                 style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '14px',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '12px',
                   background: item.iconBg,
                   color: item.iconColor,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '1.35rem',
+                  fontSize: '1.2rem',
                   flexShrink: 0
                 }}
               >
@@ -254,20 +267,20 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
 
               {/* Text Info */}
               <div style={{ flex: 1 }}>
-                <strong style={{ display: 'block', fontSize: '0.98rem', color: '#0f172a', marginBottom: '2px', fontWeight: 700 }}>
+                <strong style={{ display: 'block', fontSize: '0.92rem', color: '#0f172a', marginBottom: '2px', fontWeight: 800 }}>
                   {item.title}
                 </strong>
-                <span style={{ display: 'block', fontSize: '0.76rem', color: '#64748b', marginBottom: '6px' }}>
+                <span style={{ display: 'block', fontSize: '0.74rem', color: '#64748b', marginBottom: '4px' }}>
                   {item.subtitle}
                 </span>
                 <span 
                   style={{
                     background: '#f0f7ff',
                     color: '#0066fe',
-                    fontSize: '0.7rem',
+                    fontSize: '0.68rem',
                     fontWeight: 700,
-                    padding: '2px 8px',
-                    borderRadius: '6px',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
                     display: 'inline-block'
                   }}
                 >
@@ -288,21 +301,23 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
           style={{
             background: 'linear-gradient(135deg, #0066fe 0%, #0046b8 100%)',
             color: '#ffffff',
-            borderRadius: '16px',
-            padding: '20px 28px',
+            borderRadius: '14px',
+            padding: '18px 24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '16px',
-            boxShadow: '0 4px 20px rgba(0, 102, 254, 0.2)'
+            gap: '14px',
+            boxShadow: '0 4px 18px rgba(0, 102, 254, 0.18)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <span style={{ fontSize: '1.6rem' }}>🩺</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.18)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>
+              <i className="bi bi-stethoscope" />
+            </div>
             <div>
-              <strong style={{ display: 'block', fontSize: '1rem', fontWeight: 700 }}>Can't find your specific surgical procedure?</strong>
-              <span style={{ fontSize: '0.82rem', color: '#dbeafe', opacity: 0.95 }}>Search our complete clinical directory of 250+ surgical treatments and ICD-11 procedures.</span>
+              <strong style={{ display: 'block', fontSize: '0.96rem', fontWeight: 800, color: '#ffffff' }}>Can't find your specific surgical procedure?</strong>
+              <span style={{ fontSize: '0.8rem', color: '#e0f2fe', opacity: 0.95 }}>Search our complete clinical directory of 250+ surgical treatments and ICD-11 procedures.</span>
             </div>
           </div>
 
@@ -313,15 +328,16 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
               background: '#ffffff',
               color: '#0066fe',
               border: 'none',
-              padding: '10px 22px',
-              borderRadius: '10px',
-              fontSize: '0.85rem',
+              padding: '8px 18px',
+              borderRadius: '8px',
+              fontSize: '0.82rem',
               fontWeight: 800,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+              height: '38px',
+              boxShadow: '0 3px 10px rgba(0,0,0,0.1)'
             }}
           >
             <span>Search Treatment Directory</span>
