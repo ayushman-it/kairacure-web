@@ -29590,7 +29590,7 @@ a.contact-detail-item:hover .contact-value {
   align-items: center !important;
   gap: 8px !important;
   padding: 13px 26px !important;
-  background: linear-gradient(135deg, #2b7de9, #1a6fd8) !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 10px !important;
@@ -29757,7 +29757,7 @@ a.contact-detail-item:hover .contact-value {
   align-items: center !important;
   gap: 8px !important;
   padding: 13px 24px !important;
-  background: linear-gradient(135deg, #2b7de9, #1a6fd8) !important;
+  background: #0d2f5d !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 10px !important;
@@ -31310,7 +31310,7 @@ a.contact-detail-item:hover .contact-value {
 
 /* Hero Section - Modern */
 .partner-hero-modern {
-  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #ec4899 100%);
+  background: #0d2f5d;
   padding: 80px 24px 100px;
   text-align: center;
   position: relative;
@@ -31502,7 +31502,7 @@ a.contact-detail-item:hover .contact-value {
   width: 64px;
   height: 64px;
   margin: 0 auto 16px;
-  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+  background: #0d2f5d;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -31514,7 +31514,7 @@ a.contact-detail-item:hover .contact-value {
 .stat-number {
   font-size: 3rem;
   font-weight: 900;
-  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+  background: #0d2f5d;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -31590,7 +31590,7 @@ a.contact-detail-item:hover .contact-value {
 
 /* Featured Service Card */
 .featured-service-modern {
-  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+  background: #0d2f5d;
   border-radius: 24px;
   padding: 48px;
   position: relative;
