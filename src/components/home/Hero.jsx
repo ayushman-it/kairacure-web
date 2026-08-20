@@ -112,10 +112,10 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
           <span><strong>4.8 ★</strong>Average rating</span>
         </div>
         <div className="hero-action-row">
-          <button className="hero-btn-primary" onClick={() => setPage('planner')} type="button">
+          <button className="hero-btn-primary" onClick={() => setPage('planner')} type="button" style={{ background: '#0d2f5d', backgroundColor: '#0d2f5d', backgroundImage: 'none', borderColor: '#0d2f5d', color: '#ffffff', boxShadow: '0 4px 18px rgba(13, 47, 93, 0.4)' }}>
             <i className="fa-solid fa-route" aria-hidden="true" /> Plan My Journey
           </button>
-          <button className="hero-btn-secondary" onClick={() => setPage('treatments')} type="button">
+          <button className="hero-btn-secondary" onClick={() => setPage('treatments')} type="button" style={{ background: 'rgba(13, 47, 93, 0.85)', backgroundColor: 'rgba(13, 47, 93, 0.85)', borderColor: '#0d2f5d', color: '#ffffff' }}>
             Browse Treatments
           </button>
         </div>
@@ -124,10 +124,10 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
       {/* Right — inline AI chat card */}
       <div className="hero-visual ai-chat-card hero-chat-card">
         {/* Card header */}
-        <div className="hcc-header">
+        <div className="hcc-header" style={{ background: '#0d2f5d', backgroundColor: '#0d2f5d' }}>
           <div className="hcc-header-info">
             <strong className="hcc-title">
-              <i className="fa-solid fa-robot" style={{ color: '#0d2f5d', marginRight: '6px' }} />
+              <i className="fa-solid fa-robot" style={{ color: '#ffffff', marginRight: '6px' }} />
               Kaira AI Assistant
             </strong>
             <span className="hcc-online-text">
@@ -147,7 +147,7 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
               {msg.role === 'assistant' && (
                 <div className="hcc-avatar-icon"><i className="fa-solid fa-robot" aria-hidden="true" /></div>
               )}
-              <div className={`hcc-bubble${msg.role === 'user' ? ' hcc-bubble-user' : ''}`}>
+              <div className={`hcc-bubble${msg.role === 'user' ? ' hcc-bubble-user' : ''}`} style={msg.role === 'user' ? { background: '#0d2f5d', backgroundColor: '#0d2f5d' } : {}}>
                 {renderFormattedAiMessage(msg.content, msg.role === 'user')}
               </div>
             </div>
@@ -173,8 +173,8 @@ export function Hero({ onFindCare, onSelectSearchOption, query, searchOptions, s
               value={inputVal}
             />
           </div>
-          <button className="hcc-send-btn" type="submit" aria-label="Send" disabled={loading}>
-            <i className="fa-solid fa-paper-plane" aria-hidden="true" />
+          <button className="hcc-send-btn" type="submit" aria-label="Send" disabled={loading} style={{ background: '#0d2f5d', backgroundColor: '#0d2f5d', backgroundImage: 'none', color: '#ffffff' }}>
+            <i className="fa-solid fa-paper-plane" aria-hidden="true" style={{ color: '#ffffff' }} />
           </button>
         </form>
       </div>

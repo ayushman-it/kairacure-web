@@ -36769,6 +36769,35 @@ button.pdl-btn-outline:hover {
   box-shadow: 0 3px 10px rgba(0, 102, 254, 0.25) !important;
 }
 
+/* ==========================================================================
+   MASTER BRAND COLOR OVERRIDE (#0d2f5d) - GUARANTEED HIGHEST SPECIFICITY
+   ========================================================================== */
+html body .hero-btn-primary,
+html body .hero-section .hero-btn-primary,
+html body .hcc-send-btn,
+html body .simple-evaluation-form .submit-button,
+html body .submit-button,
+html body .hpl-btn-primary,
+html body .hpl-submit,
+html body .btn-primary,
+html body button.btn-primary {
+  background: #0d2f5d !important;
+  background-color: #0d2f5d !important;
+  background-image: none !important;
+  border-color: #0d2f5d !important;
+  color: #ffffff !important;
+}
+
+html body .hero-btn-secondary,
+html body .hero-section .hero-btn-secondary {
+  background: rgba(13, 47, 93, 0.85) !important;
+  background-color: rgba(13, 47, 93, 0.85) !important;
+  background-image: none !important;
+  border-color: #0d2f5d !important;
+  color: #ffffff !important;
+}
+
+
 .site-header .mobile-offcanvas .mobile-nav button.active .nav-icon {
   color: #ffffff !important;
 }
