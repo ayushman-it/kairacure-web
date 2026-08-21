@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE } from '../data/constants';
 import {
   PlannerSearchPage,
   ProcedureSelectPage,
@@ -137,7 +138,7 @@ export function PlannerPage({
             const currentPlan = plan || createdJourneyPlan;
             try {
               // 1. Post/Save confirmed journey plan to Admin API
-              await fetch('/api/admin/journey-plans', {
+              await fetch(`${API_BASE}/admin/journey-plans`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

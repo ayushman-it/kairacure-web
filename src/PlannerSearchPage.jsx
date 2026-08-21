@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { API_BASE } from './data/constants';
 
 const STEP_LABELS = ['Treatment', 'Procedure', 'Trip Style', 'Hospital', 'Plan Journey'];
 
@@ -218,7 +219,7 @@ export function PlannerSearchPage({
   useEffect(() => {
     const trackLead = async () => {
       try {
-        const response = await fetch('/api/leads/track', {
+        const response = await fetch(`${API_BASE}/leads/track`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -244,7 +245,7 @@ export function PlannerSearchPage({
   // Update lead when treatments are selected
   useEffect(() => {
     if (leadId && selectedTreatments.length > 0) {
-      fetch('/api/leads/update', {
+      fetch(`${API_BASE}/leads/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -328,7 +329,7 @@ export function PlannerSearchPage({
     if (selectedTreatments.length > 0) {
       // Track step completion before proceeding
       if (leadId) {
-        fetch('/api/leads/update', {
+        fetch(`${API_BASE}/leads/update`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -949,7 +950,7 @@ export function TripStylePage({
   useEffect(() => {
     const trackStep = async () => {
       try {
-        await fetch('/api/leads/update', {
+        await fetch(`${API_BASE}/leads/update`, {
           method: 'POST', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1010,7 +1011,7 @@ export function TripStylePage({
     if (selectedStyle && onContinueToHospitals) {
       // Track trip style selection
       try {
-        await fetch('/api/leads/update', {
+        await fetch(`${API_BASE}/leads/update`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1155,7 +1156,7 @@ function EmailLoginModal({ isOpen, onClose, onLoginSuccess }) {
       
       // Track OTP request (will work when backend is ready)
       try {
-        fetch('/api/leads/update', {
+        fetch(`${API_BASE}/leads/update`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1198,7 +1199,7 @@ function EmailLoginModal({ isOpen, onClose, onLoginSuccess }) {
         
         // Track successful login (will fail silently since API not ready)
         try {
-          fetch('/api/leads/update', {
+          fetch(`${API_BASE}/leads/update`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
@@ -1768,7 +1769,7 @@ export function JourneyPlanningPage({
 
     // Save to admin dashboard
     try {
-      await fetch('/api/admin/journey-plans', {
+      await fetch(`${API_BASE}/admin/journey-plans`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2764,7 +2765,7 @@ export function PlannerHospitalsPage({
     }
 
     // Track hospitals view
-    fetch('/api/leads/update', {
+    fetch(`${API_BASE}/leads/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2859,7 +2860,7 @@ export function PlannerHospitalsPage({
 
   const handleHospitalClick = (hospital) => {
     if (!isLoggedIn) {
-      fetch('/api/leads/update', {
+      fetch(`${API_BASE}/leads/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
