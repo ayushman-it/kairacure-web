@@ -11,6 +11,20 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   const searchRef = React.useRef(null);
   const inputRef = React.useRef(null);
 
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [mobileMenuOpen]);
+
   const nav = [
     ['home', 'Home'],
     ['treatments', 'Treatments'],

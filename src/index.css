@@ -36829,12 +36829,16 @@ html body .hero-section .hero-btn-secondary {
   top: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
+  left: auto !important;
   width: min(330px, 86vw) !important;
+  height: 100vh !important;
   height: 100dvh !important;
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
   background: #ffffff !important;
-  box-shadow: -12px 0 40px rgba(7, 25, 56, 0.18) !important;
-  z-index: 99999 !important;
-  padding: 20px 18px 22px !important;
+  box-shadow: -12px 0 40px rgba(7, 25, 56, 0.22) !important;
+  z-index: 999999 !important;
+  padding: 18px 16px 20px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
@@ -36842,7 +36846,7 @@ html body .hero-section .hero-btn-secondary {
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
   font-family: 'Noto Sans', sans-serif !important;
   box-sizing: border-box !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
 }
 
 .mobile-offcanvas.open {
@@ -36855,20 +36859,25 @@ html body .hero-section .hero-btn-secondary {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  background: rgba(7, 25, 56, 0.45) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
-  z-index: 99998 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  background: rgba(7, 25, 56, 0.5) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+  z-index: 999998 !important;
   border: none !important;
   cursor: pointer !important;
+  outline: none !important;
 }
 
 .mobile-offcanvas-head {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding-bottom: 14px !important;
+  padding-bottom: 12px !important;
   border-bottom: 1px solid #f1f5f9 !important;
+  flex-shrink: 0 !important;
 }
 
 .mobile-offcanvas-close-btn {
@@ -36892,11 +36901,12 @@ html body .hero-section .hero-btn-secondary {
 }
 
 .mobile-side-profile-card {
-  margin: 14px 0 10px !important;
+  margin: 12px 0 8px !important;
   padding: 10px !important;
   background: #f8fafc !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 14px !important;
+  flex-shrink: 0 !important;
 }
 
 .mobile-side-auth-btn {
@@ -36934,13 +36944,25 @@ html body .hero-section .hero-btn-secondary {
   background: #f1f5f9 !important;
 }
 
-/* Modern Unboxed Navigation Menu */
+/* Modern Unboxed Navigation Menu (Inner Scrollable Container) */
 .mobile-nav-modern {
   display: flex !important;
   flex-direction: column !important;
   gap: 4px !important;
-  margin: 10px 0 !important;
+  margin: 8px 0 !important;
   flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 4px !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.mobile-nav-modern::-webkit-scrollbar {
+  width: 4px;
+}
+.mobile-nav-modern::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 .mobile-nav-item {
@@ -36956,6 +36978,7 @@ html body .hero-section .hero-btn-secondary {
   transition: all 0.2s ease !important;
   text-decoration: none !important;
   box-shadow: none !important;
+  flex-shrink: 0 !important;
 }
 
 .mobile-nav-item-left {
@@ -37020,8 +37043,10 @@ html body .hero-section .hero-btn-secondary {
 
 /* Footer Section */
 .mobile-side-footer {
-  padding-top: 14px !important;
+  padding-top: 12px !important;
   border-top: 1px solid #f1f5f9 !important;
+  flex-shrink: 0 !important;
+  background: #ffffff !important;
 }
 
 .mobile-side-call-btn {
