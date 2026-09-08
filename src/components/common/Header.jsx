@@ -293,7 +293,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
         {/* Header */}
         <div className="mobile-offcanvas-head">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src={logoImg} alt="KairaCure" style={{ height: '44px', width: 'auto', objectFit: 'contain' }} />
+            <img src={logoImg} alt="KairaCure" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} type="button" className="mobile-offcanvas-close-btn">
             <i className="bi bi-x-lg" aria-hidden="true" />
@@ -305,22 +305,22 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
           {currentPatient ? (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#0d2f5d', color: '#ffffff', display: 'grid', placeItems: 'center', fontSize: '1.1rem' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%)', color: '#ffffff', display: 'grid', placeItems: 'center', fontSize: '1.1rem' }}>
                   <i className="bi bi-person-fill" />
                 </div>
                 <div>
-                  <strong style={{ fontSize: '0.86rem', color: '#0f172a', display: 'block', fontWeight: 800 }}>{patientLabel}</strong>
+                  <strong style={{ fontSize: '0.88rem', color: '#0f172a', display: 'block', fontWeight: 800 }}>{patientLabel}</strong>
                   <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                     <i className="bi bi-check-circle-fill" /> Active Session
                   </span>
                 </div>
               </div>
-              <button onClick={logoutAndClose} type="button" style={{ background: '#fee2e2', color: '#dc2626', border: 'none', padding: '6px 12px', borderRadius: '6px', fontSize: '0.76rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button onClick={logoutAndClose} type="button" style={{ background: '#fee2e2', color: '#dc2626', border: 'none', padding: '6px 12px', borderRadius: '8px', fontSize: '0.76rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <i className="bi bi-box-arrow-right" /> Logout
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+            <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
               <button className="mobile-side-auth-btn primary" onClick={() => navigate('login')} type="button">
                 <i className="bi bi-person-fill" /> Sign In
               </button>
@@ -331,28 +331,76 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
           )}
         </div>
 
-        {/* Mobile Nav Links List */}
-        <nav className="mobile-nav">
-          <button className={page === 'home' ? 'active' : ''} onClick={() => navigate('home')} type="button">
-            <i className="bi bi-house-door-fill nav-icon" /> <span>Home</span>
+        {/* Mobile Nav Links List (Sleek Open List with Colored Icon Badges) */}
+        <nav className="mobile-nav-modern">
+          <button className={`mobile-nav-item ${page === 'home' ? 'active' : ''}`} onClick={() => navigate('home')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#eff6ff', color: '#0052cc' }}>
+                <i className="bi bi-house-door-fill" />
+              </span>
+              <span className="mobile-nav-label">Home</span>
+            </div>
+            <i className="bi bi-chevron-right mobile-nav-arrow" />
           </button>
-          <button className={page === 'treatments' ? 'active' : ''} onClick={() => navigate('treatments')} type="button">
-            <i className="bi bi-stethoscope nav-icon" /> <span>Treatments Catalog</span>
+
+          <button className={`mobile-nav-item ${page === 'treatments' ? 'active' : ''}`} onClick={() => navigate('treatments')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#f0fdf4', color: '#16a34a' }}>
+                <i className="bi bi-stethoscope" />
+              </span>
+              <span className="mobile-nav-label">Treatments Catalog</span>
+            </div>
+            <i className="bi bi-chevron-right mobile-nav-arrow" />
           </button>
-          <button className={page === 'destinations' ? 'active' : ''} onClick={() => navigate('destinations')} type="button">
-            <i className="bi bi-geo-alt-fill nav-icon" /> <span>Medical Destinations</span>
+
+          <button className={`mobile-nav-item ${page === 'destinations' ? 'active' : ''}`} onClick={() => navigate('destinations')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#fff1f2', color: '#e11d48' }}>
+                <i className="bi bi-geo-alt-fill" />
+              </span>
+              <span className="mobile-nav-label">Medical Destinations</span>
+            </div>
+            <i className="bi bi-chevron-right mobile-nav-arrow" />
           </button>
-          <button className={page === 'partners' ? 'active' : ''} onClick={() => navigate('partners')} type="button">
-            <i className="bi bi-building-check nav-icon" /> <span>Hospitals</span>
+
+          <button className={`mobile-nav-item ${page === 'partners' ? 'active' : ''}`} onClick={() => navigate('partners')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#ecfeff', color: '#0891b2' }}>
+                <i className="bi bi-building-check" />
+              </span>
+              <span className="mobile-nav-label">Hospitals &amp; Clinics</span>
+            </div>
+            <i className="bi bi-chevron-right mobile-nav-arrow" />
           </button>
-          <button className={page === 'planner' ? 'active' : ''} onClick={() => navigate('planner')} type="button">
-            <i className="bi bi-compass-fill nav-icon" /> <span>Plan My Journey</span>
+
+          <button className={`mobile-nav-item ${page === 'planner' ? 'active' : ''}`} onClick={() => navigate('planner')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#fffbeb', color: '#d97706' }}>
+                <i className="bi bi-compass-fill" />
+              </span>
+              <span className="mobile-nav-label">Plan My Journey</span>
+            </div>
+            <i className="bi bi-chevron-right mobile-nav-arrow" />
           </button>
-          <button className={page === 'partner-growth' ? 'active' : ''} onClick={() => navigate('partner-growth')} type="button">
-            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0d2f5d' }} /> <span>Partner with us</span>
+
+          <button className={`mobile-nav-item ${page === 'partner-growth' ? 'active' : ''}`} onClick={() => navigate('partner-growth')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#eef2ff', color: '#4f46e5' }}>
+                <i className="bi bi-hospital-fill" />
+              </span>
+              <span className="mobile-nav-label">Partner with us</span>
+            </div>
+            <span className="mobile-nav-chip" style={{ background: '#e0e7ff', color: '#4338ca' }}>Hospital Growth</span>
           </button>
-          <button className={page === 'ai-assistant' ? 'active' : ''} onClick={() => navigate('ai-assistant')} type="button">
-            <i className="bi bi-robot nav-icon" style={{ color: '#0d2f5d' }} /> <span>Kaira AI Concierge</span>
+
+          <button className={`mobile-nav-item ${page === 'ai-assistant' ? 'active' : ''}`} onClick={() => navigate('ai-assistant')} type="button">
+            <div className="mobile-nav-item-left">
+              <span className="mobile-nav-icon-badge" style={{ background: '#f5f3ff', color: '#7c3aed' }}>
+                <i className="bi bi-robot" />
+              </span>
+              <span className="mobile-nav-label">Kaira AI Concierge</span>
+            </div>
+            <span className="mobile-nav-chip" style={{ background: '#f3e8ff', color: '#6b21a8' }}>AI 2.0</span>
           </button>
         </nav>
 
@@ -362,9 +410,11 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
             <i className="bi bi-telephone-fill" />
             <span>24/7 Medical Care Desk</span>
           </a>
-          <span style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', textAlign: 'center', marginTop: '8px' }}>
-            Email: care@kairacure.com
-          </span>
+          <div style={{ marginTop: '10px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+            <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 600 }}>
+              Email: <a href="mailto:care@kairacure.com" style={{ color: '#0052cc', textDecoration: 'none', fontWeight: 700 }}>care@kairacure.com</a>
+            </span>
+          </div>
         </div>
       </aside>
     </header>
