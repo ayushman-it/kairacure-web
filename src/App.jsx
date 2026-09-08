@@ -74,6 +74,7 @@ function App() {
   const [homeSnackbar, setHomeSnackbar] = useState('');
   const [query, setQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('India');
+  const [selectedCity, setSelectedCity] = useState('All');
   const [activeGroup, setActiveGroup] = useState('All');
   const [selectedTreatment, setSelectedTreatment] = useState(null);
   const [selectedHospital, setSelectedHospital] = useState(INDIA_HOSPITALS[0] || null);
@@ -205,6 +206,8 @@ function App() {
           onLogoutPatient={handlePatientLogout}
           page={page}
           setPage={setPage}
+          setSelectedHospital={setSelectedHospital}
+          setSelectedTreatment={setSelectedTreatment}
         />
       )}
 
@@ -222,7 +225,7 @@ function App() {
         {showAdmin && <AdminPanelRedirect />}
         {showHome && <TrustStrip />}
         {(showHome || page === 'destinations') && (
-          <Destinations hospitals={contentHospitals} isLoading={isContentLoading} money={money} setPage={setPage} setSelectedCountry={setSelectedCountry} />
+          <Destinations hospitals={contentHospitals} isLoading={isContentLoading} money={money} setPage={setPage} setSelectedCity={setSelectedCity} setSelectedCountry={setSelectedCountry} />
         )}
 
         {page === 'treatments' && (
@@ -250,6 +253,8 @@ function App() {
             selectedTreatment={selectedTreatment}
             setPage={setPage}
             setSelectedHospital={setSelectedHospital}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
             treatments={contentTreatments}
           />
         )}

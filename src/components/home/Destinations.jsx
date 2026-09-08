@@ -63,7 +63,7 @@ const DESTINATIONS_DATA = [
   }
 ];
 
-export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
+export function Destinations({ hospitals = [], setPage, setSelectedCity, setSelectedCountry }) {
   const carouselRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -80,7 +80,11 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
   };
 
   const handleSelectCity = (city) => {
-    if (setSelectedCountry) setSelectedCountry(city);
+    const rawCity = typeof city === 'string' ? city : city?.city || '';
+    let cleanCity = rawCity;
+    if (rawCity.includes('Delhi')) cleanCity = 'Delhi / NCR';
+    if (setSelectedCity) setSelectedCity(cleanCity);
+    if (setSelectedCountry) setSelectedCountry(cleanCity);
     if (setPage) setPage('partners');
   };
 
@@ -204,7 +208,7 @@ export function Destinations({ hospitals = [], setPage, setSelectedCountry }) {
               Premier Healthcare Cities
             </h2>
             <p style={{ fontSize: '0.94rem', color: '#64748b', margin: 0, maxWidth: '680px', lineHeight: 1.5 }}>
-              Explore top medical hubs known for JCI &amp; NABH accredited partner hospitals, specialist doctors, and seamless recovery stays.
+              Explore top medical hubs known for JCI &amp; NABH accredited hospitals, specialist doctors, and seamless recovery stays.
             </p>
           </div>
 

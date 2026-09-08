@@ -68,7 +68,7 @@ export function formatShortName(name = '') {
 
 export function formatHospitalDisplayName(rawName = '') {
   let name = String(rawName || '').trim();
-  if (!name) return 'Hospital Partner';
+  if (!name) return 'Hospital';
 
   const altNameMatch = name.match(/issued in the Name of ([^)]+)\)/i);
   if (altNameMatch && altNameMatch[1]) {
@@ -114,7 +114,7 @@ export const WHY_US = [
 export const TRUST_METRICS = [
   ['100k+', 'patient journeys benchmarked'],
   ['38+', 'destination countries tracked'],
-  ['1,500+', 'partner hospitals mapped'],
+  ['1,500+', 'accredited hospitals mapped'],
   ['48h', 'medical opinion target'],
 ];
 
@@ -144,8 +144,8 @@ export const COUNTRY_SUPPORT = [
 ];
 
 export const DEFAULT_HOME_FAQS = [
-  { id: 'faq-help', icon: 'fa-hand-holding-medical', question: 'How does Kairacure help patients?', answer: 'We help compare partner hospitals, doctors, treatment costs in Indian Rupees, appointment slots, travel support, and follow-up steps in one place.', visible: true },
-  { id: 'faq-compare', icon: 'fa-code-compare', question: 'Can I compare partner hospitals before booking?', answer: 'Yes. Patients can compare hospital profile, doctor availability, estimated package, ratings, city, and treatment focus before requesting an appointment.', visible: true },
+  { id: 'faq-help', icon: 'fa-hand-holding-medical', question: 'How does Kairacure help patients?', answer: 'We help compare hospitals, doctors, treatment costs in Indian Rupees, appointment slots, travel support, and follow-up steps in one place.', visible: true },
+  { id: 'faq-compare', icon: 'fa-code-compare', question: 'Can I compare hospitals before booking?', answer: 'Yes. Patients can compare hospital profile, doctor availability, estimated package, ratings, city, and treatment focus before requesting an appointment.', visible: true },
   { id: 'faq-opinion', icon: 'fa-file-medical', question: 'Is the second opinion support free?', answer: 'The care team can guide report sharing and coordinate available second-opinion options before the patient travels.', visible: true },
   { id: 'faq-number', icon: 'fa-phone-volume', question: 'What happens after I submit my number?', answer: 'A care expert follows up for reports, INR cost estimate, hospital options, doctor selection, and appointment planning.', visible: true },
   { id: 'faq-cost', icon: 'fa-indian-rupee-sign', question: 'Are treatment costs shown in Indian Rupees?', answer: 'Yes. Website estimates are shown in INR by default so patients can understand India treatment packages clearly.', visible: true },

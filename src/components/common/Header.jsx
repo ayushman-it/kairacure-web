@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logoImg from '../../assets/kairacure-logo.png';
 import { formatShortName } from '../../data/constants.js';
 
-export function Header({ currentPatient, hospitals = [], treatments = [], onLogoutPatient, openSearchOption, page, setPage }) {
+export function Header({ currentPatient, hospitals = [], treatments = [], onLogoutPatient, page, setPage, setSelectedHospital, setSelectedTreatment }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -15,18 +15,9 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     ['home', 'Home'],
     ['treatments', 'Treatments'],
     ['destinations', 'Destinations'],
-    ['partners', 'Partners'],
+    ['partners', 'Hospitals'],
     ['planner', 'Plan My Journey'],
-  ];
-
-  const STATIC_SUGGESTIONS = [
-    { type: 'Treatment', label: 'Heart Bypass Surgery', meta: 'Cardiac · Starting ₹2.5L', icon: 'fa-heart-pulse' },
-    { type: 'Treatment', label: 'Knee Replacement', meta: 'Orthopedics · Starting ₹1.8L', icon: 'fa-bone' },
-    { type: 'Treatment', label: 'Cancer Treatment', meta: 'Oncology · Starting ₹3L', icon: 'fa-ribbon' },
-    { type: 'Hospital', label: 'Apollo Hospitals', meta: 'Delhi, India', icon: 'fa-hospital' },
-    { type: 'Hospital', label: 'Fortis Healthcare', meta: 'Mumbai, India', icon: 'fa-hospital' },
-    { type: 'Destination', label: 'Delhi / NCR', meta: '120+ hospitals available', icon: 'fa-location-dot' },
-    { type: 'Destination', label: 'Chennai', meta: '80+ hospitals available', icon: 'fa-location-dot' },
+    ['partner-growth', 'Partner with us'],
   ];
 
   const TYPE_ICON = {
@@ -46,11 +37,120 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
   const navigate = (id) => { setPage(id); setMobileMenuOpen(false); };
   const logoutAndClose = () => { onLogoutPatient(); setMobileMenuOpen(false); };
 
+  const staticSuggestions = React.useMemo(() => {
+    const list = [];
+    if (Array.isArray(treatments) && treatments.length > 0) {
+      treatments.slice(0, 3).forEach((t) => {
+        list.push({
+          type: 'Treatment',
+          label: t.title || t.name,
+          meta: `${t.category || t.group || 'Specialty'} · Starting ₹${t.costInr ? (t.costInr / 100000).toFixed(1) + 'L' : '1.5L'}`,
+          icon: 'fa-stethoscope',
+          rawItem: t,
+          actionType: 'treatment'
+        });
+      });
+    } else {
+      list.push(
+        { type: 'Treatment', label: 'Heart Bypass Surgery', meta: 'Cardiac · Starting ₹2.5L', icon: 'fa-heart-pulse', actionType: 'treatment' },
+        { type: 'Treatment', label: 'Knee Replacement', meta: 'Orthopedics · Starting ₹1.8L', icon: 'fa-bone', actionType: 'treatment' },
+        { type: 'Treatment', label: 'Cancer Treatment', meta: 'Oncology · Starting ₹3L', icon: 'fa-ribbon', actionType: 'treatment' }
+      );
+    }
+
+    if (Array.isArray(hospitals) && hospitals.length > 0) {
+      hospitals.slice(0, 3).forEach((h) => {
+        list.push({
+          type: 'Hospital',
+          label: h.name,
+          meta: `${h.city || 'India'} · ${h.specialty || 'Accredited Hospital'}`,
+          icon: 'fa-hospital',
+          rawItem: h,
+          actionType: 'hospital'
+        });
+      });
+    } else {
+      list.push(
+        { type: 'Hospital', label: 'Apollo Hospitals', meta: 'Delhi, India', icon: 'fa-hospital', actionType: 'hospital' },
+        { type: 'Hospital', label: 'Fortis Healthcare', meta: 'Mumbai, India', icon: 'fa-hospital', actionType: 'hospital' }
+      );
+    }
+
+    list.push(
+      { type: 'Destination', label: 'Delhi / NCR', meta: '120+ accredited hospitals', icon: 'fa-location-dot', actionType: 'destination' },
+      { type: 'Destination', label: 'Chennai', meta: '80+ accredited hospitals', icon: 'fa-location-dot', actionType: 'destination' }
+    );
+
+    return list;
+  }, [treatments, hospitals]);
+
   const handleChange = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
     setActiveIdx(-1);
     setShowSugg(true);
+
+    if (!val.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    const q = val.toLowerCase().trim();
+    const results = [];
+
+    // Search Treatments
+    if (Array.isArray(treatments)) {
+      treatments.forEach((t) => {
+        const name = t.title || t.name || '';
+        const cat = t.category || t.group || '';
+        if (name.toLowerCase().includes(q) || cat.toLowerCase().includes(q)) {
+          results.push({
+            type: 'Treatment',
+            label: name,
+            meta: `${cat || 'Specialty'} · Starting ₹${t.costInr ? (t.costInr / 100000).toFixed(1) + 'L' : '1.5L'}`,
+            icon: 'fa-stethoscope',
+            rawItem: t,
+            actionType: 'treatment'
+          });
+        }
+      });
+    }
+
+    // Search Hospitals
+    if (Array.isArray(hospitals)) {
+      hospitals.forEach((h) => {
+        const name = h.name || '';
+        const city = h.city || h.location || '';
+        const spec = h.specialty || '';
+        if (name.toLowerCase().includes(q) || city.toLowerCase().includes(q) || spec.toLowerCase().includes(q)) {
+          results.push({
+            type: 'Hospital',
+            label: name,
+            meta: `${city || 'India'} · ${spec || 'Accredited Hospital'}`,
+            icon: 'fa-hospital',
+            rawItem: h,
+            actionType: 'hospital'
+          });
+        }
+      });
+    }
+
+    // Search Destinations
+    const cities = ['Delhi / NCR', 'Mumbai', 'Bengaluru', 'Chennai', 'Hyderabad', 'Kolkata', 'Kochi', 'Ahmedabad'];
+    cities.forEach((c) => {
+      if (c.toLowerCase().includes(q)) {
+        results.push({
+          type: 'Destination',
+          label: c,
+          meta: 'Top Accredited Hospitals Available',
+          icon: 'fa-location-dot',
+          cityName: c,
+          actionType: 'destination'
+        });
+      }
+    });
+
+    setSuggestions(results.slice(0, 8));
   };
 
   const handleFocus = () => {
@@ -61,15 +161,35 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     setSearchQuery('');
     setSuggestions([]);
     setShowSugg(false);
-    if (sugg.treatment) { openSearchOption?.(sugg); }
-    else if (sugg.hospital) { openSearchOption?.(sugg); }
-    else if (sugg.destination) { openSearchOption?.(sugg); }
-    else { setPage('hospitals'); }
+
+    if (sugg.actionType === 'treatment' || sugg.type === 'Treatment') {
+      if (setSelectedTreatment && sugg.rawItem) {
+        setSelectedTreatment(sugg.rawItem);
+      }
+      setPage('treatment-detail');
+    } else if (sugg.actionType === 'hospital' || sugg.type === 'Hospital') {
+      if (setSelectedHospital && sugg.rawItem) {
+        setSelectedHospital(sugg.rawItem);
+      }
+      setPage('partner-detail');
+    } else if (sugg.actionType === 'destination' || sugg.type === 'Destination') {
+      setPage('partners');
+    } else {
+      setPage('treatments');
+    }
   };
 
   const handleKeyDown = (e) => {
     if (!showSugg) return;
     if (e.key === 'Escape') { setShowSugg(false); setActiveIdx(-1); }
+    if (e.key === 'Enter') {
+      const activeList = searchQuery.trim() ? suggestions : staticSuggestions;
+      if (activeIdx >= 0 && activeIdx < activeList.length) {
+        handleSelect(activeList[activeIdx]);
+      } else if (activeList.length > 0) {
+        handleSelect(activeList[0]);
+      }
+    }
   };
 
   React.useEffect(() => {
@@ -78,7 +198,7 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const displaySuggestions = searchQuery.trim() ? suggestions : STATIC_SUGGESTIONS;
+  const displaySuggestions = searchQuery.trim() ? suggestions : staticSuggestions;
 
   return (
     <header className="site-header">
@@ -223,13 +343,13 @@ export function Header({ currentPatient, hospitals = [], treatments = [], onLogo
             <i className="bi bi-geo-alt-fill nav-icon" /> <span>Medical Destinations</span>
           </button>
           <button className={page === 'partners' ? 'active' : ''} onClick={() => navigate('partners')} type="button">
-            <i className="bi bi-building-check nav-icon" /> <span>Partner Hospitals</span>
+            <i className="bi bi-building-check nav-icon" /> <span>Hospitals</span>
           </button>
           <button className={page === 'planner' ? 'active' : ''} onClick={() => navigate('planner')} type="button">
             <i className="bi bi-compass-fill nav-icon" /> <span>Plan My Journey</span>
           </button>
           <button className={page === 'partner-growth' ? 'active' : ''} onClick={() => navigate('partner-growth')} type="button">
-            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0d2f5d' }} /> <span>Hospital Growth Partner</span>
+            <i className="bi bi-hospital-fill nav-icon" style={{ color: '#0d2f5d' }} /> <span>Partner with us</span>
           </button>
           <button className={page === 'ai-assistant' ? 'active' : ''} onClick={() => navigate('ai-assistant')} type="button">
             <i className="bi bi-robot nav-icon" style={{ color: '#0d2f5d' }} /> <span>Kaira AI Concierge</span>

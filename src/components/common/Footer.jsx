@@ -47,7 +47,7 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
       rawItem: t,
       type: 'treatment'
     }));
-  } else if (activeTab === 'Partners') {
+  } else if (activeTab === 'Hospitals' || activeTab === 'Partners') {
     const sourceHospitals = Array.isArray(hospitals) && hospitals.length > 0 ? hospitals : [
       { name: 'Apollo Hospitals', city: 'Delhi / NCR', accreditations: ['NABH', 'JCI'] },
       { name: 'Fortis Healthcare', city: 'Mumbai', accreditations: ['NABH', 'JCI'] },
@@ -93,7 +93,7 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
 
   const handleViewMore = () => {
     if (activeTab === 'Treatments') setPage && setPage('treatments');
-    else if (activeTab === 'Partners') setPage && setPage('partners');
+    else if (activeTab === 'Hospitals' || activeTab === 'Partners') setPage && setPage('partners');
     else if (activeTab === 'Doctors') setPage && setPage('treatments');
     else if (activeTab === 'Destinations') setPage && setPage('destinations');
   };
@@ -103,7 +103,7 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
       <div className="kc-footer-top">
         {/* Dynamic Footer Tabs */}
         <div className="kc-footer-tabs">
-          {['Treatments', 'Partners', 'Doctors', 'Destinations'].map((tab) => (
+          {['Treatments', 'Hospitals', 'Doctors', 'Destinations'].map((tab) => (
             <button
               key={tab}
               className={`kc-footer-tab${activeTab === tab ? ' active' : ''}`}
@@ -169,7 +169,7 @@ export function Footer({ setPage, treatments = [], hospitals = [], setSelectedTr
         <div className="kc-footer-col">
           <h4>About {BRAND_NAME}</h4>
           <a href="#" onClick={(e) => { e.preventDefault(); setPage && setPage('home'); }}>About Us</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); setPage && setPage('partner-growth'); }}>Become a Hospital Partner</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); setPage && setPage('partner-growth'); }}>Partner with us</a>
           <a href="#" onClick={(e) => { e.preventDefault(); setPage && setPage('ai-assistant'); }}>{BRAND_NAME} AI Concierge</a>
         </div>
         <div className="kc-footer-col">

@@ -3,6 +3,7 @@ import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.
 import { SkeletonCard } from '../components/common/SkeletonCard.jsx';
 import { StarRating } from '../components/common/StarRating.jsx';
 import { EvaluationForm } from '../components/hospitals/EvaluationForm.jsx';
+import { BookAppointmentModal } from '../components/modals/BookAppointmentModal.jsx';
 import {
   TREATMENTS,
   TREATMENT_GROUPS,
@@ -11,18 +12,39 @@ import {
   getHospitalImage
 } from '../data/constants.js';
 
-export function PartnersPage({ hospitals, isLoading = false, money, selectedTreatment, setPage, setSelectedHospital, treatments = TREATMENTS }) {
-  const cityOptions = useMemo(() => [...new Set(hospitals.map((hospital) => hospital.city))].sort(), [hospitals]);
+export function PartnersPage({
+  hospitals,
+  isLoading = false,
+  money,
+  selectedTreatment,
+  setPage,
+  setSelectedHospital,
+  selectedCity: propSelectedCity,
+  setSelectedCity: setPropSelectedCity,
+  treatments = TREATMENTS
+}) {
+  const [localCity, setLocalCity] = useState('All');
+  const selectedCity = propSelectedCity !== undefined ? propSelectedCity : localCity;
+  const setSelectedCity = setPropSelectedCity || setLocalCity;
+
+  const cityOptions = useMemo(() => {
+    const list = [...new Set(hospitals.map((hospital) => hospital.city).filter(Boolean))].sort();
+    if (selectedCity && selectedCity !== 'All' && !list.includes(selectedCity)) {
+      list.unshift(selectedCity);
+    }
+    return list;
+  }, [hospitals, selectedCity]);
+
   const treatmentOptions = useMemo(() => treatments.map((treatment) => treatment.title || treatment.name), [treatments]);
   
   // DEFAULT FILTERS: NOTHING PRE-SELECTED!
   const [selectedCountry, setSelectedCountry] = useState('All');
-  const [selectedCity, setSelectedCity] = useState('All');
   const [selectedDepartment, setSelectedDepartment] = useState('All');
   const [selectedTreatmentFilter, setSelectedTreatmentFilter] = useState('All');
   const [quickFilter, setQuickFilter] = useState('all'); // 'all', 'jci', 'nabh', 'multispecialty'
   const [visibleHospitalCount, setVisibleHospitalCount] = useState(5);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [bookingHospital, setBookingHospital] = useState(null);
 
   const filteredDirectoryHospitals = useMemo(() => hospitals.filter((hospital) => {
     const tags = Array.isArray(hospital.tags) ? hospital.tags : [];
@@ -31,7 +53,16 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
     const matchesCountry = selectedCountry === 'All' || (hospital.country && hospital.country.toLowerCase() === selectedCountry.toLowerCase());
     
     // City Filter
-    const matchesCity = selectedCity === 'All' || hospital.city === selectedCity;
+    let matchesCity = selectedCity === 'All' || hospital.city === selectedCity;
+    if (!matchesCity && selectedCity && selectedCity !== 'All') {
+      const targetLower = selectedCity.toLowerCase();
+      const hospitalCityLower = (hospital.city || '').toLowerCase();
+      if (targetLower.includes('delhi') && (hospitalCityLower.includes('delhi') || hospitalCityLower.includes('gurugram') || hospitalCityLower.includes('noida') || hospitalCityLower.includes('gurgaon'))) {
+        matchesCity = true;
+      } else if (hospitalCityLower && (hospitalCityLower.includes(targetLower) || targetLower.includes(hospitalCityLower))) {
+        matchesCity = true;
+      }
+    }
     
     // Department Filter
     const matchesDepartment = selectedDepartment === 'All' || tags.some((tag) => treatments.find((treatment) => (treatment.title || treatment.name) === tag)?.group === selectedDepartment);
@@ -269,7 +300,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
       <div style={{ maxWidth: '1380px', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.02em' }}>
-            Popular Partners &amp; Hospitals
+            Top Hospitals in India
           </h2>
           <p style={{ fontSize: '0.9rem', color: '#64748b', margin: 0 }}>
             Compare providers by destination, speciality, doctors, value, and full estimated budget.
@@ -318,15 +349,6 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
         >
           Multi Specialty
         </button>
-
-        {/* Uniform Royal Blue Button (NO Black background!) */}
-        <button
-          type="button"
-          onClick={() => setPage('partner-growth')}
-          style={{ background: '#0d2f5d', color: '#ffffff', fontWeight: 700, marginLeft: 'auto', borderRadius: '10px', padding: '8px 18px', border: 'none', cursor: 'pointer', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 14px rgba(0,102,254,0.22)' }}
-        >
-          <i className="bi bi-broadcast-pin" style={{ color: '#ffffff' }} /> Hospital Partner Growth &amp; DOOH Ads
-        </button>
       </div>
 
       {/* Main Content Layout (Expanded to 1380px) */}
@@ -340,7 +362,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '48px', textAlign: 'center' }}>
               <i className="bi bi-hospital" style={{ fontSize: '2.8rem', color: '#94a3b8', display: 'block', marginBottom: '12px' }} />
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: '0 0 6px' }}>No Hospitals Match Your Filter Criteria</h3>
-              <p style={{ fontSize: '0.88rem', color: '#64748b', margin: '0 0 18px' }}>Try resetting your filter selections to browse our full network of accredited partner hospitals.</p>
+              <p style={{ fontSize: '0.88rem', color: '#64748b', margin: '0 0 18px' }}>Try resetting your filter selections to browse our full network of accredited hospitals.</p>
               <button onClick={handleResetAllFilters} className="partner-search-btn-v2" style={{ margin: '0 auto', width: 'auto', padding: '0 24px' }}>
                 Reset Filters
               </button>
@@ -417,7 +439,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                 <button 
                   onClick={() => {
                     setSelectedHospital(hospital);
-                    setPage('planner');
+                    setBookingHospital(hospital);
                   }} 
                   type="button" 
                   style={{
@@ -452,7 +474,7 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
                 type="button"
                 style={{ background: '#ffffff', border: '1.5px solid #0d2f5d', color: '#0d2f5d', padding: '12px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 8px rgba(0,102,254,0.08)' }}
               >
-                <span>Load More Partner Hospitals</span>
+                <span>Load More Hospitals</span>
                 <i className="bi bi-chevron-down" />
               </button>
             </div>
@@ -467,6 +489,17 @@ export function PartnersPage({ hospitals, isLoading = false, money, selectedTrea
         </div>
 
       </div>
+
+      {bookingHospital && (
+        <BookAppointmentModal 
+          hospital={bookingHospital} 
+          onClose={() => setBookingHospital(null)} 
+          onSuccessNavigate={(hosp) => {
+            setSelectedHospital(hosp);
+            setPage('partner-detail');
+          }} 
+        />
+      )}
     </section>
   );
 }

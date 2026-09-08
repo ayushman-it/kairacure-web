@@ -9,10 +9,10 @@ export function JourneyModal({ onClose, setPage, treatments = [] }) {
         <button className="modal-close" onClick={onClose} type="button">x</button>
         <span>Plan smarter</span>
         <h2>Build a quick medical travel estimate</h2>
-        <p>Select a treatment, compare partners and doctors, then see a demo budget for package, flights, visa, stay, pickup and care support.</p>
+        <p>Select a treatment, compare hospitals and doctors, then see a demo budget for package, flights, visa, stay, pickup and care support.</p>
         <div className="modal-steps">
           <span>Choose treatment</span>
-          <span>Compare partners</span>
+          <span>Compare hospitals</span>
           <span>Estimate total cost</span>
         </div>
         <button

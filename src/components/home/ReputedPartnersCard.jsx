@@ -88,7 +88,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
                 <span>ACCREDITED HEALTHCARE NETWORK</span>
               </div>
               <h2 style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.65rem)', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
-                Our Reputed Partner Hospitals
+                Our Reputed Hospitals
               </h2>
             </div>
 
@@ -113,7 +113,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>View All {hospitals.length > 0 ? hospitals.length : 120}+ Partner Hospitals</span>
+              <span>View All {hospitals.length > 0 ? hospitals.length : 120}+ Hospitals</span>
               <i className="bi bi-arrow-right" />
             </button>
           </div>
@@ -158,7 +158,7 @@ export function ReputedPartnersCard({ setPage, setSelectedHospital, hospitals = 
                 </div>
 
                 <div style={{ marginTop: '12px', paddingTop: '8px', borderTop: '1px dashed #cbd5e1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.74rem', color: '#0d2f5d', fontWeight: 700 }}>
-                  <span>Verified Medical Partner</span>
+                  <span>Verified Medical Center</span>
                   <i className="bi bi-chevron-right" />
                 </div>
               </div>

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 const FAQS_DATA = [
   {
     category: 'hospital',
-    question: 'How do I choose the best partner hospital for my treatment?',
-    answer: 'Our medical desk evaluates your clinical diagnosis against 100+ JCI & NABH accredited partner hospitals. We match surgeon expertise, hospital success rates, bed availability, and patient budget to recommend the top 3 hospital options for your specific procedure.',
+    question: 'How do I choose the best hospital for my treatment?',
+    answer: 'Our medical desk evaluates your clinical diagnosis against 100+ JCI & NABH accredited hospitals. We match surgeon expertise, hospital success rates, bed availability, and patient budget to recommend the top 3 hospital options for your specific procedure.',
     badge: 'Hospital Selection'
   },
   {
@@ -16,19 +16,19 @@ const FAQS_DATA = [
   {
     category: 'travel',
     question: 'Do you assist with medical visa invitation letters and airport pickup?',
-    answer: 'Yes, 100% complimentary support. We coordinate with your selected partner hospital to issue official Medical Visa Invitation Letters (VIL) for the patient and attendants. Upon arrival, a dedicated Kairacure escort provides private airport pickup and transport to your hotel/hospital.',
+    answer: 'Yes, 100% complimentary support. We coordinate with your selected hospital to issue official Medical Visa Invitation Letters (VIL) for the patient and attendants. Upon arrival, a dedicated Kairacure escort provides private airport pickup and transport to your hotel/hospital.',
     badge: 'Travel & Visa Desk'
   },
   {
     category: 'second-opinion',
     question: 'Can I get a free second opinion from senior specialists before traveling?',
-    answer: 'Yes! You can upload your medical reports, MRI, CT scans, or doctor prescriptions. Our team shares them with senior department heads at top partner hospitals to provide a comprehensive second opinion and recommended line of treatment within 24-48 hours.',
+    answer: 'Yes! You can upload your medical reports, MRI, CT scans, or doctor prescriptions. Our team shares them with senior department heads at top hospitals to provide a comprehensive second opinion and recommended line of treatment within 24-48 hours.',
     badge: 'Doctor Review'
   },
   {
     category: 'hotel',
     question: 'How are hotel accommodations and stay length managed during recovery?',
-    answer: 'We partner with verified medical-friendly hotels located within 1-3 km of your hospital. These hotels feature wheelchair accessibility, doctor on call, patient diet kitchens, and elevator access. Your stay duration is customized based on post-operative recovery guidelines.',
+    answer: 'We coordinate with verified medical-friendly hotels located within 1-3 km of your hospital. These hotels feature wheelchair accessibility, doctor on call, patient diet kitchens, and elevator access. Your stay duration is customized based on post-operative recovery guidelines.',
     badge: 'Accommodation'
   },
   {
@@ -157,7 +157,7 @@ export function HomeFaqSection() {
             Kairacure FAQs &amp; Help Desk
           </h2>
           <p style={{ fontSize: '0.94rem', color: '#64748b', margin: 0, maxWidth: '720px', lineHeight: 1.5 }}>
-            Quick answers about partner hospital accreditation, doctor second opinions, surgical package estimates, and international travel coordination.
+            Quick answers about hospital accreditation, doctor second opinions, surgical package estimates, and international travel coordination.
           </p>
         </div>
 

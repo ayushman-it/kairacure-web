@@ -5,7 +5,7 @@ const BASE_SPECIALTIES = [
     key: 'orthopedics',
     title: 'Orthopedics',
     defaultSubtitle: 'Joint Replacement & Spine',
-    iconClass: 'bi bi-person-fill-gear',
+    iconClass: 'fa-solid fa-bone',
     iconBg: '#eff6ff',
     iconColor: '#0d2f5d',
     defaultCount: '120+ Procedures',
@@ -15,7 +15,7 @@ const BASE_SPECIALTIES = [
     key: 'cardiac',
     title: 'Cardiac Surgery',
     defaultSubtitle: 'CABG, Valve & Angioplasty',
-    iconClass: 'bi bi-heart-pulse-fill',
+    iconClass: 'fa-solid fa-heart-pulse',
     iconBg: '#fef2f2',
     iconColor: '#ef4444',
     defaultCount: '95+ Procedures',
@@ -25,7 +25,7 @@ const BASE_SPECIALTIES = [
     key: 'gastroenterology',
     title: 'Gastroenterology',
     defaultSubtitle: 'GI Surgery & Endoscopy',
-    iconClass: 'bi bi-stethoscope',
+    iconClass: 'fa-solid fa-pills',
     iconBg: '#ecfdf5',
     iconColor: '#10b981',
     defaultCount: '80+ Procedures',
@@ -35,7 +35,7 @@ const BASE_SPECIALTIES = [
     key: 'urology',
     title: 'Urology',
     defaultSubtitle: 'Kidney Stone & Prostate',
-    iconClass: 'bi bi-shield-plus',
+    iconClass: 'fa-solid fa-droplet',
     iconBg: '#f0f9ff',
     iconColor: '#0284c7',
     defaultCount: '75+ Procedures',
@@ -45,7 +45,7 @@ const BASE_SPECIALTIES = [
     key: 'infertility',
     title: 'Infertility & IVF',
     defaultSubtitle: 'IVF, IUI & Fertility Care',
-    iconClass: 'bi bi-heart-fill',
+    iconClass: 'fa-solid fa-baby',
     iconBg: '#fdf2f8',
     iconColor: '#ec4899',
     defaultCount: '50+ Procedures',
@@ -55,7 +55,7 @@ const BASE_SPECIALTIES = [
     key: 'ent',
     title: 'Ear, Nose, Throat',
     defaultSubtitle: 'ENT Surgery & Sinus',
-    iconClass: 'bi bi-person-badge',
+    iconClass: 'fa-solid fa-ear-listen',
     iconBg: '#f5f3ff',
     iconColor: '#8b5cf6',
     defaultCount: '65+ Procedures',
@@ -65,7 +65,7 @@ const BASE_SPECIALTIES = [
     key: 'oncology',
     title: 'Oncology Care',
     defaultSubtitle: 'Chemo, Tumor & Onco Surgery',
-    iconClass: 'bi bi-award-fill',
+    iconClass: 'fa-solid fa-ribbon',
     iconBg: '#fffbeb',
     iconColor: '#f59e0b',
     defaultCount: '110+ Procedures',
@@ -75,7 +75,7 @@ const BASE_SPECIALTIES = [
     key: 'neuro',
     title: 'Spine & Neuro',
     defaultSubtitle: 'Brain & Disc Surgery',
-    iconClass: 'bi bi-cpu-fill',
+    iconClass: 'fa-solid fa-brain',
     iconBg: '#ecfeff',
     iconColor: '#06b6d4',
     defaultCount: '85+ Procedures',
@@ -147,7 +147,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
       setSelectedTreatment(matchedTreatment);
       setPage('treatment-detail');
     } else {
-      if (setPage) setPage('planner');
+      if (setPage) setPage('treatments');
     }
   };
 
@@ -268,7 +268,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
 
           <button
             type="button"
-            onClick={() => setPage && setPage('planner')}
+            onClick={() => setPage && setPage('treatments')}
             style={{
               background: '#0d2f5d',
               color: '#ffffff',
@@ -388,7 +388,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
 
           <button
             type="button"
-            onClick={() => setPage && setPage('planner')}
+            onClick={() => setPage && setPage('treatments')}
             style={{
               background: '#ffffff',
               color: '#0d2f5d',

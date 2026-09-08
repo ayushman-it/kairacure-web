@@ -22,7 +22,7 @@ const METRICS_DATA = [
     iconBg: '#fffbeb',
     iconColor: '#f59e0b',
     number: '1,500+',
-    label: 'Accredited Hospital Partners',
+    label: 'Accredited Hospitals',
     subTag: '✓ JCI & NABH Certified'
   },
   {
@@ -37,7 +37,7 @@ const METRICS_DATA = [
 
 const ACCREDITATIONS = [
   { label: 'ISO 9001:2015 Process', icon: 'bi bi-shield-check' },
-  { label: 'JCI & NABH Partner Network', icon: 'bi bi-award-fill' },
+  { label: 'JCI & NABH Hospital Network', icon: 'bi bi-award-fill' },
   { label: 'IATA Travel Desk Coordinated', icon: 'bi bi-airplane-fill' },
   { label: '★ 4.9 Google Patient Rating', icon: 'bi bi-star-fill' }
 ];

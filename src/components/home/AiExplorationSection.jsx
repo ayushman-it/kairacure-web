@@ -216,7 +216,7 @@ export function AiExplorationSection({ setPage }) {
                   Compare Hospital Options &amp; Doctor Availability
                 </h4>
                 <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, lineHeight: 1.45 }}>
-                  Evaluate surgical packages across JCI &amp; NABH accredited partner hospitals, doctor availability, and priority appointment booking.
+                  Evaluate surgical packages across JCI &amp; NABH accredited hospitals, doctor availability, and priority appointment booking.
                 </p>
               </div>
             </div>
@@ -282,7 +282,7 @@ export function AiExplorationSection({ setPage }) {
                   Coordinated Travel, Visa &amp; Hotel Stay
                 </h4>
                 <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 12px', lineHeight: 1.45 }}>
-                  End-to-end flight booking, verified medical partner hotel accommodation, visa invitation letters, and dedicated airport escort.
+                  End-to-end flight booking, verified medical hotel accommodation, visa invitation letters, and dedicated airport escort.
                 </p>
 
                 {/* Mobile Callback Form */}

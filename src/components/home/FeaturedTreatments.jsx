@@ -14,7 +14,7 @@ export function FeaturedTreatments({ money, setPage, setSelectedTreatment, treat
       <div className="section-heading">
         <div>
           <h2>Popular Treatment Journeys</h2>
-          <p>Shortlist treatments by real-world needs, package scope, partner match, and total budget.</p>
+          <p>Shortlist treatments by real-world needs, package scope, hospital match, and total budget.</p>
         </div>
       </div>
       <div className="featured-carousel" aria-label="Featured treatment carousel">
@@ -23,7 +23,7 @@ export function FeaturedTreatments({ money, setPage, setSelectedTreatment, treat
             <div>
               <span>{t.group || 'Specialty'}</span>
               <strong>{t.name || t.title || 'Treatment'}</strong>
-              <p>Comprehensive treatment with coordinated partner hospital support.</p>
+              <p>Comprehensive treatment with coordinated hospital support.</p>
               <button
                 onClick={() => {
                   if (setSelectedTreatment) setSelectedTreatment(t);

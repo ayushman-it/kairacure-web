@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Footer } from '../components/common/Footer.jsx';
 import { Breadcrumbs } from '../components/common/Breadcrumbs.jsx';
+import { BookAppointmentModal } from '../components/modals/BookAppointmentModal.jsx';
 import {
   API_BASE,
   accreditationText,
@@ -18,6 +19,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
   // INTERACTIVE GALLERY STATE: Default to first gallery image or main hospital image
   const [activeImg, setActiveImg] = useState(() => gallery[0] || getHospitalImage(hospital));
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   // Doctors Check: ONLY show if database has real doctors
   const hasRealDoctors = (Array.isArray(hospital.doctorsList) && hospital.doctorsList.length > 0) || Boolean(hospital.doctor);
@@ -80,7 +82,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
           <Breadcrumbs
             items={[
               { label: 'Home', onClick: () => setPage('home') },
-              { label: 'Partners', onClick: onBack || (() => setPage('partners')) },
+              { label: 'Hospitals', onClick: onBack || (() => setPage('partners')) },
               { label: hospital.country || 'India', onClick: () => setPage('destinations') },
               { label: cleanHospitalName },
             ]}
@@ -96,7 +98,7 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
               <div className="pdl-cover-wrap" style={{ height: '230px', position: 'relative', borderRadius: '10px', overflow: 'hidden' }}>
                 <img src={activeImg} alt={cleanHospitalName} onError={handleImageFallback} className="pdl-cover-img" />
                 <span className="pdl-badge-verified">
-                  <i className="bi bi-shield-check" style={{ marginRight: '0.35rem', color: '#38bdf8' }} /> Verified Partner
+                  <i className="bi bi-shield-check" style={{ marginRight: '0.35rem', color: '#38bdf8' }} /> Verified Hospital
                 </span>
               </div>
 
@@ -178,9 +180,14 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
 
               {/* COMPACT & ELEGANT ACTION BUTTONS */}
               <div className="pdl-actions-row" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '0.65rem', width: '100%', maxWidth: '100%', boxSizing: 'border-box', marginTop: '1rem', height: 'auto', alignSelf: 'flex-start' }}>
-                <a href="#connect-form" className="pdl-btn-primary" style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px' }}>
+                <button 
+                  onClick={() => setShowBookingModal(true)} 
+                  type="button" 
+                  className="pdl-btn-primary" 
+                  style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+                >
                   <i className="bi bi-calendar-check-fill" style={{ marginRight: '0.35rem' }} /> Book Free Consultation
-                </a>
+                </button>
                 <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline" style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px' }}>
                   <i className="bi bi-calculator-fill" style={{ marginRight: '0.35rem' }} /> Journey Cost Calculator
                 </button>
@@ -422,6 +429,17 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
       {/* ── REUSABLE FOOTER ── */}
       <Footer setPage={setPage} />
 
+      {showBookingModal && (
+        <BookAppointmentModal 
+          hospital={hospital} 
+          onClose={() => setShowBookingModal(false)} 
+          onSuccessNavigate={() => {
+            setActiveTab('doctors');
+            const docSec = document.getElementById('doctors-section');
+            if (docSec) docSec.scrollIntoView({ behavior: 'smooth' });
+          }} 
+        />
+      )}
     </div>
   );
 }
