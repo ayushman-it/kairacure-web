@@ -4471,19 +4471,19 @@
 .planner-footer-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 26px;
+  gap: 6px;
+  padding: 8px 18px;
   background: linear-gradient(135deg, #0d2f5d 0%, #1a6fd8 100%);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
   transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 14px rgba(43, 125, 233, 0.35);
+  box-shadow: 0 3px 10px rgba(43, 125, 233, 0.25);
 }
 
 .planner-footer-btn:hover:not(:disabled) {

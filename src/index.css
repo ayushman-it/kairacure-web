@@ -504,13 +504,14 @@ button {
 }
 
 .hero-action-row button {
-  min-height: 44px;
+  min-height: 36px;
   border: 0;
   border-radius: 999px;
-  padding: 0 16px;
+  padding: 0 14px;
   color: #ffffff;
   background: var(--blue);
-  font-weight: 900;
+  font-weight: 700;
+  font-size: 0.82rem;
 }
 
 .hero-action-row button:last-child {
@@ -21379,9 +21380,10 @@ a.contact-detail-item:hover .contact-value {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 12px 32px;
+  padding: 7px 20px;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -34392,20 +34394,20 @@ select:focus {
 .pdl-btn-primary,
 a.pdl-btn-primary,
 button.pdl-btn-primary {
-  padding: 0.65rem 1.35rem !important;
+  padding: 0.42rem 0.95rem !important;
   background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%) !important;
   color: #ffffff !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
-  font-size: 0.88rem !important;
+  font-size: 0.8rem !important;
   text-decoration: none !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 16px rgba(0, 102, 254, 0.3) !important;
+  box-shadow: 0 3px 10px rgba(0, 102, 254, 0.25) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 8px !important;
+  gap: 6px !important;
   transition: all 0.2s ease !important;
 }
 
@@ -34414,7 +34416,7 @@ a.pdl-btn-primary:hover,
 button.pdl-btn-primary:hover {
   background: linear-gradient(135deg, #0052cc 0%, #0040a8 100%) !important;
   color: #ffffff !important;
-  box-shadow: 0 6px 20px rgba(0, 102, 254, 0.4) !important;
+  box-shadow: 0 5px 14px rgba(0, 102, 254, 0.35) !important;
   transform: translateY(-1px) !important;
   text-decoration: none !important;
 }
@@ -34422,16 +34424,16 @@ button.pdl-btn-primary:hover {
 .pdl-btn-enquire,
 a.pdl-btn-enquire,
 button.pdl-btn-enquire {
-  padding: 0.5rem 1.1rem !important;
+  padding: 0.38rem 0.85rem !important;
   background: linear-gradient(135deg, #0d2f5d 0%, #0052cc 100%) !important;
   color: #ffffff !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
-  font-size: 0.82rem !important;
+  font-size: 0.78rem !important;
   text-decoration: none !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 3px 10px rgba(0, 102, 254, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 102, 254, 0.2) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -34448,13 +34450,13 @@ button.pdl-btn-enquire:hover {
 .pdl-btn-outline,
 a.pdl-btn-outline,
 button.pdl-btn-outline {
-  padding: 0.65rem 1.15rem !important;
+  padding: 0.42rem 0.9rem !important;
   background: #ffffff !important;
   color: #0d2f5d !important;
   border: 1.5px solid #0d2f5d !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
-  font-size: 0.88rem !important;
+  font-size: 0.8rem !important;
   text-decoration: none !important;
   cursor: pointer !important;
   display: inline-flex !important;
@@ -35372,12 +35374,12 @@ button.pdl-btn-outline:hover {
   background: transparent !important;
   color: #0d2f5d !important;
   font-weight: 700 !important;
-  font-size: 0.92rem !important;
+  font-size: 0.8rem !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.45rem !important;
-  padding: 0.55rem 1.25rem !important;
+  gap: 0.35rem !important;
+  padding: 0.35rem 0.85rem !important;
   border-radius: 50px !important;
   transition: all 0.2s ease !important;
 }
@@ -35885,13 +35887,13 @@ button.pdl-btn-outline:hover {
   background: #0d2f5d !important;
   color: #ffffff !important;
   border: none !important;
-  padding: 12px 32px !important;
-  border-radius: 12px !important;
+  padding: 7px 20px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.8rem !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
-  box-shadow: 0 4px 16px rgba(0, 102, 254, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(0, 102, 254, 0.2) !important;
 }
 
 .kc-load-more-btn-v2:hover {
@@ -36004,9 +36006,9 @@ button.pdl-btn-outline:hover {
 
   .kc-load-more-btn-v2 {
     width: 100% !important;
-    max-width: 280px !important;
-    padding: 12px 24px !important;
-    font-size: 0.9rem !important;
+    max-width: 240px !important;
+    padding: 8px 18px !important;
+    font-size: 0.8rem !important;
   }
 }
 
