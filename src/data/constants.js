@@ -196,17 +196,17 @@ export function accreditationText(accreditations, fallback = 'Accredited Healthc
 export const HOSPITAL_PLACEHOLDER_IMAGE = 'https://placehold.co/1200x780/eef4ff/2874fc?text=Hospital+Image';
 export const HEALTH_ICON_BASE = '/health-icons';
 export const HEALTH_ICON_SOURCES = {
-  hip: '/health-icons/outline/body/bone.svg',
+  hip: '/health-icons/outline/specialties/orthopaedics.svg',
   knee: '/health-icons/outline/specialties/orthopaedics.svg',
-  ligament: '/health-icons/outline/devices/bandage.svg',
-  abrasion: '/health-icons/outline/conditions/skin-cancer.svg',
+  ligament: '/health-icons/outline/specialties/orthopaedics.svg',
+  abrasion: '/health-icons/outline/specialties/general-surgery.svg',
   rheumatology: '/health-icons/outline/specialties/rheumatology.svg',
-  spine: '/health-icons/outline/body/spine.svg',
+  spine: '/health-icons/outline/specialties/orthopaedics.svg',
   orthopedics: '/health-icons/outline/specialties/orthopaedics.svg',
 
-  cardiac_valve: '/health-icons/outline/body/heart.svg',
+  cardiac_valve: '/health-icons/outline/specialties/cardiology.svg',
   cardiac_bypass: '/health-icons/outline/specialties/cardiology.svg',
-  cardiac_stent: '/health-icons/outline/devices/pacemaker.svg',
+  cardiac_stent: '/health-icons/outline/specialties/cardiology.svg',
   cardiac: '/health-icons/outline/specialties/cardiology.svg',
 
   oncology: '/health-icons/outline/specialties/oncology.svg',
@@ -214,29 +214,29 @@ export const HEALTH_ICON_SOURCES = {
   gastroenterology: '/health-icons/outline/specialties/gastroenterology.svg',
   nephrology: '/health-icons/outline/specialties/nephrology.svg',
   urology: '/health-icons/outline/specialties/urology.svg',
-  neurology: '/health-icons/outline/people/neurosurgery.svg',
-  gynecology_uterus: '/health-icons/outline/body/female-reproductive_system.svg',
+  neurology: '/health-icons/outline/specialties/general-surgery.svg',
+  gynecology_uterus: '/health-icons/outline/specialties/gynecology.svg',
   gynecology: '/health-icons/outline/specialties/gynecology.svg',
-  infertility: '/health-icons/outline/body/female-reproductive_system.svg',
+  infertility: '/health-icons/outline/specialties/gynecology.svg',
   ent_ear: '/health-icons/outline/specialties/ear-nose-and-throat.svg',
   ent: '/health-icons/outline/specialties/ear-nose-and-throat.svg',
   ophthalmology: '/health-icons/outline/specialties/opthalmology.svg',
-  dental: '/health-icons/outline/body/tooth.svg',
-  hair: '/health-icons/outline/body/head.svg',
-  dermatology: '/health-icons/outline/conditions/skin-cancer.svg',
+  dental: '/health-icons/outline/specialties/general-surgery.svg',
+  hair: '/health-icons/outline/specialties/general-surgery.svg',
+  dermatology: '/health-icons/outline/specialties/general-surgery.svg',
   pediatrics: '/health-icons/outline/specialties/pediatrics.svg',
   wellness: '/health-icons/outline/specialties/gym.svg',
-  plastic: '/health-icons/outline/specialties/surgical-department.svg',
-  general: '/health-icons/outline/specialties/outpatient.svg',
+  plastic: '/health-icons/outline/specialties/general-surgery.svg',
+  general: '/health-icons/outline/specialties/general-surgery.svg',
 };
 
 export const HEALTH_ICON_CDN_FALLBACKS = {
-  hip: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/bone.svg',
+  hip: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
   knee: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
-  ligament: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/devices/bandage.svg',
-  abrasion: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/conditions/skin-cancer.svg',
+  ligament: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
+  abrasion: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/general-surgery.svg',
   rheumatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/rheumatology.svg',
-  spine: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/spine.svg',
+  spine: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
   orthopedics: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
 
   cardiac: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/cardiology.svg',
@@ -245,8 +245,8 @@ export const HEALTH_ICON_CDN_FALLBACKS = {
   gynecology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gynecology.svg',
   ent: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/ear-nose-and-throat.svg',
   ophthalmology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/opthalmology.svg',
-  dental: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/tooth.svg',
-  general: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/outpatient.svg',
+  dental: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/general-surgery.svg',
+  general: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/general-surgery.svg',
 };
 
 export function getTreatmentIconKind(treatment = {}) {
