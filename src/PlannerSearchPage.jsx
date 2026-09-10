@@ -539,7 +539,7 @@ export function PlannerSearchPage({
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '1.02rem', color: '#0f172a', fontWeight: 700, margin: '0 0 0.4rem 0', lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: '0.9rem', color: '#0f172a', fontWeight: 700, margin: '0 0 0.35rem 0', lineHeight: 1.3 }}>
                     {title}
                   </h3>
                 </div>

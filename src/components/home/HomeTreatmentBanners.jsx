@@ -259,7 +259,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
             >
               EXPLORE MEDICAL SPECIALTIES
             </span>
-            <h2 style={{ fontSize: 'clamp(1.35rem, 2.5vw, 1.8rem)', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+            <h2 style={{ fontSize: 'clamp(1.15rem, 2vw, 1.45rem)', fontWeight: 800, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
               Find Your Treatment
             </h2>
             <p style={{ fontSize: '0.84rem', color: '#64748b', margin: 0, maxWidth: '680px', lineHeight: 1.5 }}>
@@ -328,7 +328,7 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
 
               {/* Text Info */}
               <div style={{ flex: 1 }}>
-                <strong style={{ display: 'block', fontSize: '0.92rem', color: '#0f172a', marginBottom: '2px', fontWeight: 800 }}>
+                <strong style={{ display: 'block', fontSize: '0.84rem', color: '#0f172a', marginBottom: '2px', fontWeight: 800 }}>
                   {item.title}
                 </strong>
                 <span 
