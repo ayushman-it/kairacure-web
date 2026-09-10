@@ -19,6 +19,8 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
   const [activeTab, setActiveTab] = useState('overview');
   const [leadForm, setLeadForm] = useState({ name: '', phone: '', email: '', treatment: hospital.specialty || 'General', notes: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+  const [selectedEnquiryTitle, setSelectedEnquiryTitle] = useState('');
   const [googleReviews, setGoogleReviews] = useState(null);
   const [loadingGoogleReviews, setLoadingGoogleReviews] = useState(false);
 
@@ -87,16 +89,16 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
   const handleEnquireClick = (itemTitle) => {
     if (itemTitle) {
       setLeadForm((prev) => ({ ...prev, treatment: itemTitle }));
+      setSelectedEnquiryTitle(itemTitle);
+    } else {
+      setSelectedEnquiryTitle('');
     }
+    setFormSubmitted(false);
+    setShowEnquiryModal(true);
+
     const formElement = document.getElementById('connect-form');
     if (formElement) {
       formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      const nameInput = formElement.querySelector('input');
-      if (nameInput) {
-        setTimeout(() => {
-          nameInput.focus();
-        }, 350);
-      }
     }
   };
 
@@ -443,6 +445,102 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
         </div>
 
       </div>
+
+      {/* ENQUIRY CONSULTATION MODAL POPUP */}
+      {showEnquiryModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }}
+          onClick={() => setShowEnquiryModal(false)}
+        >
+          <div 
+            style={{
+              background: '#ffffff',
+              borderRadius: '16px',
+              maxWidth: '460px',
+              width: '100%',
+              padding: '24px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowEnquiryModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: '#f1f5f9',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                display: 'grid',
+                placeItems: 'center',
+                color: '#64748b'
+              }}
+            >
+              <i className="bi bi-x-lg" />
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '18px' }}>
+              <span style={{ background: '#f0f7ff', color: '#0d2f5d', border: '1px solid #bfdbfe', padding: '3px 10px', borderRadius: '14px', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase' }}>
+                Free Consultation &amp; Quote
+              </span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: '8px 0 2px' }}>
+                {selectedEnquiryTitle ? `Enquire for ${selectedEnquiryTitle}` : `Request Consultation at ${cleanHospitalName}`}
+              </h3>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>
+                Get doctor opinion and estimated cost package within 2 hours
+              </p>
+            </div>
+
+            {formSubmitted ? (
+              <div style={{ padding: '1.5rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '12px', textAlign: 'center' }}>
+                <i className="bi bi-check-circle-fill" style={{ fontSize: '2.5rem', color: '#16a34a', marginBottom: '0.5rem', display: 'block' }} />
+                <h4 style={{ color: '#14532d', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 0.25rem' }}>Request Submitted!</h4>
+                <p style={{ color: '#166534', fontSize: '0.82rem', margin: 0 }}>Our care coordinator will contact you on WhatsApp / Phone shortly.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>Patient Full Name *</label>
+                  <input type="text" required placeholder="Enter full name" value={leadForm.name} onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} className="pdl-input" autoFocus />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>Phone / WhatsApp Number *</label>
+                  <input type="tel" required placeholder="+91 99999 99999" value={leadForm.phone} onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} className="pdl-input" />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>Medical Issue / Specialty</label>
+                  <input type="text" placeholder="e.g. IVF, Knee replacement..." value={leadForm.treatment} onChange={(e) => setLeadForm({ ...leadForm, treatment: e.target.value })} className="pdl-input" />
+                </div>
+                <button type="submit" className="pdl-form-submit" style={{ marginTop: '4px' }}>
+                  Submit Consultation Request
+                </button>
+                <span style={{ fontSize: '0.7rem', color: '#64748b', textAlign: 'center', display: 'block' }}>
+                  🔒 100% Free &amp; Confidential Support
+                </span>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

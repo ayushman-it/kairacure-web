@@ -71,19 +71,21 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
     { q: `What international patient services are provided?`, a: `Services include complimentary airport transfers, language interpreters (Arabic, Russian, French), guest house stay arrangements, and 24/7 dedicated case managers.` }
   ];
 
+  const [selectedEnquiryTitle, setSelectedEnquiryTitle] = useState('');
+
   const handleEnquireClick = (itemTitle) => {
     if (itemTitle) {
       setLeadForm((prev) => ({ ...prev, treatment: itemTitle }));
+      setSelectedEnquiryTitle(itemTitle);
+    } else {
+      setSelectedEnquiryTitle('');
     }
+    setFormSubmitted(false);
+    setShowBookingModal(true);
+
     const formElement = document.getElementById('connect-form');
     if (formElement) {
       formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      const nameInput = formElement.querySelector('input');
-      if (nameInput) {
-        setTimeout(() => {
-          nameInput.focus();
-        }, 350);
-      }
     }
   };
 
