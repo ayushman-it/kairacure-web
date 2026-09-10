@@ -14,7 +14,7 @@ export function UiIcon({ name }) {
   return <i aria-hidden="true" className={`fa-solid ${uiIcons[name] || uiIcons.shield} ui-bootstrap-icon`} />;
 }
 
-export function TreatmentVectorIcon({ treatment, size = 26 }) {
+export function TreatmentVectorIcon({ treatment, size = 26, style, filter }) {
   const iconKind = getTreatmentIconKind(treatment);
   const localIconUrl = HEALTH_ICON_SOURCES[iconKind] || HEALTH_ICON_SOURCES.general;
   const cdnIconUrl = HEALTH_ICON_CDN_FALLBACKS?.[iconKind] || HEALTH_ICON_CDN_FALLBACKS?.general;
@@ -71,6 +71,8 @@ export function TreatmentVectorIcon({ treatment, size = 26 }) {
     }
   };
 
+  const defaultFilter = 'invert(16%) sepia(85%) saturate(2800%) hue-rotate(205deg) brightness(85%) contrast(100%)';
+
   if (!imgFailed && currentSrc) {
     return (
       <img
@@ -80,9 +82,10 @@ export function TreatmentVectorIcon({ treatment, size = 26 }) {
           width: `${size}px`,
           height: `${size}px`,
           objectFit: 'contain',
-          filter: 'invert(16%) sepia(85%) saturate(2800%) hue-rotate(205deg) brightness(85%) contrast(100%)',
+          filter: filter !== undefined ? filter : defaultFilter,
           display: 'inline-block',
           verticalAlign: 'middle',
+          ...style
         }}
         onError={handleError}
       />

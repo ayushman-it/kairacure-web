@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { TreatmentVectorIcon } from '../common/UiIcon.jsx';
 
 const BASE_SPECIALTIES = [
   {
@@ -314,7 +315,15 @@ export function HomeTreatmentBanners({ setPage, setActiveGroup, setSelectedTreat
                   flexShrink: 0
                 }}
               >
-                <i className={item.iconClass} />
+                <TreatmentVectorIcon 
+                  treatment={{
+                    key: item.key,
+                    title: item.title,
+                    category: item.title,
+                    specialty: item.key
+                  }} 
+                  size={26} 
+                />
               </div>
 
               {/* Text Info */}
