@@ -1,5 +1,5 @@
-import React from 'react';
-import { getTreatmentIconKind } from '../../data/constants.js';
+import React, { useState } from 'react';
+import { getTreatmentIconKind, HEALTH_ICON_SOURCES } from '../../data/constants.js';
 
 export function UiIcon({ name }) {
   const uiIcons = {
@@ -14,9 +14,12 @@ export function UiIcon({ name }) {
   return <i aria-hidden="true" className={`fa-solid ${uiIcons[name] || uiIcons.shield} ui-bootstrap-icon`} />;
 }
 
-export function TreatmentVectorIcon({ treatment }) {
+export function TreatmentVectorIcon({ treatment, size = 26 }) {
   const iconKind = getTreatmentIconKind(treatment);
-  const iconClasses = {
+  const healthIconUrl = HEALTH_ICON_SOURCES[iconKind] || HEALTH_ICON_SOURCES.general;
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackClasses = {
     cardiac: 'fa-heart-pulse',
     orthopedics: 'fa-bone',
     oncology: 'fa-ribbon',
@@ -37,7 +40,26 @@ export function TreatmentVectorIcon({ treatment }) {
     pediatrics: 'fa-child',
     general: 'fa-hospital-user',
   };
-  return <i aria-hidden="true" className={`fa-solid ${iconClasses[iconKind] || iconClasses.general} treatment-vector-icon`} />;
+
+  if (!imgError && healthIconUrl) {
+    return (
+      <img
+        src={healthIconUrl}
+        alt={treatment?.title || treatment?.name || 'Medical Icon'}
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+          objectFit: 'contain',
+          filter: 'invert(16%) sepia(85%) saturate(2800%) hue-rotate(205deg) brightness(85%) contrast(100%)',
+          display: 'inline-block',
+          verticalAlign: 'middle',
+        }}
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  return <i aria-hidden="true" className={`fa-solid ${fallbackClasses[iconKind] || fallbackClasses.general} treatment-vector-icon`} />;
 }
 
 export function TreatmentIconTile({ treatment, className = '', label }) {

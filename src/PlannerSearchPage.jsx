@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { API_BASE } from './data/constants';
+import { TreatmentVectorIcon } from './components/common/UiIcon';
 
 const STEP_LABELS = ['Treatment', 'Procedure', 'Trip Style', 'Hospital', 'Plan Journey'];
 
@@ -349,40 +350,7 @@ export function PlannerSearchPage({
   };
 
   const getTreatmentIcon = (treatment) => {
-    // Use the same TreatmentVectorIcon component from home page
-    const iconKind = getTreatmentIconKind ? getTreatmentIconKind(treatment) : 'general';
-    
-    const iconClasses = {
-      cardiac: 'fa-heart-pulse',
-      orthopedics: 'fa-bone',
-      oncology: 'fa-ribbon',
-      gastroenterology: 'fa-notes-medical',
-      neurology: 'fa-brain',
-      spine: 'fa-staff-snake',
-      urology: 'fa-droplet',
-      gynecology: 'fa-venus',
-      infertility: 'fa-baby',
-      ent: 'fa-ear-listen',
-      hair: 'fa-user-doctor',
-      dental: 'fa-tooth',
-      plastic: 'fa-user-doctor',
-      wellness: 'fa-spa',
-      dermatology: 'fa-hand-dots',
-      ophthalmology: 'fa-eye',
-      emergency: 'fa-truck-medical',
-      pediatrics: 'fa-child',
-      general: 'fa-hospital-user',
-    };
-
-    const iconClass = iconClasses[iconKind] || iconClasses.general;
-    
-    return (
-      <i 
-        aria-hidden="true" 
-        className={`fa-solid ${iconClass}`}
-        style={{ fontSize: '2rem', color: 'inherit' }}
-      />
-    );
+    return <TreatmentVectorIcon treatment={treatment} size={28} />;
   };
 
   return (

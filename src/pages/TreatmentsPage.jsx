@@ -1,30 +1,8 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
 import { SkeletonCard } from '../components/common/SkeletonCard.jsx';
+import { TreatmentVectorIcon } from '../components/common/UiIcon.jsx';
 import { getTreatmentIconKind, getTreatmentCategory } from '../data/constants.js';
-
-function TreatmentVectorIcon({ treatment }) {
-  const iconKind = getTreatmentIconKind(treatment);
-  const iconClasses = {
-    cardiac: 'fa-heart-pulse',
-    orthopedics: 'fa-bone',
-    oncology: 'fa-ribbon',
-    gastroenterology: 'fa-notes-medical',
-    neurology: 'fa-brain',
-    spine: 'fa-staff-snake',
-    urology: 'fa-droplet',
-    gynecology: 'fa-venus',
-    infertility: 'fa-baby',
-    ent: 'fa-ear-listen',
-    ophthalmology: 'fa-eye',
-    dental: 'fa-tooth',
-    hair: 'fa-user-doctor',
-    dermatology: 'fa-hand-dots',
-    pediatrics: 'fa-child',
-    general: 'fa-hospital-user',
-  };
-  return <i aria-hidden="true" className={`fa-solid ${iconClasses[iconKind] || iconClasses.general} treatment-vector-icon`} />;
-}
 
 function getTreatmentDisplayTitle(item) {
   return item?.title || item?.name || 'Treatment';
