@@ -4536,18 +4536,18 @@
    PROCEDURE CARD — icon
    ============================================= */
 .procedure-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   background: linear-gradient(135deg, #eef4ff 0%, #e0ecff 100%);
   border: 1px solid #c7d9f8;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #0d2f5d;
   flex-shrink: 0;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   transition: background 0.18s, color 0.18s;
 }
 

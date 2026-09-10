@@ -507,21 +507,21 @@ export function PlannerSearchPage({
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                     <div style={{
-                      width: '38px',
-                      height: '38px',
-                      borderRadius: '11px',
-                      background: isSelected ? '#0d2f5d' : '#eff6ff',
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '9px',
+                      background: isSelected ? '#0d2f5d' : '#f0f7ff',
                       color: isSelected ? '#ffffff' : '#0d2f5d',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1.1rem',
+                      flexShrink: 0,
                       boxShadow: isSelected ? '0 3px 10px rgba(0, 102, 254, 0.25)' : 'none',
-                      border: '1px solid #dbeafe',
+                      border: isSelected ? '1px solid #0d2f5d' : '1px solid #dbeafe',
                     }}>
                       <TreatmentVectorIcon
                         treatment={treatment}
-                        size={22}
+                        size={17}
                         filter={isSelected ? 'brightness(0) invert(1)' : undefined}
                       />
                     </div>
@@ -797,7 +797,7 @@ export function ProcedureSelectPage({
               <div className="procedure-card-icon">
                 <TreatmentVectorIcon
                   treatment={proc}
-                  size={24}
+                  size={17}
                   filter={selected ? 'brightness(0) invert(1)' : undefined}
                 />
               </div>
