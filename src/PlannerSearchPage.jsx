@@ -490,13 +490,13 @@ export function PlannerSearchPage({
                 className={isSelected ? 'admin-treatment-card selected active' : 'admin-treatment-card'}
                 onClick={() => toggleTreatment(treatment)}
                 style={{
-                  padding: '1.25rem',
+                  padding: '1rem 1.1rem',
                   background: isSelected ? '#f0f7ff' : '#ffffff',
                   border: isSelected ? '2px solid #0d2f5d' : '1px solid #e2e8f0',
                   borderRadius: '14px',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   boxShadow: isSelected ? '0 6px 20px rgba(0, 102, 254, 0.16)' : '0 4px 16px rgba(13, 47, 93, 0.04)',
                   cursor: 'pointer',
                   transition: 'all 0.22s ease',
@@ -505,33 +505,33 @@ export function PlannerSearchPage({
                 }}
               >
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
                     <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '12px',
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '11px',
                       background: isSelected ? '#0d2f5d' : '#eff6ff',
                       color: isSelected ? '#ffffff' : '#0d2f5d',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1.15rem',
+                      fontSize: '1.1rem',
                       boxShadow: isSelected ? '0 3px 10px rgba(0, 102, 254, 0.25)' : 'none',
                       border: '1px solid #dbeafe',
                     }}>
                       <TreatmentVectorIcon
                         treatment={treatment}
-                        size={24}
+                        size={22}
                         filter={isSelected ? 'brightness(0) invert(1)' : undefined}
                       />
                     </div>
 
                     <span style={{
-                      fontSize: '0.72rem',
+                      fontSize: '0.68rem',
                       fontWeight: 700,
                       color: '#0d2f5d',
                       background: '#f0f7ff',
-                      padding: '0.2rem 0.65rem',
+                      padding: '0.15rem 0.55rem',
                       borderRadius: '20px',
                       border: '1px solid #dbeafe',
                     }}>
@@ -539,13 +539,13 @@ export function PlannerSearchPage({
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '0.9rem', color: '#0f172a', fontWeight: 700, margin: '0 0 0.35rem 0', lineHeight: 1.3 }}>
+                  <h3 style={{ fontSize: '0.82rem', color: '#0f172a', fontWeight: 700, margin: '0 0 0.25rem 0', lineHeight: 1.3 }}>
                     {title}
                   </h3>
                 </div>
 
-                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: hasCosting ? '#0f172a' : '#64748b' }}>
+                <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.65rem', marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 700, color: hasCosting ? '#0f172a' : '#64748b' }}>
                     {hasCosting ? `From ₹${(Number(treatment.packageFrom) / 100000).toFixed(1)}L` : 'Estimate on request'}
                   </span>
 
