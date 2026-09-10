@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { MedicalVideoBackdrop } from '../components/common/MedicalVideoBackdrop.jsx';
 import { SkeletonCard } from '../components/common/SkeletonCard.jsx';
-import { getTreatmentIconKind } from '../data/constants.js';
+import { getTreatmentIconKind, getTreatmentCategory } from '../data/constants.js';
 
 function TreatmentVectorIcon({ treatment }) {
   const iconKind = getTreatmentIconKind(treatment);
@@ -9,12 +9,19 @@ function TreatmentVectorIcon({ treatment }) {
     cardiac: 'fa-heart-pulse',
     orthopedics: 'fa-bone',
     oncology: 'fa-ribbon',
+    gastroenterology: 'fa-notes-medical',
+    neurology: 'fa-brain',
     spine: 'fa-staff-snake',
-    urology: 'fa-prescription-bottle-medical',
-    dental: 'fa-tooth',
-    hair: 'fa-person',
+    urology: 'fa-droplet',
+    gynecology: 'fa-venus',
+    infertility: 'fa-baby',
+    ent: 'fa-ear-listen',
     ophthalmology: 'fa-eye',
-    general: 'fa-briefcase-medical',
+    dental: 'fa-tooth',
+    hair: 'fa-user-doctor',
+    dermatology: 'fa-hand-dots',
+    pediatrics: 'fa-child',
+    general: 'fa-hospital-user',
   };
   return <i aria-hidden="true" className={`fa-solid ${iconClasses[iconKind] || iconClasses.general} treatment-vector-icon`} />;
 }
@@ -30,7 +37,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
 
     const uniqueGroups = new Set();
     treatments.forEach((item) => {
-      const group = item.group || item.category || item.specialty;
+      const group = getTreatmentCategory(item);
       if (group && group.trim()) {
         uniqueGroups.add(group.trim());
       }
@@ -42,7 +49,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
   }, [treatments]);
 
   const items = activeGroup === 'All' ? treatments : treatments.filter((item) => {
-    const itemGroup = item.group || item.category || item.specialty;
+    const itemGroup = getTreatmentCategory(item);
     return itemGroup === activeGroup;
   });
 
@@ -124,7 +131,7 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
                     <TreatmentVectorIcon treatment={item} />
                   </div>
                   <span className="kc-treatment-tag-v2">
-                    {item.group || item.category || item.specialty || 'Medical'}
+                    {getTreatmentCategory(item)}
                   </span>
                 </div>
 

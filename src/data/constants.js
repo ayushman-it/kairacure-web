@@ -224,22 +224,52 @@ export const HEALTH_ICON_SOURCES = {
 };
 
 export function getTreatmentIconKind(treatment = {}) {
-  const text = `${treatment.id || ''} ${treatment.title || ''} ${treatment.specialty || ''}`.toLowerCase();
-  if (/cardiac|heart|cabg|valve|angioplasty|bypass|stent/.test(text)) return 'cardiac';
-  if (/ortho|joint|knee|hip|bone|sports|fracture|arthro/.test(text)) return 'orthopedics';
-  if (/oncology|cancer|chemo|tumou?r|radiation/.test(text)) return 'oncology';
-  if (/gastro|stomach|liver|colon|digest|intestin|bowel/.test(text)) return 'gastroenterology';
-  if (/neuro|brain|stroke|epilep|parkinson|alzheimer/.test(text)) return 'neurology';
-  if (/spine|spinal|disc|vertebra/.test(text)) return 'spine';
-  if (/urology|kidney|stone|prostat|bladder|dialysis/.test(text)) return 'urology';
-  if (/gynecology|gynaecology|gyne|gynae|ovarian|uterus|cervix/.test(text)) return 'gynecology';
-  if (/fertility|ivf|infertility/.test(text)) return 'infertility';
-  if (/ent|ear|nose|throat|tonsil|sinus/.test(text)) return 'ent';
-  if (/eye|ophthalm|cataract|retina|vision|lasik|glaucoma/.test(text)) return 'ophthalmology';
-  if (/dental|tooth|teeth|oral|gum|implant/.test(text)) return 'dental';
-  if (/hair|transplant/.test(text)) return 'hair';
-  if (/skin|derma|cosmetic|aesthetic/.test(text)) return 'dermatology';
+  const text = `${treatment.id || ''} ${treatment.title || ''} ${treatment.name || ''} ${treatment.specialty || ''} ${treatment.group || ''} ${treatment.category || ''} ${treatment.code || ''}`.toLowerCase();
+
+  if (/cardiac|heart|cabg|valve|angioplasty|bypass|stent|coronary|cardio|myocardial|arrhythmia|pacemaker/.test(text)) return 'cardiac';
+  if (/ortho|joint|knee|hip|bone|sports|fracture|arthro|ligament|abrasion|arthropat|scoliosis|spine|lumbar|cervical|disc|vertebra/.test(text)) return 'orthopedics';
+  if (/oncology|cancer|chemo|tumou?r|radiation|carcinoma|leukemia|sarcoma|melanoma|neoplasm/.test(text)) return 'oncology';
+  if (/gastro|stomach|liver|colon|digest|intestin|bowel|endoscopy|gallbladder|bariatric|hernia|pancrea/.test(text)) return 'gastroenterology';
+  if (/neuro|brain|stroke|epilep|parkinson|alzheimer|headache|cerebral|spinal cord/.test(text)) return 'neurology';
+  if (/urol|kidney|stone|prostat|bladder|dialysis|urinary|nephr|renal/.test(text)) return 'urology';
+  if (/gynec|gynaec|gynae|gyne|ovarian|uterus|cervix|women|obstetric|fibroid|hysterect/.test(text)) return 'gynecology';
+  if (/fertility|ivf|infertility|embryo/.test(text)) return 'infertility';
+  if (/ent|ear|nose|throat|tonsil|sinus|adenoid|hearing|otolaryn|septum|vocal/.test(text)) return 'ent';
+  if (/eye|ophthalm|cataract|retina|vision|lasik|glaucoma|cornea|optic/.test(text)) return 'ophthalmology';
+  if (/dental|tooth|teeth|oral|gum|implant|periodon|root canal/.test(text)) return 'dental';
+  if (/hair|transplant|scalp/.test(text)) return 'hair';
+  if (/skin|derma|cosmetic|aesthetic|laser|acne|psoria/.test(text)) return 'dermatology';
+  if (/pediatric|paediatric|child|infant|baby|neonat/.test(text)) return 'pediatrics';
+
   return 'general';
+}
+
+export function getTreatmentCategory(treatment = {}) {
+  const iconKind = getTreatmentIconKind(treatment);
+  const categoryNames = {
+    cardiac: 'Cardiac Surgery',
+    orthopedics: 'Orthopedics',
+    oncology: 'Oncology',
+    gastroenterology: 'Gastroenterology',
+    neurology: 'Neurology',
+    spine: 'Spine Surgery',
+    urology: 'Urology',
+    gynecology: 'Gynaecology',
+    infertility: 'Infertility / IVF',
+    ent: 'Ear, Nose, Throat (ENT)',
+    ophthalmology: 'Ophthalmology (Eye)',
+    dental: 'Dental Surgery',
+    hair: 'Hair Transplant',
+    dermatology: 'Dermatology & Skin',
+    pediatrics: 'Pediatrics',
+    general: 'General Surgery',
+  };
+
+  if (iconKind !== 'general' && categoryNames[iconKind]) {
+    return categoryNames[iconKind];
+  }
+
+  return treatment.category || treatment.specialty || treatment.group || 'Medical';
 }
 
 export function getHospitalImage(hospital) {
