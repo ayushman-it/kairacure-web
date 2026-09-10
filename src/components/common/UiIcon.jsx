@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { getTreatmentIconKind, HEALTH_ICON_SOURCES } from '../../data/constants.js';
+import React, { useState, useEffect } from 'react';
+import { getTreatmentIconKind, HEALTH_ICON_SOURCES, HEALTH_ICON_CDN_FALLBACKS } from '../../data/constants.js';
 
 export function UiIcon({ name }) {
   const uiIcons = {
@@ -16,8 +16,16 @@ export function UiIcon({ name }) {
 
 export function TreatmentVectorIcon({ treatment, size = 26 }) {
   const iconKind = getTreatmentIconKind(treatment);
-  const healthIconUrl = HEALTH_ICON_SOURCES[iconKind] || HEALTH_ICON_SOURCES.general;
-  const [imgError, setImgError] = useState(false);
+  const localIconUrl = HEALTH_ICON_SOURCES[iconKind] || HEALTH_ICON_SOURCES.general;
+  const cdnIconUrl = HEALTH_ICON_CDN_FALLBACKS?.[iconKind] || HEALTH_ICON_CDN_FALLBACKS?.general;
+
+  const [currentSrc, setCurrentSrc] = useState(localIconUrl);
+  const [imgFailed, setImgFailed] = useState(false);
+
+  useEffect(() => {
+    setCurrentSrc(localIconUrl);
+    setImgFailed(false);
+  }, [localIconUrl]);
 
   const fallbackClasses = {
     hip: 'fa-bone',
@@ -55,10 +63,18 @@ export function TreatmentVectorIcon({ treatment, size = 26 }) {
     general: 'fa-hospital-user',
   };
 
-  if (!imgError && healthIconUrl) {
+  const handleError = () => {
+    if (currentSrc === localIconUrl && cdnIconUrl && cdnIconUrl !== localIconUrl) {
+      setCurrentSrc(cdnIconUrl);
+    } else {
+      setImgFailed(true);
+    }
+  };
+
+  if (!imgFailed && currentSrc) {
     return (
       <img
-        src={healthIconUrl}
+        src={currentSrc}
         alt={treatment?.title || treatment?.name || 'Medical Icon'}
         style={{
           width: `${size}px`,
@@ -68,7 +84,7 @@ export function TreatmentVectorIcon({ treatment, size = 26 }) {
           display: 'inline-block',
           verticalAlign: 'middle',
         }}
-        onError={() => setImgError(true)}
+        onError={handleError}
       />
     );
   }
