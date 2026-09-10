@@ -196,28 +196,35 @@ export function accreditationText(accreditations, fallback = 'Accredited Healthc
 export const HOSPITAL_PLACEHOLDER_IMAGE = 'https://placehold.co/1200x780/eef4ff/2874fc?text=Hospital+Image';
 export const HEALTH_ICON_BASE = 'https://healthicons.org/icons/svg/filled';
 export const HEALTH_ICON_SOURCES = {
-  cardiac: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/cardiology.svg',
-  orthopedics: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
-  oncology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/oncology.svg',
-  urology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/urology.svg',
-  gynecology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gynecology.svg',
-  ophthalmology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/opthalmology.svg',
-  gastroenterology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gastroenterology.svg',
-  emergency: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/accident-and_emergency.svg',
-  pediatrics: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/pediatrics.svg',
-  nephrology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/nephrology.svg',
-  neurology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/people/neurosurgery.svg',
-  ent: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/ear-nose-and-throat.svg',
-  dermatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/conditions/skin-cancer.svg',
-  respirology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/respirology.svg',
+  hip: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/bone.svg',
+  knee: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
+  ligament: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/devices/bandage.svg',
+  abrasion: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/conditions/skin-cancer.svg',
   rheumatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/rheumatology.svg',
-  endocrinology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/endocrinology.svg',
-  hematology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/hematology.svg',
-  hepatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/hepatology.svg',
   spine: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/spine.svg',
+  orthopedics: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/orthopaedics.svg',
+
+  cardiac_valve: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/heart.svg',
+  cardiac_bypass: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/cardiology.svg',
+  cardiac_stent: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/devices/pacemaker.svg',
+  cardiac: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/cardiology.svg',
+
+  oncology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/oncology.svg',
+  hepatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/hepatology.svg',
+  gastroenterology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gastroenterology.svg',
+  nephrology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/nephrology.svg',
+  urology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/urology.svg',
+  neurology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/people/neurosurgery.svg',
+  gynecology_uterus: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/female-reproductive_system.svg',
+  gynecology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gynecology.svg',
+  infertility: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/female-reproductive_system.svg',
+  ent_ear: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/ear-nose-and-throat.svg',
+  ent: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/ear-nose-and-throat.svg',
+  ophthalmology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/opthalmology.svg',
   dental: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/tooth.svg',
   hair: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/head.svg',
-  infertility: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/body/female-reproductive_system.svg',
+  dermatology: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/conditions/skin-cancer.svg',
+  pediatrics: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/pediatrics.svg',
   wellness: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/gym.svg',
   plastic: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/surgical-department.svg',
   general: 'https://cdn.jsdelivr.net/npm/healthicons@0.1.0/public/icons/svg/outline/specialties/outpatient.svg',
@@ -226,17 +233,45 @@ export const HEALTH_ICON_SOURCES = {
 export function getTreatmentIconKind(treatment = {}) {
   const text = `${treatment.id || ''} ${treatment.title || ''} ${treatment.name || ''} ${treatment.specialty || ''} ${treatment.group || ''} ${treatment.category || ''} ${treatment.code || ''}`.toLowerCase();
 
-  if (/cardiac|heart|cabg|valve|angioplasty|bypass|stent|coronary|cardio|myocardial|arrhythmia|pacemaker/.test(text)) return 'cardiac';
-  if (/ortho|joint|knee|hip|bone|sports|fracture|arthro|ligament|abrasion|arthropat|scoliosis|spine|lumbar|cervical|disc|vertebra/.test(text)) return 'orthopedics';
-  if (/oncology|cancer|chemo|tumou?r|radiation|carcinoma|leukemia|sarcoma|melanoma|neoplasm/.test(text)) return 'oncology';
-  if (/gastro|stomach|liver|colon|digest|intestin|bowel|endoscopy|gallbladder|bariatric|hernia|pancrea/.test(text)) return 'gastroenterology';
-  if (/neuro|brain|stroke|epilep|parkinson|alzheimer|headache|cerebral|spinal cord/.test(text)) return 'neurology';
-  if (/urol|kidney|stone|prostat|bladder|dialysis|urinary|nephr|renal/.test(text)) return 'urology';
-  if (/gynec|gynaec|gynae|gyne|ovarian|uterus|cervix|women|obstetric|fibroid|hysterect/.test(text)) return 'gynecology';
+  // Procedure-specific Ortho & Joint sub-types
+  if (/hip/.test(text)) return 'hip';
+  if (/knee/.test(text)) return 'knee';
+  if (/ligament|acl|pcl|meniscus/.test(text)) return 'ligament';
+  if (/abrasion/.test(text)) return 'abrasion';
+  if (/arthropat|rheumat|arthritis/.test(text)) return 'rheumatology';
+  if (/spine|spinal|disc|vertebra|lumbar|cervical|scoliosis/.test(text)) return 'spine';
+  if (/ortho|bone|sports|fracture|arthro/.test(text)) return 'orthopedics';
+
+  // Procedure-specific Cardiac sub-types
+  if (/valve/.test(text)) return 'cardiac_valve';
+  if (/bypass|cabg/.test(text)) return 'cardiac_bypass';
+  if (/angioplasty|stent/.test(text)) return 'cardiac_stent';
+  if (/cardiac|heart|coronary|cardio|myocardial|arrhythmia|pacemaker/.test(text)) return 'cardiac';
+
+  // Procedure-specific Gastro & Liver sub-types
+  if (/liver|hepatic|hepatitis|cirrhosis/.test(text)) return 'hepatology';
+  if (/gastro|stomach|colon|digest|intestin|bowel|endoscopy|gallbladder|bariatric|hernia|pancrea/.test(text)) return 'gastroenterology';
+
+  // Procedure-specific Urology sub-types
+  if (/kidney|nephr|renal|dialysis/.test(text)) return 'nephrology';
+  if (/urol|stone|prostat|bladder|urinary/.test(text)) return 'urology';
+
+  // Procedure-specific Gynecology & IVF sub-types
   if (/fertility|ivf|infertility|embryo/.test(text)) return 'infertility';
-  if (/ent|ear|nose|throat|tonsil|sinus|adenoid|hearing|otolaryn|septum|vocal/.test(text)) return 'ent';
-  if (/eye|ophthalm|cataract|retina|vision|lasik|glaucoma|cornea|optic/.test(text)) return 'ophthalmology';
-  if (/dental|tooth|teeth|oral|gum|implant|periodon|root canal/.test(text)) return 'dental';
+  if (/uterus|cervix|fibroid|hysterect/.test(text)) return 'gynecology_uterus';
+  if (/gynec|gynaec|gyne|gynae|ovarian|women|obstetric/.test(text)) return 'gynecology';
+
+  // ENT sub-types
+  if (/ear|hearing|audiolog|cochlear/.test(text)) return 'ent_ear';
+  if (/ent|nose|throat|tonsil|sinus|adenoid|septum|vocal/.test(text)) return 'ent';
+
+  // Eye sub-types
+  if (/cataract|lasik|vision|retina|cornea|glaucoma|eye|ophthalm/.test(text)) return 'ophthalmology';
+
+  // Other specialties
+  if (/oncology|cancer|chemo|tumou?r|radiation|carcinoma|leukemia|sarcoma|melanoma|neoplasm/.test(text)) return 'oncology';
+  if (/neuro|brain|stroke|epilep|parkinson|alzheimer|headache|cerebral/.test(text)) return 'neurology';
+  if (/dental|tooth|teeth|oral|gum|implant|root canal/.test(text)) return 'dental';
   if (/hair|transplant|scalp/.test(text)) return 'hair';
   if (/skin|derma|cosmetic|aesthetic|laser|acne|psoria/.test(text)) return 'dermatology';
   if (/pediatric|paediatric|child|infant|baby|neonat/.test(text)) return 'pediatrics';
@@ -247,21 +282,35 @@ export function getTreatmentIconKind(treatment = {}) {
 export function getTreatmentCategory(treatment = {}) {
   const iconKind = getTreatmentIconKind(treatment);
   const categoryNames = {
-    cardiac: 'Cardiac Surgery',
-    orthopedics: 'Orthopedics',
-    oncology: 'Oncology',
-    gastroenterology: 'Gastroenterology',
-    neurology: 'Neurology',
+    hip: 'Orthopedics (Hip)',
+    knee: 'Orthopedics (Knee)',
+    ligament: 'Orthopedics (Ligament / Joint)',
+    abrasion: 'Orthopedics / Joint Care',
+    rheumatology: 'Rheumatology & Joint Care',
     spine: 'Spine Surgery',
+    orthopedics: 'Orthopedics',
+    cardiac_valve: 'Cardiac Valve Surgery',
+    cardiac_bypass: 'Cardiac Bypass (CABG)',
+    cardiac_stent: 'Angioplasty & Stenting',
+    cardiac: 'Cardiac Surgery',
+    oncology: 'Oncology (Cancer)',
+    hepatology: 'Hepatology (Liver)',
+    gastroenterology: 'Gastroenterology',
+    nephrology: 'Nephrology (Kidney)',
     urology: 'Urology',
+    neurology: 'Neurology / Brain',
+    gynecology_uterus: 'Gynaecology',
     gynecology: 'Gynaecology',
     infertility: 'Infertility / IVF',
+    ent_ear: 'ENT (Ear Care)',
     ent: 'Ear, Nose, Throat (ENT)',
     ophthalmology: 'Ophthalmology (Eye)',
     dental: 'Dental Surgery',
     hair: 'Hair Transplant',
     dermatology: 'Dermatology & Skin',
     pediatrics: 'Pediatrics',
+    wellness: 'Wellness Care',
+    plastic: 'Cosmetic & Plastic Surgery',
     general: 'General Surgery',
   };
 
