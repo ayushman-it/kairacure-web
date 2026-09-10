@@ -71,6 +71,22 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
     { q: `What international patient services are provided?`, a: `Services include complimentary airport transfers, language interpreters (Arabic, Russian, French), guest house stay arrangements, and 24/7 dedicated case managers.` }
   ];
 
+  const handleEnquireClick = (itemTitle) => {
+    if (itemTitle) {
+      setLeadForm((prev) => ({ ...prev, treatment: itemTitle }));
+    }
+    const formElement = document.getElementById('connect-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const nameInput = formElement.querySelector('input');
+      if (nameInput) {
+        setTimeout(() => {
+          nameInput.focus();
+        }, 350);
+      }
+    }
+  };
+
   return (
     <div className="partner-standalone-shell" style={{ background: '#ffffff', minHeight: '100vh', color: '#0f172a', fontFamily: "'Noto Sans', sans-serif" }}>
 
@@ -275,9 +291,9 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                           <span style={{ fontSize: '0.68rem', color: '#64748b', display: 'block' }}>Starts from</span>
                           <strong style={{ fontSize: '0.95rem', color: '#0066fe' }}>{money(t.packageFrom)}</strong>
                         </div>
-                        <a href="#connect-form" className="pdl-btn-enquire">
+                        <button type="button" onClick={() => handleEnquireClick(t.title)} className="pdl-btn-enquire" style={{ cursor: 'pointer' }}>
                           Enquire
-                        </a>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -304,9 +320,9 @@ export function PartnerLandingPage({ money, selectedHospital, selectedTreatment,
                         <span>•</span>
                         <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
                       </div>
-                      <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center', display: 'block', textDecoration: 'none' }}>
+                      <button type="button" onClick={() => handleEnquireClick(`Consultation with ${doc.name}`)} className="pdl-btn-outline" style={{ width: '100%', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center', display: 'block', cursor: 'pointer' }}>
                         Book Slot
-                      </a>
+                      </button>
                     </div>
                   ))}
                 </div>

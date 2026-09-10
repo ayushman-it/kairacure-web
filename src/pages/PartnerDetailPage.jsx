@@ -84,6 +84,22 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
     { q: `What international patient services are provided?`, a: `Services include complimentary airport transfers, language interpreters (Arabic, Russian, French), guest house stay arrangements, and 24/7 dedicated case managers.` }
   ];
 
+  const handleEnquireClick = (itemTitle) => {
+    if (itemTitle) {
+      setLeadForm((prev) => ({ ...prev, treatment: itemTitle }));
+    }
+    const formElement = document.getElementById('connect-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const nameInput = formElement.querySelector('input');
+      if (nameInput) {
+        setTimeout(() => {
+          nameInput.focus();
+        }, 350);
+      }
+    }
+  };
+
   return (
     <section className="profile-page detail-page partner-detail-landing" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0.75rem 12px 3rem', boxSizing: 'border-box', overflowX: 'hidden' }}>
       <MedicalVideoBackdrop />
@@ -181,9 +197,9 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
 
             {/* Action CTAs */}
             <div className="pdl-actions-row" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '0.65rem', width: '100%', maxWidth: '100%', boxSizing: 'border-box', marginTop: '1rem', height: 'auto', alignSelf: 'flex-start' }}>
-              <a href="#connect-form" className="pdl-btn-primary" style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px' }}>
+              <button type="button" onClick={() => handleEnquireClick('')} className="pdl-btn-primary" style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}>
                 <i className="bi bi-calendar-check-fill" style={{ marginRight: '0.35rem' }} /> Book Free Consultation
-              </a>
+              </button>
               <button onClick={() => setPage('planner')} type="button" className="pdl-btn-outline" style={{ height: '42px', minHeight: '42px', maxHeight: '42px', padding: '0 1rem', fontSize: '0.85rem', boxSizing: 'border-box', margin: 0, justifyContent: 'center', flex: '1 1 180px' }}>
                 <i className="bi bi-calculator-fill" style={{ marginRight: '0.35rem' }} /> Journey Cost Calculator
               </button>
@@ -271,9 +287,9 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
                         <span style={{ fontSize: '0.68rem', color: '#64748b', display: 'block' }}>Starts from</span>
                         <strong style={{ fontSize: '0.95rem', color: '#0d2f5d' }}>{money(t.packageFrom)}</strong>
                       </div>
-                      <a href="#connect-form" className="pdl-btn-primary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.78rem' }}>
+                      <button type="button" onClick={() => handleEnquireClick(t.title)} className="pdl-btn-primary" style={{ padding: '0.4rem 0.75rem', fontSize: '0.78rem', border: 'none', cursor: 'pointer' }}>
                         Enquire
-                      </a>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -300,9 +316,9 @@ export function PartnerDetailPage({ money, selectedHospital, selectedTreatment, 
                       <span>•</span>
                       <span style={{ color: '#16a34a', fontWeight: 700 }}>{doc.rating}</span>
                     </div>
-                    <a href="#connect-form" className="pdl-btn-outline" style={{ width: '100%', display: 'block', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center', textDecoration: 'none' }}>
+                    <button type="button" onClick={() => handleEnquireClick(`Consultation with ${doc.name}`)} className="pdl-btn-outline" style={{ width: '100%', display: 'block', padding: '0.4rem', fontSize: '0.78rem', textAlign: 'center', cursor: 'pointer' }}>
                       Book Slot
-                    </a>
+                    </button>
                   </div>
                 ))}
               </div>
