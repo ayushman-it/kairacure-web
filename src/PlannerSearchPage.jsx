@@ -545,8 +545,8 @@ export function PlannerSearchPage({
                 </div>
 
                 <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.65rem', marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.78rem', fontWeight: 700, color: hasCosting ? '#0f172a' : '#64748b' }}>
-                    {hasCosting ? `From ₹${(Number(treatment.packageFrom) / 100000).toFixed(1)}L` : 'Estimate on request'}
+                  <span style={{ fontSize: hasCosting ? '0.78rem' : '0.7rem', fontWeight: 600, color: hasCosting ? '#0f172a' : '#64748b' }}>
+                    {hasCosting ? `From ₹${(Number(treatment.packageFrom) / 100000).toFixed(1)}L` : 'Cost on Request'}
                   </span>
 
                   <span style={{

@@ -119,8 +119,8 @@ export function TreatmentsPage({ activeGroup, isLoading = false, money, setActiv
               </div>
 
               <div className="kc-treatment-footer-v2">
-                <span className="kc-treatment-price-v2">
-                  {item.packageFrom ? `From ₹${(item.packageFrom / 100000).toFixed(1)}L` : 'Estimate on request'}
+                <span className="kc-treatment-price-v2" style={!item.packageFrom ? { fontSize: '0.72rem', color: '#64748b' } : undefined}>
+                  {item.packageFrom ? `From ₹${(item.packageFrom / 100000).toFixed(1)}L` : 'Cost on Request'}
                 </span>
                 <span className="kc-treatment-btn-v2">
                   Details <i className="bi bi-arrow-right-short" style={{ fontSize: '1.1rem' }} />
