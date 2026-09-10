@@ -519,7 +519,11 @@ export function PlannerSearchPage({
                       boxShadow: isSelected ? '0 3px 10px rgba(0, 102, 254, 0.25)' : 'none',
                       border: '1px solid #dbeafe',
                     }}>
-                      <i className="bi bi-heart-pulse-fill" aria-hidden="true" />
+                      <TreatmentVectorIcon
+                        treatment={treatment}
+                        size={24}
+                        filter={isSelected ? 'brightness(0) invert(1)' : undefined}
+                      />
                     </div>
 
                     <span style={{
@@ -791,7 +795,11 @@ export function ProcedureSelectPage({
 
               {/* Icon */}
               <div className="procedure-card-icon">
-                <i className={`fa-solid ${iconClass}`} aria-hidden="true" />
+                <TreatmentVectorIcon
+                  treatment={proc}
+                  size={24}
+                  filter={selected ? 'brightness(0) invert(1)' : undefined}
+                />
               </div>
 
               <div className="procedure-card-body">
@@ -2249,9 +2257,12 @@ export function JourneyPlanningPage({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {(selectedTreatments.length ? selectedTreatments : [{ id: 'ent', title: 'ENT Surgery', packageFrom: 240000 }]).map(t => (
                 <div key={t.id || t._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', gap: '8px' }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <strong style={{ display: 'block', fontSize: '0.84rem', color: '#0f172a', margin: '0 0 2px', wordBreak: 'break-word' }}>{getPlannerTreatmentTitle(t)}</strong>
-                    <span style={{ fontSize: '0.7rem', color: '#64748b' }}>ICD-11 Classified</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
+                    <TreatmentVectorIcon treatment={t} size={22} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <strong style={{ display: 'block', fontSize: '0.84rem', color: '#0f172a', margin: '0 0 2px', wordBreak: 'break-word' }}>{getPlannerTreatmentTitle(t)}</strong>
+                      <span style={{ fontSize: '0.7rem', color: '#64748b' }}>ICD-11 Classified</span>
+                    </div>
                   </div>
                   <span style={{ display: 'inline-block', background: '#0d2f5d', color: '#ffffff', padding: '3px 10px', borderRadius: '12px', fontSize: '0.74rem', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}>
                     {t.packageFrom ? `From ₹${(t.packageFrom / 100000).toFixed(1)}L` : 'From ₹2.4L'}
@@ -2878,8 +2889,9 @@ export function PlannerHospitalsPage({
         <strong>Selected Treatments:</strong>
         <div className="treatments-summary">
           {selectedTreatments.map((treatment) => (
-            <span key={treatment.id} className="treatment-badge">
-              {getPlannerTreatmentTitle(treatment)}
+            <span key={treatment.id} className="treatment-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <TreatmentVectorIcon treatment={treatment} size={18} />
+              <span>{getPlannerTreatmentTitle(treatment)}</span>
             </span>
           ))}
         </div>
